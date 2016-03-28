@@ -3,9 +3,9 @@ const Boom = require('boom');
 const req = require('request');
 
 const config = require('../config');
-const logEvent = require('../util/logEvent');
+//const logEvent = require('../util/logEvent');
 const Slack = require('../util/slack');
-const commandParser = require('../util/commandParser');
+//const commandParser = require('../util/commandParser');
 
 const slack = new Slack({
   token: config.slack.token
@@ -24,6 +24,8 @@ module.exports.slackHook = function(request, reply) {
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
+
+  console.log(payload);
 
   /*
   slack.getUserInfo(payload.user_id)

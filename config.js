@@ -4,16 +4,16 @@ var getEnv = require('getenv');
 module.exports = {
   port: getEnv.int('PORT', 3000),
   mongo:{
-    username: getEnv('MONGO_USERNAME', ''),
-    password: getEnv('MONGO_PASSWORD', ''),
-    url: getEnv('COUCHDB_URL', 'http://127.0.0.1'),
-    port: getEnv.int('MONGO_PORT', 5984),
-    dbName: getEnv('MONGO_NAME', '')
+    username: getEnv('SLIRA_MONGO_USERNAME', ''),
+    password: getEnv('SLIRA_MONGO_PASSWORD', ''),
+    url: getEnv('SLIRA_MONGO_URL', 'http://127.0.0.1'),
+    port: getEnv.int('SLIRA_MONGO_PORT', 5984),
+    dbName: getEnv('SLIRA_MONGO_NAME', '')
   },
   slack:{
-    token: getEnv('SLACK_TOKEN', ''),
+    token: getEnv('SLIRA_SLACK_TOKEN', ''),
     webhooks:{
-      requestTokens: getEnv('SLACK_WEBHOOK_TOKENS', '').split(',')
+      requestTokens: getEnv('SLIRA_SLACK_WEBHOOK_TOKENS', '').split(',')
     }
   },
   jira:{
