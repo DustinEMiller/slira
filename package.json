@@ -1,0 +1,22 @@
+{
+  "name": "slira",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --debug index.js",
+    "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors.",
+  },
+  "dependencies": {
+    "getenv": "^0.6.0",
+    "hapi": "^13.2.2",
+    "joi": "^8.0.5",
+    "keymirror": "^0.1.1",
+    "node-uuid": "^1.4.7",
+    "request": "^2.69.0"
+  },
+  "engines": {
+    "node": "5.x"
+  }
+}

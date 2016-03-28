@@ -1,0 +1,38 @@
+{
+  "name": "slira",
+  "description": "A Hapi rest api for handling integration between Slack and JIRA",
+  "keywords": ["node", "hapi", "jira", "slack"],
+  "env": {
+    "MONGO_USERNAME": {
+      "description": "MongoDB username"
+    },
+    "MONGO_PASSWORD": {
+      "description": "MongoDB password"
+    },
+    "MONGO_URL":{
+      "description":"Mongo db url, eg: https://<your_account>.cloudant.com"
+    },
+    "MONGO_PORT":{
+      "description":"MongoDB port",
+      "value":"443"
+    },
+    "MONGO_NAME":{
+      "description":""
+    },
+    "SLACK_TOKEN":{
+      "description": "to get slack profiles"
+    },
+    "SLACK_WEBHOOK_TOKENS":{
+      "description":""
+    },
+    "JIRA_USERNAME":{
+      "description":""
+    },
+    "JIRA_PASSWORD":{
+      "description":""
+    },
+    "JIRA_URL":{
+      "description":""
+    }
+  }
+}
