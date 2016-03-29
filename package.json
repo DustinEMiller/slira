@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon --debug index.js",
-    "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors.",
+    "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors."
   },
   "dependencies": {
     "getenv": "^0.6.0",
