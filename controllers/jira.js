@@ -3,9 +3,7 @@ const Boom = require('boom');
 const req = require('request');
 
 const config = require('../config');
-//const logEvent = require('../util/logEvent');
-const Slack = require('../util/slack');
-//const commandParser = require('../util/commandParser');
+const Slack = require('../utils/slack');
 
 const slack = new Slack({
   token: config.slack.token

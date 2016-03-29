@@ -9,8 +9,10 @@
     "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors."
   },
   "dependencies": {
+    "camelcase-keys-recursive": "^0.8.1",
     "getenv": "^0.6.0",
     "hapi": "^13.2.2",
+    "hapi-auth-basic": "^4.1.0",
     "joi": "^8.0.5",
     "keymirror": "^0.1.1",
     "node-uuid": "^1.4.7",
