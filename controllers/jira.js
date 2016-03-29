@@ -13,17 +13,19 @@ function slackTokenMatch(token) {
   const tokens = config.slack.webhooks.requestTokens;
   const match = tokens.filter((t) => t === token);
 
+  console.log(tokens);
+
   return match.length > 0;
 }
 
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
 
+  console.log(payload);
+
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
-
-  console.log(payload);
 
   /*
   slack.getUserInfo(payload.user_id)
