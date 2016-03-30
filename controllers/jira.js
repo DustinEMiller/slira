@@ -22,8 +22,27 @@ module.exports.slackHook = function(request, reply) {
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
-  console.log(JIRA.queryIssues());
-  reply(JIRA.queryIssues());
+
+  JIRA.queryIssues()
+    .then((result) => {
+      var message = {
+            'attachments': {}
+          };
+
+      message.attachments = info.issues.map(function(issue){
+        return {
+          'fallback': 'Task ' + issue.key + ' ' +issue.fields.summary + ' ' + issue.fields.description,
+          'pretext': 'Task ' + issue.key,
+          'title': issue.fields.summary,
+          'text': issue.fields.description,
+          'color': '#F35A00'
+        }
+      });
+      reply(message);
+    })
+    .catch((err) => {
+      reply(Boom.badImplementation());
+    });
   /*
   slack.getUserInfo(payload.user_id)
     .then((result) => {

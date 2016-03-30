@@ -16,30 +16,18 @@ module.exports.transitionIssue = function() {
 	
 }
 
-module.exports.queryIssues = function(callback) {
+module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
+	return new Promise((resolve, reject) => {
+	    req(url, function(err, httpResponse, body) {
+	      if (err) {
+	        return reject(err);
+	      }
 
-	var result = req(options, function(error, response, body) {
-		if (error || response.statusCode !== 200) {	
-      		return error || {statusCode: response.statusCode};
-    	} else {
-    		var info = JSON.parse(body),
-    			message = {
-    				'attachments': {}
-    			};
-
-			message.attachments = info.issues.map(function(issue){
-				return {
-					'fallback': 'Task ' + issue.key + ' ' +issue.fields.summary + ' ' + issue.fields.description,
-					'pretext': 'Task ' + issue.key,
-					'title': issue.fields.summary,
-					'text': issue.fields.description,
-					'color': '#F35A00'
-				}
-			});
-			return message;
-    	}
-	});
-
-	return result;
+	      if (httpResponse.statusCode === 200) {
+	        return resolve(JSON.parse(body));
+	      }
+	      reject('Not OK Response');
+	    });
+  	});
 }
