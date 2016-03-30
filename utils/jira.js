@@ -3,12 +3,13 @@ const Boom = require('boom');
 const req = require('request');
 const config = require('../config');
 
+var creds = config.jira.username + ":" config.jira.password;
 var options = {
 	url: '',
 	headers: {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
-		'Authorization': 'Basic ' + new Buffer("{config.jira.username}:{config.jira.password}").toString('base64')
+		'Authorization': 'Basic ' + creds.toString('base64')
 	}	
 };
 
