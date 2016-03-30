@@ -29,7 +29,7 @@ module.exports.slackHook = function(request, reply) {
             'attachments': {}
           };
 
-      message.attachments = info.issues.map(function(issue){
+      message.attachments = result.issues.map(function(issue){
         return {
           'fallback': 'Task ' + issue.key + ' ' +issue.fields.summary + ' ' + issue.fields.description,
           'pretext': 'Task ' + issue.key,
