@@ -19,7 +19,7 @@ module.exports.transitionIssue = function() {
 module.exports.queryIssues = function(callback) {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
-	req(options, function(error, response, body) {
+	var result = req(options, function(error, response, body) {
 		if (error || response.statusCode !== 200) {	
       		return error || {statusCode: response.statusCode};
     	} else {
@@ -40,4 +40,6 @@ module.exports.queryIssues = function(callback) {
 			return message;
     	}
 	});
+
+	return result;
 }
