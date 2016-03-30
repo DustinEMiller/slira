@@ -22,7 +22,7 @@ module.exports.slackHook = function(request, reply) {
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
-  
+  console.log(JIRA.queryIssues());
   reply(JIRA.queryIssues());
   /*
   slack.getUserInfo(payload.user_id)
