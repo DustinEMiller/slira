@@ -20,6 +20,8 @@ module.exports.queryIssues = function(callback) {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
 	req(options, function(error, response, body) {
+		console.log(error);
+		console.log(response.statusCode);
 		if (error || response.statusCode !== 200) {	
 			console.log(error || {statusCode: response.statusCode})
       		return error || {statusCode: response.statusCode};
