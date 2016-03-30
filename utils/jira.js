@@ -21,6 +21,7 @@ module.exports.queryIssues = function(callback) {
 
 	req(options, function(error, response, body) {
 		if (error || response.statusCode !== 200) {	
+			console.log(error || {statusCode: response.statusCode})
       		return error || {statusCode: response.statusCode};
     	} else {
     		var info = JSON.parse(body),
@@ -37,7 +38,7 @@ module.exports.queryIssues = function(callback) {
 					'color': '#F35A00'
 				}
 			});
-
+			console.log(message);
 			return message;
     	}
 	});

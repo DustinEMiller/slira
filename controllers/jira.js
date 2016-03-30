@@ -19,9 +19,9 @@ function slackTokenMatch(token) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
 
-  if (!slackTokenMatch(payload.token)) {
+  /*if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
-  }
+  }*/
   
   reply(JIRA.queryIssues());
   /*
