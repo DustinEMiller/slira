@@ -19,7 +19,7 @@ module.exports.transitionIssue = function() {
 module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 	return new Promise((resolve, reject) => {
-	    req(url, function(err, httpResponse, body) {
+	    req(options, function(err, httpResponse, body) {
 	    	console.log(err);
 	    	console.log(httpResponse);
 			if (err) {
