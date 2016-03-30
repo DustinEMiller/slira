@@ -3,7 +3,7 @@ const Boom = require('boom');
 const req = require('request');
 const config = require('../config');
 
-var creds = config.jira.username + ":" config.jira.password;
+var creds = config.jira.username + ":" + config.jira.password;
 var options = {
 	url: '',
 	headers: {
