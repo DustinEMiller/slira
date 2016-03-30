@@ -38,7 +38,7 @@ module.exports.slackHook = function(request, reply) {
           'color': '#F35A00'
         }
       });
-      reply(message);
+      reply(JSON.stringify(message));
     })
     .catch((err) => {
       reply(Boom.badImplementation(err));
