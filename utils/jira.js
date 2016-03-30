@@ -17,13 +17,12 @@ module.exports.transitionIssue = function(request, reply) {
 }
 
 module.exports.queryIssues = function() {
-	console.log(options);
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
 	req(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
     		var info = JSON.parse(body);
-    		console.log('success');
+    		console.log(info);
   		} else {
   			console.log(error);
   		}
