@@ -16,7 +16,7 @@ module.exports.transitionIssue = function() {
 	
 }
 
-module.exports.queryIssues = function(callback) {
+module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
 	req(options, function(error, response, body) {
