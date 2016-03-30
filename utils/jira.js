@@ -8,7 +8,7 @@ var options = {
 	headers: {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
-		'Authorization': 'Basic ' + new Buffer("#{config.jira.username}:#{config.jira.password}").toString('base64')
+		'Authorization': 'Basic ' + new Buffer("{config.jira.username}:{config.jira.password}").toString('base64')
 	}	
 };
 
@@ -17,15 +17,15 @@ module.exports.transitionIssue = function(request, reply) {
 }
 
 module.exports.queryIssues = function() {
+	console.log(options);
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
 	req(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
     		var info = JSON.parse(body);
-    		console.log(info);
+    		console.log('success');
   		} else {
-  			console.log(error);
-  			console.log(response);	
+  			console.log('error');
   		}
 	});
 }
