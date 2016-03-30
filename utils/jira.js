@@ -16,15 +16,12 @@ module.exports.transitionIssue = function() {
 	
 }
 
-module.exports.queryIssues = function() {
+module.exports.queryIssues = function(callback) {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
 	req(options, function(error, response, body) {
-		console.log(body);
-		console.log(response);
 		if (error || response.statusCode !== 200) {	
-			console.log(error || {statusCode: response.statusCode})
-      		//return error || {statusCode: response.statusCode};
+      		return error || {statusCode: response.statusCode};
     	} else {
     		var info = JSON.parse(body),
     			message = {
@@ -40,8 +37,7 @@ module.exports.queryIssues = function() {
 					'color': '#F35A00'
 				}
 			});
-			console.log(message);
-			//return message;
+			return message;
     	}
 	});
 }

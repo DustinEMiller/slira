@@ -19,11 +19,11 @@ function slackTokenMatch(token) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
 
-  /*if (!slackTokenMatch(payload.token)) {
+  if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
-  }*/
+  }
   
-  JIRA.queryIssues();
+  reply(JIRA.queryIssues());
   /*
   slack.getUserInfo(payload.user_id)
     .then((result) => {
