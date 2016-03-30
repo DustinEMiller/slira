@@ -20,14 +20,16 @@ module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 	return new Promise((resolve, reject) => {
 	    req(url, function(err, httpResponse, body) {
-	      if (err) {
-	        return reject(err);
-	      }
+	    	console.log(err);
+	    	console.log(httpResponse);
+			if (err) {
+				return reject(err);
+			}
 
-	      if (httpResponse.statusCode === 200) {
-	        return resolve(JSON.parse(body));
-	      }
-	      reject('Not OK Response');
+			if (httpResponse.statusCode === 200) {
+				return resolve(JSON.parse(body));
+			}
+			reject('Not OK Response');
 	    });
   	});
 }
