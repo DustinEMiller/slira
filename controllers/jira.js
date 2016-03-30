@@ -41,7 +41,7 @@ module.exports.slackHook = function(request, reply) {
       reply(message);
     })
     .catch((err) => {
-      reply(Boom.badImplementation());
+      reply(Boom.badImplementation(err));
     });
   /*
   slack.getUserInfo(payload.user_id)
