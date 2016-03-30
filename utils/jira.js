@@ -23,13 +23,13 @@ module.exports.queryIssues = function() {
 	    	console.log(err);
 	    	console.log(httpResponse);
 			if (err) {
-				return reject(err);
+				return reject(new Error(err));
 			}
 
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
-			reject('Not OK Response');
+			reject(new('Not OK Response'));
 	    });
   	});
 }
