@@ -24,7 +24,7 @@ module.exports.queryIssues = function(callback) {
 		console.log(response);
 		if (error || response.statusCode !== 200) {	
 			console.log(error || {statusCode: response.statusCode})
-      		return error || {statusCode: response.statusCode};
+      		//return error || {statusCode: response.statusCode};
     	} else {
     		var info = JSON.parse(body),
     			message = {
@@ -41,7 +41,7 @@ module.exports.queryIssues = function(callback) {
 				}
 			});
 			console.log(message);
-			return message;
+			//return message;
     	}
 	});
 }
