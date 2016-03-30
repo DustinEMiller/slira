@@ -1,6 +1,5 @@
 'use strict';
 const Boom = require('boom');
-const req = require('request');
 
 const config = require('../config');
 const Slack = require('../utils/slack');

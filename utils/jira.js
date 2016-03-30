@@ -19,7 +19,7 @@ module.exports.transitionIssue = function(request, reply) {
 module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 
-	request(options, function(error, response, body) {
+	req(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
     		var info = JSON.parse(body);
     		console.log(info);
