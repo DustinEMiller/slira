@@ -4,6 +4,7 @@ const req = require('request');
 
 const config = require('../config');
 const Slack = require('../utils/slack');
+const JIRA = require('../utils/jira');
 
 const slack = new Slack({
   token: config.slack.token
@@ -12,8 +13,6 @@ const slack = new Slack({
 function slackTokenMatch(token) {
   const tokens = config.slack.webhooks.requestTokens;
   const match = tokens.filter((t) => t === token);
-
-  console.log(tokens);
 
   return match.length > 0;
 }
@@ -26,7 +25,7 @@ module.exports.slackHook = function(request, reply) {
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
-
+  JIRA.queryIssues();
   /*
   slack.getUserInfo(payload.user_id)
     .then((result) => {

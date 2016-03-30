@@ -11,11 +11,8 @@ server.connection({
   }
 });
 
-console.log('nuts');
 server.register(require('hapi-auth-basic'),() => {
-	console.log('nuts');
   server.route(require('./routes'));
-
   server.start(() => {
     console.log('Server running at:', server.info.uri);
   });

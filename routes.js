@@ -1,5 +1,4 @@
 'use strict';
-//const Joi = require('joi');
 const jira = require('./controllers/jira');
 
 
