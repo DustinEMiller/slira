@@ -29,7 +29,7 @@ module.exports.queryIssues = function() {
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
-			reject(new('Not OK Response'));
+			reject(new Error('Not OK Response'));
 	    });
   	});
 }
