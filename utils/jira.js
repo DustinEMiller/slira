@@ -20,8 +20,6 @@ module.exports.queryIssues = function() {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
-	    	console.log(err);
-	    	console.log(httpResponse);
 			if (err) {
 				return reject(new Error(err));
 			}

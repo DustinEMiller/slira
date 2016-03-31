@@ -26,7 +26,9 @@ module.exports.slackHook = function(request, reply) {
   JIRA.queryIssues()
     .then((result) => {
       var message = {
-            'attachments': {}
+            "response_type": "in_channel",
+            "text": "JIRA issue query.",
+            'attachments': []
           };
 
       message.attachments = result.issues.map(function(issue){
