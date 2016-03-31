@@ -29,7 +29,7 @@ module.exports.slackHook = function(request, reply) {
     .then((result) => {
       var message = {
             "response_type": "ephemeral",
-            "text": "Issues assigned to: "
+            "text": "Issues assigned to: ",
             'attachments': []
           };
 
