@@ -19,6 +19,8 @@ function slackTokenMatch(token) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
 
+  console.log(request.payload);
+
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
@@ -27,6 +29,7 @@ module.exports.slackHook = function(request, reply) {
     .then((result) => {
       var message = {
             "response_type": "ephemeral",
+            "text": "Issues assigned to: "
             'attachments': []
           };
 
