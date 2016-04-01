@@ -12,12 +12,25 @@ var options = {
 	}	
 };
 
-module.exports.transitionIssue = function() {
-	
+module.exports.transitionIssue = function(args) {
+	options.url = config.jira.url + 'rest/api/2/issue/'+args[1]+'/transitions?expand=transitions.fields';
+	options.form = '{"transition":{"id":"'++'"}}';
+	return new Promise((resolve, reject) => {
+	    req.post(options, function(err, httpResponse, body) {
+			if (err) {
+				return reject(new Error(err));
+			}
+
+			if (httpResponse.statusCode === 200) {
+				return resolve(JSON.parse(body));
+			}
+			reject(new Error('Not OK Response'));
+	    });
+  	});	
 }
 
-module.exports.queryIssues = function() {
-	options.url = config.jira.url + 'rest/api/2/search?jql=assignee=dustin.miller';
+module.exports.queryIssues = function(args) {
+	options.url = config.jira.url + 'rest/api/2/search?jql=assignee%20in%20("'+args[1]+'")';
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 			if (err) {

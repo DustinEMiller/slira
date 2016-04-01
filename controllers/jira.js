@@ -19,17 +19,18 @@ function slackTokenMatch(token) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
 
-  console.log(request.payload);
-
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
 
-  JIRA.queryIssues()
+  var commandArgs = request.payload.text.split(" ", 2);
+
+  if (commandArgs[0] === 'issues') {
+    JIRA.queryIssues(commandArgs)
     .then((result) => {
       var message = {
             "response_type": "ephemeral",
-            "text": "Issues assigned to: ",
+            "text": "Issues assigned to: " + commandArgs[1],
             'attachments': []
           };
 
@@ -47,54 +48,21 @@ module.exports.slackHook = function(request, reply) {
     .catch((err) => {
       reply(Boom.badImplementation(err));
     });
-  /*
-  slack.getUserInfo(payload.user_id)
-    .then((result) => {
-      const profile = result.user.profile;
+  } else if (commandArgs[0] === 'states') {
+    
+  } else if (commandArgs[0] === 'details') {
+    
+  } else if (commandArgs[0] === 'transition') {
+    JIRA.transitionIssue(commandArgs)
+      .then((result) => {
 
-      return Employee.getByEmail(profile.email)
-        .then((employee) => {
+      })
+      .catch((err) => {
+        
+      });
+  } else if (commandArgs[0] === 'help') {
 
-          if (!employee) {
+  } else {
 
-            return new Employee({
-              name: profile.realName,
-              email: profile.email,
-              status,
-              command
-            })
-            .save();
-
-          } else {
-
-            return Employee.updateStatus(employee.email, status, command);
-          }
-        })
-        .then((employee) => {
-          var message = '',
-              botResponse;
-          if(employee.message){
-            message = ' "'+employee.message+'"';
-          }
-          botResponse = '*' + employee.name + '*: ' + employee.status + message;
-          req({
-            url: 'https://hooks.slack.com/services/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',
-            method: 'POST',
-            json: {
-              channel: "#where",
-              username: "Where Bot",
-              text: botResponse
-            }
-          }, function(err, res) {
-            console.log(err, res);
-          });
-          reply('Updated status to *'+employee.status+'*, your default status is: *'+employee.defaultStatus+'*. \n To change your default status use \`/here -default` for *InOffice*, \`/out -default` for *OutOfOffice* and \`/remote -default` for *Remote* \nAttach a message to your status: \`/'+slashCommand+' -default This is my message!` or \`/'+slashCommand+' This is my message!`\nTo view statuses use \`/where \`. You may also use a *single* word as a search condition. \`/where jeff\``');
-          logEvent(employee);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      reply(Boom.badImplementation());
-    });
-  */
+  }
 };
