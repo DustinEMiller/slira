@@ -14,7 +14,7 @@ var options = {
 
 function getRequest() {
 	return new Promise((resolve, reject) => {
-	    req.post(options, function(err, httpResponse, body) {
+	    req(options, function(err, httpResponse, body) {
 			if (err) {
 				console.log('err');
 				return reject(new Error(err));
