@@ -52,5 +52,6 @@ module.exports.transitionIssue = function(args) {
 module.exports.queryIssues = function(query) {
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
+	console.log(options.url);
 	return getRequest();
 }
