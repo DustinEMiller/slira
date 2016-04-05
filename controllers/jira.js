@@ -61,7 +61,7 @@ module.exports.slackHook = function(request, reply) {
         console.log(result);
         var message = {
           "response_type": "ephemeral",
-          "text": "Transition stats available for the issue *" + argString + "*",
+          "text": "Transition states available for the issue *" + argString + "*",
           'attachments': []
         };
 
@@ -70,7 +70,7 @@ module.exports.slackHook = function(request, reply) {
             'fallback': transition.name + ': ' + transition.to.description,
             'title': transition.name,
             'text': transition.to.description,
-            'color': transition.to.statusCategory.colorName
+            'color': "'" + transition.to.statusCategory.colorName + "'"
           }
         });
 
