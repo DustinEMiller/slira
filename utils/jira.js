@@ -24,7 +24,7 @@ function getRequest() {
 				console.log('resolve');
 				return resolve(JSON.parse(body));
 			}
-			console.log('no resolve');
+			console.log(httpResponse);
 			reject(new Error('Not OK Response'));
 	    });
   	});		
