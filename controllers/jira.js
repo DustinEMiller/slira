@@ -55,10 +55,9 @@ module.exports.slackHook = function(request, reply) {
       reply(Boom.badImplementation(err));
     });
   } else if (command[0] === 'states') {
-    console.log('states');
+    
     JIRA.retrieveTransitions(argString)
       .then((result) => {
-        console.log(result);
         var message = {
           "response_type": "ephemeral",
           "text": "Transition states available for the issue *" + argString + "*",
@@ -77,6 +76,8 @@ module.exports.slackHook = function(request, reply) {
         if (message.attachments.length === 0) {
           message.text += '\nThat issue does not exist';
         }
+
+        console.log(message);
 
         reply(JSON.stringify(message)).header('content-type', 'application/json');
       }) 
