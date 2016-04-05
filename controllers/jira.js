@@ -19,7 +19,7 @@ function slackTokenMatch(token) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
   var command = request.payload.text.split(/\s+/).slice(0,1),
-      argString.replace(command[0], '');
+      argString = request.payload.text.replace(command[0], '');
 
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
