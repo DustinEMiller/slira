@@ -47,13 +47,17 @@ module.exports.slackHook = function(request, reply) {
         }
       });
 
+      console.log(message.attachments.length);
+
       if (message.attachments.length === 0) {
         message.attachments = {
           'fallback': 'No issues found',
           'pretext': 'No issues found'
         }
       }
-      
+
+      console.log(message);
+
       reply(JSON.stringify(message)).header('content-type', 'application/json');
     })
     .catch((err) => {
