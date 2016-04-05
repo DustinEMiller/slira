@@ -28,9 +28,12 @@ module.exports.slackHook = function(request, reply) {
   if (command[0] === 'issues') {
     JIRA.queryIssues(argString)
     .then((result) => {
+
+      
+
       var message = {
             "response_type": "ephemeral",
-            "text": "Issues assigned to: " + argString,
+            "text": "Issues assigned to: *" + argString + "*",
             'attachments': []
           };
 
@@ -42,6 +45,14 @@ module.exports.slackHook = function(request, reply) {
           'text': issue.fields.description,
           'color': '#F35A00'
         }
+
+      if (message.attachments.length === 0) {
+        message.attachments = {
+          'fallback': 'No issues found',
+          'pretext': 'No issues found'
+        }
+      }
+
       });
       reply(JSON.stringify(message)).header('content-type', 'application/json');
     })
