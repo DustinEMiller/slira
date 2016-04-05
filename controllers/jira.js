@@ -77,6 +77,8 @@ module.exports.slackHook = function(request, reply) {
         if (message.attachments.length === 0) {
           message.text += '\nThat issue does not exist';
         }
+
+        reply(JSON.stringify(message)).header('content-type', 'application/json');
       }) 
       .catch((err) => {
         reply(Boom.badImplementation(err));
