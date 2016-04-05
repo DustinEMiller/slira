@@ -30,10 +30,10 @@ module.exports.slackHook = function(request, reply) {
     .then((result) => {
 
       var message = {
-            "response_type": "in_channel",
-            "text": "Issues assigned to: *" + argString + "*",
-            'attachments': []
-          };
+          "response_type": "ephemeral",
+          "text": "Issues assigned to: *" + argString + "*",
+          'attachments': []
+        };
 
       message.attachments = result.issues.map(function(issue){
         return {
@@ -57,7 +57,24 @@ module.exports.slackHook = function(request, reply) {
   } else if (command[0] === 'states') {
     JIRA.queryIssues(argString)
       .then((result) => {
+        var message = {
+          "response_type": "ephemeral",
+          "text": "Transition stats available for the issue *" + argString + "*",
+          'attachments': []
+        };
 
+        message.attachments = result.transitions.map(function(transition){
+          return {
+            'fallback': transition.name + ': ' + transition.to.description,
+            'title': transition.name
+            'text': transition.to.description,
+            'color': transition.to.statusCategory.colorName
+          }
+        });
+
+        if (message.attachments.length === 0) {
+          message.text += '\nThat issue does not exist';
+        }
       }) 
       .catch((err) => {
 

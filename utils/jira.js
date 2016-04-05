@@ -27,8 +27,8 @@ function getRequest() {
   	});		
 }
 
-module.exports.retrieveTransitions = function(args){
-	options.url = config.jira.url + 'rest/api/2/issue/'+args[1]+'/transitions?expand=transitions.fields';
+module.exports.retrieveTransitions = function(issue){
+	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest();
 }
 
