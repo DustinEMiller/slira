@@ -18,19 +18,19 @@ function slackTokenMatch(token) {
 
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
+  var command = request.payload.text.split(/\s+/).slice(0,1),
+      argString.replace(command[0], '');
 
   if (!slackTokenMatch(payload.token)) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
 
-  var commandArgs = request.payload.text.split(" ", 2);
-
   if (commandArgs[0] === 'issues') {
-    JIRA.queryIssues(commandArgs)
+    JIRA.queryIssues(argString)
     .then((result) => {
       var message = {
             "response_type": "ephemeral",
-            "text": "Issues assigned to: " + commandArgs[1],
+            "text": "Issues assigned to: " + argString,
             'attachments': []
           };
 
@@ -48,11 +48,11 @@ module.exports.slackHook = function(request, reply) {
     .catch((err) => {
       reply(Boom.badImplementation(err));
     });
-  } else if (commandArgs[0] === 'states') {
+  } else if (command[0] === 'states') {
     
-  } else if (commandArgs[0] === 'details') {
+  } else if (command[0] === 'details') {
     
-  } else if (commandArgs[0] === 'transition') {
+  } else if (command[0] === 'transition') {
     JIRA.transitionIssue(commandArgs)
       .then((result) => {
 

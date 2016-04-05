@@ -49,8 +49,7 @@ module.exports.transitionIssue = function(args) {
   	});	
 }
 
-module.exports.queryIssues = function(args) {
-	options.url = config.jira.url + 'rest/api/2/search?jql=assignee%20in%20("'+args[1]+'")';
-	console.log(options);
+module.exports.queryIssues = function(query) {
+	options.url = config.jira.url + 'rest/api/2/search?jql=assignee%20in%20("'+query+'")';
 	return getRequest();
 }
