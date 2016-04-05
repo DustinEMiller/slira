@@ -66,7 +66,7 @@ module.exports.slackHook = function(request, reply) {
         message.attachments = result.transitions.map(function(transition){
           return {
             'fallback': transition.name + ': ' + transition.to.description,
-            'title': transition.name
+            'title': transition.name,
             'text': transition.to.description,
             'color': transition.to.statusCategory.colorName
           }
