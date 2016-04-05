@@ -30,7 +30,7 @@ module.exports.slackHook = function(request, reply) {
     .then((result) => {
 
       var message = {
-            "response_type": "ephemeral",
+            "response_type": "in_channel",
             "text": "Issues assigned to: *" + argString + "*",
             'attachments': []
           };
@@ -49,15 +49,19 @@ module.exports.slackHook = function(request, reply) {
         message.text += '\nNo issues found';
       }
 
-      console.log(message);
-
       reply(JSON.stringify(message)).header('content-type', 'application/json');
     })
     .catch((err) => {
       reply(Boom.badImplementation(err));
     });
   } else if (command[0] === 'states') {
-    
+    JIRA.queryIssues(argString)
+      .then((result) => {
+
+      }) 
+      .catch((err) => {
+
+      });
   } else if (command[0] === 'details') {
     
   } else if (command[0] === 'transition') {
