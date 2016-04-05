@@ -25,7 +25,7 @@ module.exports.slackHook = function(request, reply) {
     return reply(Boom.badRequest('Bad Request Token'));
   }
 
-  if (commandArgs[0] === 'issues') {
+  if (command[0] === 'issues') {
     JIRA.queryIssues(argString)
     .then((result) => {
       var message = {
