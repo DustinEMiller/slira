@@ -45,6 +45,7 @@ module.exports.slackHook = function(request, reply) {
           'text': issue.fields.description,
           'color': '#F35A00'
         }
+      });
 
       if (message.attachments.length === 0) {
         message.attachments = {
@@ -52,8 +53,7 @@ module.exports.slackHook = function(request, reply) {
           'pretext': 'No issues found'
         }
       }
-
-      });
+      
       reply(JSON.stringify(message)).header('content-type', 'application/json');
     })
     .catch((err) => {
