@@ -16,15 +16,12 @@ function getRequest() {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 			if (err) {
-				console.log('err');
 				return reject(new Error(err));
 			}
 
 			if (httpResponse.statusCode === 200) {
-				console.log('resolve');
 				return resolve(JSON.parse(body));
 			}
-			console.log(httpResponse);
 			reject(new Error('Not OK Response'));
 	    });
   	});		
