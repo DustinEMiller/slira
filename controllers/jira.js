@@ -77,7 +77,7 @@ module.exports.slackHook = function(request, reply) {
         }
       }) 
       .catch((err) => {
-
+        reply(Boom.badImplementation(err));
       });
   } else if (command[0] === 'details') {
     
