@@ -29,6 +29,7 @@ function getRequest() {
 
 module.exports.retrieveTransitions = function(issue){
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
+	console.log(options);
 	return getRequest();
 }
 

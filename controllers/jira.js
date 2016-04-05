@@ -55,8 +55,10 @@ module.exports.slackHook = function(request, reply) {
       reply(Boom.badImplementation(err));
     });
   } else if (command[0] === 'states') {
+    console.log('states');
     JIRA.retrieveTransitions(argString)
       .then((result) => {
+        console.log(result);
         var message = {
           "response_type": "ephemeral",
           "text": "Transition stats available for the issue *" + argString + "*",
