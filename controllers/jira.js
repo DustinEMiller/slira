@@ -69,7 +69,7 @@ module.exports.slackHook = function(request, reply) {
             'fallback': transition.name + ': ' + transition.to.description,
             'title': transition.name,
             'text': transition.to.description,
-            'color': '"'+ transition.to.statusCategory.colorName + '"'
+            'color': transition.to.statusCategory.colorName
           }
         });
 
