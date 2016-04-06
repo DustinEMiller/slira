@@ -84,6 +84,7 @@ module.exports.slackHook = function(request, reply) {
             'title': transition.name,
             'text': transition.to.description,
             'color': mappedColors(transition.to.statusCategory.colorName)
+          }
 
         });
 
