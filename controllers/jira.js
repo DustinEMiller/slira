@@ -16,7 +16,7 @@ function slackTokenMatch(token) {
   return match.length > 0;
 }
 
-function mappedColors(color)
+function mappedColors(color) {
   var colors = {
     "blue-gray":"#2E3D54",
     "yellow":"#F6C342",
