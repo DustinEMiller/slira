@@ -99,6 +99,7 @@ module.exports.slackHook = function(request, reply) {
   } else if (command[0] === 'details') {
     JIRA.issueDetails(argString)
       .then((result) => {
+        var date = new Date(result.fields.updated);
         var message = {
           'response_type': 'ephemeral',
           'attachments' : [{
@@ -127,7 +128,7 @@ module.exports.slackHook = function(request, reply) {
               },
               {
                 'title': 'Last Updated',
-                'value': result.fields.updated,
+                'value': date.toLocaleString(),
                 'short': true
               }
             ],
@@ -146,7 +147,7 @@ module.exports.slackHook = function(request, reply) {
 
       })
       .catch((err) => {
-        
+        reply(Boom.badImplementation(err));  
       });
   } else if (commandArgs[0] === 'help') {
 
