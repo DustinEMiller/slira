@@ -142,6 +142,7 @@ module.exports.slackHook = function(request, reply) {
         reply(Boom.badImplementation(err));  
       });  
   } else if (command[0] === 'transition') {
+    argString = argString.split(/\s+/)
     JIRA.transitionIssue(argString)
       .then((result) => {
 

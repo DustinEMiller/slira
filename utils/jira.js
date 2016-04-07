@@ -44,9 +44,13 @@ function postRequest() {
   	});		
 }
 
-module.exports.retrieveTransitions = function(issue){
+function listTransitions(issue) {
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest();
+}
+
+module.exports.retrieveTransitions = function(issue) {
+	return listTransitions();
 }
 
 module.exports.issueDetails = function(issue){
@@ -55,8 +59,10 @@ module.exports.issueDetails = function(issue){
 }
 
 module.exports.transitionIssue = function(args) {
-	options.url = config.jira.url + 'rest/api/2/issue/'+args[1]+'/transitions?expand=transitions.fields';
-	options.form = {"transition":{"id":"'++'"}};
+	listTransitions(args[0]);
+	var state = args[1];
+	options.url = config.jira.url + 'rest/api/2/issue/'+args[0]+'/transitions?expand=transitions.fields';
+	options.form = {"transition":{"id":"'+state+'"}};
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
 			if (err) {
