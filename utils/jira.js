@@ -59,13 +59,13 @@ module.exports.issueDetails = function(issue){
 }
 
 module.exports.transitionIssue = function(args) {
-	var subCommand = argString.split(/\s+/).slice(0,1);
+	var subCommand = args.split(/\s+/).slice(0,1);
 	console.log(subCommand);
-	console.log(argString);
+	console.log(args);
 	listTransitions(subCommand)
 		.then((result) => {
 			result.find((state) => {
-				return state.name === argString;
+				return state.name === args;
 			});	
 		})
 		.then((result) => {
