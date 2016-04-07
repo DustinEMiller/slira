@@ -58,7 +58,7 @@ module.exports.transitionIssue = function(args) {
 
 	exports.retrieveTransitions(subCommand[0])
 		.then((result) => {
-			var status = result.find((state) => {
+			var status = result.transitions.find((state) => {
 				return state.name.toLowerCase() === args.toLowerCase();
 			});	
 			console.log(status);
