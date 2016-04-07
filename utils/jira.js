@@ -66,10 +66,6 @@ module.exports.transitionIssue = function(args) {
 			options.form = {'transition':{'id': status.id}};
 			return postRequest();
 		})
-		.then((result) => {
-			console.log(result);
-			console.log('propagation');
-		})
 		.catch((err) => {
 			console.log('nope');
 		});
