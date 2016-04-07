@@ -50,8 +50,8 @@ module.exports.slackHook = function(request, reply) {
 
       message.attachments = result.issues.map(function(issue){
         return {
-          'fallback': 'Task ' + issue.key + ' ' +issue.fields.summary + ' ' + issue.fields.description,
-          'pretext': 'Task ' + issue.key,
+          'fallback': 'Task ' + issue.key + ' ' +issue.fields.summary + ' ' + issue.fields.description ': ' + config.jira.url + '/browse/' + issue.key,
+          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issues.key + '>',
           'title': issue.fields.summary,
           'text': issue.fields.description,
           'color': '#F35A00'
@@ -73,7 +73,7 @@ module.exports.slackHook = function(request, reply) {
       .then((result) => {
         var message = {
           "response_type": "ephemeral",
-          "text": "Transition states available for the issue *" + argString + "*",
+          "text": "Transition states available for the issue <" + config.jira.url + '/browse/' + argString + '|' + argString + '>',
           'attachments': []
         };
 
@@ -99,10 +99,43 @@ module.exports.slackHook = function(request, reply) {
   } else if (command[0] === 'details') {
     JIRA.issueDetails(argString)
       .then((result) => {
-
+        var message = {
+          'response_type': 'ephemeral',
+          'attachments' : [{
+            'pretext': 'Task <' + config.jira.url + '/browse/' + argString + '|' + argString + '>',
+            'title': result.fields.summary,
+            'text': result.fields.description,
+            'fields': [{
+                'title': 'Assignee',
+                'value': fields.assignee.displayName,
+                'short': true
+              },
+              {
+                'title': 'Reporter',
+                'value': fields.reporter.displayName,
+                'short': true
+              },
+              'title': 'Type',
+                'value': fields.issuetype.name,
+                'short': true
+              },
+              {
+                'title': 'Status',
+                'value': fields.status.statusCategory.name,
+                'short': true
+              },
+              {
+                'title': 'Last Updated',
+                'value': fields.updated,
+                'short': true
+              }
+            ],
+          'color': '#F35A00'
+          }]
+        };
       })
       .catch((err) => {
-        
+        reply(Boom.badImplementation(err));  
       });  
   } else if (command[0] === 'transition') {
     JIRA.transitionIssue(argString)

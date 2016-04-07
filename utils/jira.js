@@ -37,9 +37,6 @@ function postRequest() {
 				return reject(new Error(err));
 			}
 
-			console.log(httpResponse.statusCode);
-			console.log(JSON.parse(body));
-
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
