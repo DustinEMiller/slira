@@ -59,11 +59,14 @@ module.exports.transitionIssue = function(args) {
 	exports.retrieveTransitions(subCommand[0])
 		.then((result) => {
 			var status = result.transitions.find((state) => {
+				console.log(state);
+				console.log(args);
 				return state.name.toLowerCase() === args.toLowerCase();
 			});	
 			console.log(status);
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.form = {'transition':{'id': status.id}};
+			console.log(options);
 			return postRequest();
 		})
 		.then((result) => {
