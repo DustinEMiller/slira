@@ -65,15 +65,17 @@ module.exports.transitionIssue = function(args) {
 	console.log(args);
 	listTransitions(subCommand[0])
 		.then((result) => {
-			result.find((state) => {
+			var status = result.find((state) => {
 				return state.name.toLowerCase() === args.toLowerCase();
 			});	
+
+			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
+			options.form = {'transition':{'id': status.id}};
+			return postRequest();
 		})
 		.then((result) => {
 			console.log(result);
-			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
-			options.form = {'transition':{'id': result.id}};
-			return postRequest();
+			console.log('propagation');
 		})
 		.catch((err) => {
 			console.log('nope');
