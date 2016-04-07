@@ -107,27 +107,27 @@ module.exports.slackHook = function(request, reply) {
             'text': result.fields.description,
             'fields': [{
                 'title': 'Assignee',
-                'value': fields.assignee.displayName,
+                'value': result.fields.assignee.displayName,
                 'short': true
               },
               {
                 'title': 'Reporter',
-                'value': fields.reporter.displayName,
+                'value': result.fields.reporter.displayName,
                 'short': true
               },
               {
                 'title': 'Type',
-                'value': fields.issuetype.name,
+                'value': result.fields.issuetype.name,
                 'short': true
               },
               {
                 'title': 'Status',
-                'value': fields.status.statusCategory.name,
+                'value': result.fields.status.statusCategory.name,
                 'short': true
               },
               {
                 'title': 'Last Updated',
-                'value': fields.updated,
+                'value': result.fields.updated,
                 'short': true
               }
             ],
