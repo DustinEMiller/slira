@@ -128,7 +128,7 @@ module.exports.slackHook = function(request, reply) {
               },
               {
                 'title': 'Last Updated',
-                'value': date,
+                'value': updated,
                 'short': true
               }
             ],
