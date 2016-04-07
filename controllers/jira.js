@@ -115,7 +115,8 @@ module.exports.slackHook = function(request, reply) {
                 'value': fields.reporter.displayName,
                 'short': true
               },
-              'title': 'Type',
+              {
+                'title': 'Type',
                 'value': fields.issuetype.name,
                 'short': true
               },
