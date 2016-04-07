@@ -143,13 +143,7 @@ module.exports.slackHook = function(request, reply) {
       });  
   } else if (command[0] === 'transition') {
     argString = argString.split(/\s+/)
-    JIRA.transitionIssue(argString)
-      .then((result) => {
-
-      })
-      .catch((err) => {
-        reply(Boom.badImplementation(err));  
-      });
+    JIRA.transitionIssue(argString);
   } else if (commandArgs[0] === 'help') {
 
   } else {
