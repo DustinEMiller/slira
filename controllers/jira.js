@@ -51,7 +51,7 @@ module.exports.slackHook = function(request, reply) {
       message.attachments = result.issues.map(function(issue){
         return {
           'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + '/browse/' + issue.key,
-          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issues.key + '>',
+          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issue.key + '>',
           'title': issue.fields.summary,
           'text': issue.fields.description,
           'color': '#F35A00'
