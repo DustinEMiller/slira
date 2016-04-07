@@ -19,8 +19,6 @@ function getRequest() {
 				return reject(new Error(err));
 			}
 
-			console.log(httpResponse.statusCode);
-
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
@@ -44,13 +42,9 @@ function postRequest() {
   	});		
 }
 
-function listTransitions(issue) {
+module.exports.retrieveTransitions = function(issue) {
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest();
-}
-
-module.exports.retrieveTransitions = function(issue) {
-	return listTransitions(issue);
 }
 
 module.exports.issueDetails = function(issue){
@@ -61,9 +55,8 @@ module.exports.issueDetails = function(issue){
 module.exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
 	args = args.replace(subCommand[0], '').trim();
-	console.log(subCommand[0]);
-	console.log(args);
-	listTransitions(subCommand[0])
+
+	exports.retrieveTransitions(subCommand[0])
 		.then((result) => {
 			var status = result.find((state) => {
 				return state.name.toLowerCase() === args.toLowerCase();
