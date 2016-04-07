@@ -99,8 +99,8 @@ module.exports.slackHook = function(request, reply) {
   } else if (command[0] === 'details') {
     JIRA.issueDetails(argString)
       .then((result) => {
-        var date = new Date(result.fields.updated);
-        var message = {
+        var updated = new Date(result.fields.updated).toLocaleString(),
+            message = {
           'response_type': 'ephemeral',
           'attachments' : [{
             'pretext': 'Task <' + config.jira.url + '/browse/' + argString + '|' + argString + '>',
@@ -128,7 +128,7 @@ module.exports.slackHook = function(request, reply) {
               },
               {
                 'title': 'Last Updated',
-                'value': date.toLocaleString(),
+                'value': date,
                 'short': true
               }
             ],
