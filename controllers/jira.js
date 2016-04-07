@@ -77,11 +77,10 @@ module.exports.slackHook = function(request, reply) {
           'attachments': []
         };
 
-
         message.attachments = result.transitions.map(function(transition){
           return {
-            'fallback': transition.name + ': ' + transition.to.description,
-            'title': transition.name,
+            'fallback': 'Name: ' + transition.name + ' ID: ' + transition.id + ': ' + transition.to.description,
+            'title': 'Name: ' + transition.name + ' ID: ' + transition.id, 
             'text': transition.to.description,
             'color': mappedColors(transition.to.statusCategory.colorName)
           }
@@ -92,17 +91,21 @@ module.exports.slackHook = function(request, reply) {
           message.text += '\nThat issue does not exist';
         }
 
-        console.log(message);
-
         reply(JSON.stringify(message)).header('content-type', 'application/json');
       }) 
       .catch((err) => {
         reply(Boom.badImplementation(err));
       });
   } else if (command[0] === 'details') {
-    
+    JIRA.issueDetails(argString)
+      .then((result) => {
+
+      })
+      .catch((err) => {
+        
+      });  
   } else if (command[0] === 'transition') {
-    JIRA.transitionIssue(commandArgs)
+    JIRA.transitionIssue(argString)
       .then((result) => {
 
       })

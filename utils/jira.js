@@ -19,6 +19,27 @@ function getRequest() {
 				return reject(new Error(err));
 			}
 
+			console.log(httpResponse.statusCode);
+			console.log(JSON.parse(body));
+
+			if (httpResponse.statusCode === 200) {
+				return resolve(JSON.parse(body));
+			}
+			reject(new Error('Not OK Response'));
+	    });
+  	});		
+}
+
+function postRequest() {
+	return new Promise((resolve, reject) => {
+	    req.post(options, function(err, httpResponse, body) {
+			if (err) {
+				return reject(new Error(err));
+			}
+
+			console.log(httpResponse.statusCode);
+			console.log(JSON.parse(body));
+
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
@@ -29,6 +50,11 @@ function getRequest() {
 
 module.exports.retrieveTransitions = function(issue){
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
+	return getRequest();
+}
+
+module.exports.issueDetails = function(issue){
+	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest();
 }
 
