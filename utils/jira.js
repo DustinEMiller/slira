@@ -60,17 +60,18 @@ module.exports.issueDetails = function(issue){
 
 module.exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
-	console.log(subCommand);
+	args = args.replace(subCommand[0], '').trim();
+	console.log(subCommand[0]);
 	console.log(args);
-	listTransitions(subCommand)
+	listTransitions(subCommand[0])
 		.then((result) => {
 			result.find((state) => {
-				return state.name === args;
+				return state.name.toLowerCase() === args.toLowerCase();
 			});	
 		})
 		.then((result) => {
 			console.log(result);
-			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand+'/transitions?expand=transitions.fields';
+			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.form = {'transition':{'id': result.id}};
 			return postRequest();
 		})
