@@ -50,7 +50,8 @@ function listTransitions(issue) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
-	return listTransitions();
+	var transitions = listTransitions()
+	return transitions;
 }
 
 module.exports.issueDetails = function(issue){
