@@ -59,22 +59,21 @@ module.exports.issueDetails = function(issue){
 }
 
 module.exports.transitionIssue = function(args) {
-	listTransitions(args[0]);
-	var state = args[1];
-	options.url = config.jira.url + 'rest/api/2/issue/'+args[0]+'/transitions?expand=transitions.fields';
-	options.form = {"transition":{"id":"'+state+'"}};
-	return new Promise((resolve, reject) => {
-	    req.post(options, function(err, httpResponse, body) {
-			if (err) {
-				return reject(new Error(err));
-			}
-
-			if (httpResponse.statusCode === 200) {
-				return resolve(JSON.parse(body));
-			}
-			reject(new Error('Not OK Response'));
-	    });
-  	});	
+	listTransitions(args[0])
+		.then((result) => {
+			result.find((state) => {
+				return state.name === args[1];
+			});	
+		})
+		.then((result) => {
+			console.log(result);
+			options.url = config.jira.url + 'rest/api/2/issue/'+args[0]+'/transitions?expand=transitions.fields';
+			options.form = {'transition':{'id': result.id}};
+			return postRequest();
+		})
+		.catch((err) => {
+			console.log('nope');
+		});
 }
 
 module.exports.queryIssues = function(query) {
