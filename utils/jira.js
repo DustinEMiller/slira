@@ -68,7 +68,7 @@ module.exports.transitionIssue = function(args) {
 			var status = result.find((state) => {
 				return state.name.toLowerCase() === args.toLowerCase();
 			});	
-
+			console.log(status);
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.form = {'transition':{'id': status.id}};
 			return postRequest();
