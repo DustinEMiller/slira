@@ -9,7 +9,8 @@ var options = {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
 		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
-	}	
+	},
+	form: {}	
 };
 
 function getRequest() {
@@ -66,6 +67,7 @@ module.exports.transitionIssue = function(args) {
 			console.log(status);
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.form = {'transition':{'id': status.id}};
+			{"transition": { "id": "21" }}
 			console.log(options);
 			return postRequest();
 		})
