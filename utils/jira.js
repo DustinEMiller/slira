@@ -14,6 +14,7 @@ var options = {
 };
 
 function getRequest() {
+	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 
