@@ -21,11 +21,15 @@ function getRequest() {
 				return reject(new Error(err));
 			}
 
-			if (httpResponse.statusCode === 200 || httpResponse.statusCode === 204) {
+			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
 
-			reject(new Error('Not OK Response'));
+			if httpResponse.statusCode === 404 {
+				return reject(new Error('404 Response'));
+			}
+
+			return reject(new Error('Not OK Response'));
 	    });
   	});		
 }
@@ -41,9 +45,17 @@ function postRequest() {
 				return resolve(JSON.parse(body));
 			}
 
-			reject(new Error('Not OK Response'));
+			if (httpResponse.statusCode === 204) {
+				return resolve();	
+			}
+
+			return reject(new Error('Not OK Response'));
 	    });
   	});		
+}
+
+function isNumber (o) {
+  return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
 }
 
 module.exports.retrieveTransitions = function(issue) {
@@ -62,22 +74,27 @@ module.exports.transitionIssue = function(args) {
 
 	exports.retrieveTransitions(subCommand[0])
 		.then((result) => {
-			var status = result.transitions.find((state) => {
-				console.log(state);
-				return state.name.toLowerCase() === args.toLowerCase();
-			});	
-			console.log(status);
+			var statusId = args;
+
+			if(isNumber(args)) {
+				var status = result.transitions.find((state) => {
+					return state.name.toLowerCase() === args.toLowerCase();
+				});	
+				statusId = status.id;
+			}
+			
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
-			options.json= {"transition": { "id": status.id }};
+			options.json = {"transition": { "id": statusId }};
 		
 			return postRequest();
 		})
 		.then((result) => {
 			console.log(result);
-			console.log('propagation');
+			return '1';
 		})
 		.catch((err) => {
 			console.log(err);
+			return 'error';
 		});
 }
 
