@@ -3,9 +3,7 @@
 const Boom = require('boom');
 const req = require('request');
 const config = require('../config');
-
-var options = {
-	url: '',
+const headers = {
 	headers: {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
@@ -60,11 +58,13 @@ function isNumber (o) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
+	options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest();
 }
 
 module.exports.issueDetails = function(issue){
+	options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest();
 }
@@ -84,6 +84,7 @@ module.exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 			
+			options = headers;
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json = {"transition": { "id": statusId }};
 		
@@ -100,6 +101,7 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
+	options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
 	return getRequest();
