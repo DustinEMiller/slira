@@ -16,13 +16,15 @@ var options = {
 function getRequest() {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
+
 			if (err) {
 				return reject(new Error(err));
 			}
 
-			if (httpResponse.statusCode === 200) {
+			if (httpResponse.statusCode === 200 || httpResponse.statusCode === 204) {
 				return resolve(JSON.parse(body));
 			}
+
 			reject(new Error('Not OK Response'));
 	    });
   	});		
@@ -38,6 +40,7 @@ function postRequest() {
 			if (httpResponse.statusCode === 200) {
 				return resolve(JSON.parse(body));
 			}
+
 			reject(new Error('Not OK Response'));
 	    });
   	});		
@@ -61,14 +64,12 @@ module.exports.transitionIssue = function(args) {
 		.then((result) => {
 			var status = result.transitions.find((state) => {
 				console.log(state);
-				console.log('args');
 				return state.name.toLowerCase() === args.toLowerCase();
 			});	
 			console.log(status);
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json= {"transition": { "id": status.id }};
-			
-			console.log(options);
+		
 			return postRequest();
 		})
 		.then((result) => {
