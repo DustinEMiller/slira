@@ -25,7 +25,7 @@ function getRequest() {
 				return resolve(JSON.parse(body));
 			}
 
-			if httpResponse.statusCode === 404 {
+			if (httpResponse.statusCode === 404) {
 				return reject(new Error('404 Response'));
 			}
 
