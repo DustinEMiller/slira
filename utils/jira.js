@@ -76,7 +76,7 @@ module.exports.transitionIssue = function(args) {
 		.then((result) => {
 			var statusId = args;
 
-			if(isNumber(args)) {
+			if(!isNumber(args)) {
 				var status = result.transitions.find((state) => {
 					return state.name.toLowerCase() === args.toLowerCase();
 				});	
