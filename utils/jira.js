@@ -66,7 +66,7 @@ module.exports.transitionIssue = function(args) {
 			});	
 			console.log(status);
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
-			options.json= {"transition": { "id": status.id }};
+			options.json= {"transition": { "id": state.id }};
 			
 			console.log(options);
 			return postRequest();
