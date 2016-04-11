@@ -23,10 +23,10 @@ function getRequest(options) {
 			}
 
 			if (httpResponse.statusCode === 404) {
-				return reject(new Error('404 Response'));
+				return reject('404'));
 			}
 
-			return reject(new Error('Not OK Response'));
+			return reject('not'));
 	    });
   	});		
 }
@@ -100,6 +100,7 @@ module.exports.retrieveTransitions = function(issue) {
 	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
+	    	console.log(err);
 	    	return JSON.stringify(err);
 	    });
 }
@@ -150,8 +151,14 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
+			var message = err;
+			if (err = '404') {
+				message = 'There was not an issue detected in that command. Please type `/jira help` for assistance.';
+			} else {
+				message = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `/jira help` for further assistance.'
+			}
 			console.log(err);
-			return JSON.stringify(err);
+			return JSON.stringify(message);
 		});
 }
 
@@ -184,6 +191,7 @@ module.exports.transitionIssue = function(args) {
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
+			console.log(err);
 			return JSON.stringify(err);
 		});
 }
@@ -221,6 +229,7 @@ module.exports.queryIssues = function(query) {
 	      	return JSON.stringify(message);
 		})
 		.catch((err) => {
+			console.log(err);
 			return JSON.stringify(err);
 		});
 }
