@@ -56,16 +56,16 @@ function isNumber (o) {
 }
 
 function mappedColors(color) {
-  var colors = {
-    "blue-gray":"#2E3D54",
-    "yellow":"#F6C342",
-    "green":"#14892C"
-  };
+	var colors = {
+	    "blue-gray":"#2E3D54",
+	    "yellow":"#F6C342",
+	    "green":"#14892C"
+	};
 
-    if (typeof colors[color.toLowerCase()] != 'undefined')
-        return colors[color.toLowerCase()];
+	if (typeof colors[color.toLowerCase()] != 'undefined')
+	    return colors[color.toLowerCase()];
 
-    return "#000000";
+	return "#000000";
 }
 
 function queryTransitions (issue) {
@@ -100,8 +100,7 @@ module.exports.retrieveTransitions = function(issue) {
 	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
-	    	console.log(err);
-	    	return 'error';
+	    	return JSON.stringify(err);
 	    });
 }
 
@@ -151,15 +150,16 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
-			return 'error';
+			console.log(err);
+			return JSON.stringify(err);
 		});
 }
 
 module.exports.transitionIssue = function(args) {
-	var subCommand = args.split(/\s+/).slice(0,1);
-	args = args.replace(subCommand[0], '').trim();
+	var issue = args.split(/\s+/).slice(0,1);
+	args = args.replace(issue[0], '').trim();
 
-	return queryTransitions(subCommand[0])
+	return queryTransitions(issue[0])
 		.then((result) => {
 			var statusId = args,
 				opts = Object.create(options);
@@ -171,7 +171,7 @@ module.exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 
-			opts.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
+			opts.url = config.jira.url + 'rest/api/2/issue/'+issue[0]+'/transitions?expand=transitions.fields';
 			opts.json = {"transition": { "id": statusId }};
 		
 			return postRequest(opts);
@@ -184,8 +184,7 @@ module.exports.transitionIssue = function(args) {
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
-			console.log(err);
-			return 'error';
+			return JSON.stringify(err);
 		});
 }
 
@@ -201,24 +200,28 @@ module.exports.queryIssues = function(query) {
 	          'attachments': []
 	        };
 
-	      message.attachments = result.issues.map(function(issue){
-	        return {
-	          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + 'browse/' + issue.key,
-	          'pretext': 'Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>',
-	          'title': issue.fields.summary,
-	          'text': issue.fields.description,
-	          'color': '#F35A00'
+	        if (query === '') {
+	        	message.text = 'No user string found in command. Type /jira help to get details on how to use this command.'
+	        } else {
+	        	message.attachments = result.issues.map(function(issue){
+			        return {
+			          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + 'browse/' + issue.key,
+			          'pretext': 'Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>',
+			          'title': issue.fields.summary,
+			          'text': issue.fields.description,
+			          'color': '#F35A00'
+			        }
+	      		});
+
+		      	if (message.attachments.length === 0) {
+			        message.text += '\nNo issues found';
+		      	}
 	        }
-	      });
 
-	      if (message.attachments.length === 0) {
-	        message.text += '\nNo issues found';
-	      }
-
-	      return JSON.stringify(message);
+	      	return JSON.stringify(message);
 		})
 		.catch((err) => {
-			return 'error';
+			return JSON.stringify(err);
 		});
 }
 
