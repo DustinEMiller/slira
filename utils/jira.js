@@ -68,6 +68,8 @@ module.exports.retrieveTransitions = function(issue) {
 module.exports.issueDetails = function(issue){
 	var opts = options;
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
+	console.log('options');
+	console.log(options);
 	return getRequest(opts);
 }
 
