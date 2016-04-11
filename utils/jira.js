@@ -66,6 +66,7 @@ module.exports.retrieveTransitions = function(issue) {
 module.exports.issueDetails = function(issue){
 	var opts = headers;
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
+	var test = headers
 	console.log(test);
 	return getRequest(opts);
 }
