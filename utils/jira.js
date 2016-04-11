@@ -84,7 +84,8 @@ module.exports.transitionIssue = function(args) {
 				});	
 				statusId = status.id;
 			}
-			var test.test = 'lol';
+			var test = headers;
+			test.test = 'lol';
 			console.log(test);
 			var opts = headers;
 			opts.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
