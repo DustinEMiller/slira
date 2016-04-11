@@ -8,7 +8,8 @@ var options = {
 		'Content-Type': 'application/json',
 		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
 	},	
-};
+},
+	command = '/jira';
 
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
@@ -157,7 +158,7 @@ module.exports.issueDetails = function(issue){
 		.catch((err) => {
 			var message = {text: err};
 			if (err = '404') {
-				message.text = 'That issue does not exist. Please type `/jira help` for assistance.';
+				message.text = 'Issue \''+issue+'\' does not exist. Please type `/jira help` for assistance.';
 			} else {
 				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `/jira help` for further assistance.'
 			}
