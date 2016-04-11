@@ -11,6 +11,8 @@ const headers = {
 	}	
 };
 
+var options;
+
 function getRequest() {
 	console.log(options);
 	return new Promise((resolve, reject) => {
