@@ -155,11 +155,11 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = err;
+			var message {text: err}
 			if (err = '404') {
-				message = 'There was not an issue detected in that command. Please type `/jira help` for assistance.';
+				message.text = 'That issue does not exist. Please type `/jira help` for assistance.';
 			} else {
-				message = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `/jira help` for further assistance.'
+				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `/jira help` for further assistance.'
 			}
 			console.log(err);
 			return JSON.stringify(message);
