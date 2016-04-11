@@ -55,6 +55,19 @@ function isNumber (o) {
   return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
 }
 
+function mappedColors(color) {
+  var colors = {
+    "blue-gray":"#2E3D54",
+    "yellow":"#F6C342",
+    "green":"#14892C"
+  };
+
+    if (typeof colors[color.toLowerCase()] != 'undefined')
+        return colors[color.toLowerCase()];
+
+    return "#000000";
+}
+
 function queryTransitions (issue) {
 	var opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';

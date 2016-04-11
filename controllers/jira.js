@@ -15,19 +15,6 @@ function slackTokenMatch(token) {
   return match.length > 0;
 }
 
-function mappedColors(color) {
-  var colors = {
-    "blue-gray":"#2E3D54",
-    "yellow":"#F6C342",
-    "green":"#14892C"
-  };
-
-    if (typeof colors[color.toLowerCase()] != 'undefined')
-        return colors[color.toLowerCase()];
-
-    return "#000000";
-}
-
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
   var command = request.payload.text.split(/\s+/).slice(0,1),
