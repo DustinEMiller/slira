@@ -40,9 +40,9 @@ module.exports.slackHook = function(request, reply) {
   } else if (command[0] === 'transition' || command[0] === 't') {
     mechanism = JIRA.transitionIssue(argString);
   } else if (commandArgs[0] === 'help') {
-    return reply(JIRA.help()).header('content-type', 'application/json');
+    return reply(JIRA.help(0)).header('content-type', 'application/json');
   } else {
-    return reply(JIRA.help()).header('content-type', 'application/json');
+    return reply(JIRA.help(1)).header('content-type', 'application/json');
   }
 
   mechanism
