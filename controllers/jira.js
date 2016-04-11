@@ -142,8 +142,15 @@ module.exports.slackHook = function(request, reply) {
         reply(Boom.badImplementation(err));  
       });  
   } else if (command[0] === 'transition') {
-    var result = JIRA.transitionIssue(argString);
-    console.log(result);
+    JIRA.transitionIssue(argString)
+      .then((result) => {
+        console.log(result);
+        reply(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        reply(result);
+      });
   } else if (commandArgs[0] === 'help') {
 
   } else {
