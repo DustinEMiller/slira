@@ -72,7 +72,7 @@ module.exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
 	args = args.replace(subCommand[0], '').trim();
 
-	exports.retrieveTransitions(subCommand[0])
+	return exports.retrieveTransitions(subCommand[0])
 		.then((result) => {
 			var statusId = args;
 
