@@ -155,7 +155,7 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message {text: err}
+			var message = {text: err};
 			if (err = '404') {
 				message.text = 'That issue does not exist. Please type `/jira help` for assistance.';
 			} else {
