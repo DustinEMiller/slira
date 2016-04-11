@@ -11,9 +11,7 @@ const headers = {
 	}	
 };
 
-var options;
-
-function getRequest() {
+function getRequest(options) {
 	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
@@ -35,7 +33,7 @@ function getRequest() {
   	});		
 }
 
-function postRequest() {
+function postRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
 			if (err) {
@@ -60,15 +58,15 @@ function isNumber (o) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
-	return getRequest();
+	return getRequest(options);
 }
 
 module.exports.issueDetails = function(issue){
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
-	return getRequest();
+	return getRequest(options);
 }
 
 module.exports.transitionIssue = function(args) {
@@ -86,11 +84,11 @@ module.exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 			
-			options = headers;
+			var options = headers;
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json = {"transition": { "id": statusId }};
 		
-			return postRequest();
+			return postRequest(options);
 		})
 		.then((result) => {
 			console.log(result);
@@ -103,8 +101,8 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
-	return getRequest();
+	return getRequest(options);
 }
