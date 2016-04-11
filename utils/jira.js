@@ -23,10 +23,10 @@ function getRequest(options) {
 			}
 
 			if (httpResponse.statusCode === 404) {
-				return reject('404'));
+				return reject('404');
 			}
 
-			return reject('not'));
+			return reject('not');
 	    });
   	});		
 }
@@ -46,7 +46,11 @@ function postRequest(options) {
 				return resolve();	
 			}
 
-			return reject(new Error('Not OK Response'));
+			if (httpResponse.statusCode === 404) {
+				return reject('404');
+			}
+
+			return reject('not');
 	    });
   	});		
 }
