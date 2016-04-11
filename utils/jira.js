@@ -87,6 +87,7 @@ module.exports.retrieveTransitions = function(issue) {
 	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
+	    	console.log(err);
 	    	return 'error';
 	    });
 }
