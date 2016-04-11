@@ -90,7 +90,7 @@ module.exports.transitionIssue = function(args) {
 			return postRequest(options);
 		})
 		.then((result) => {
-			console.log(result);
+			console.log('result');
 			return '1';
 		})
 		.catch((err) => {
