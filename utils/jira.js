@@ -1,4 +1,3 @@
-
 'use strict';
 const Boom = require('boom');
 const req = require('request');
@@ -58,13 +57,13 @@ function isNumber (o) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
-	var options = headers;
+	let options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(options);
 }
 
 module.exports.issueDetails = function(issue){
-	var options = headers;
+	let options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest(options);
 }
@@ -84,7 +83,7 @@ module.exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 			
-			var options = headers;
+			let options = headers;
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json = {"transition": { "id": statusId }};
 		
@@ -101,7 +100,7 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
-	var options = headers;
+	let options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
 	return getRequest(options);
