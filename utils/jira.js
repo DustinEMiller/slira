@@ -9,10 +9,9 @@ const headers = {
 		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
 	}	
 };
-var options;
 
 function getRequest(options) {
-
+	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 
@@ -34,6 +33,7 @@ function getRequest(options) {
 }
 
 function postRequest(options) {
+	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
 			if (err) {
@@ -57,19 +57,19 @@ function isNumber (o) {
   return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
 }
 
-exports.retrieveTransitions = function(issue) {
+module.exports.retrieveTransitions = function(issue) {
 	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(options);
 }
 
-exports.issueDetails = function(issue){
+module.exports.issueDetails = function(issue){
 	var options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest(options);
 }
 
-exports.transitionIssue = function(args) {
+module.exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
 	args = args.replace(subCommand[0], '').trim();
 
@@ -100,7 +100,7 @@ exports.transitionIssue = function(args) {
 		});
 }
 
-exports.queryIssues = function(query) {
+module.exports.queryIssues = function(query) {
 	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
