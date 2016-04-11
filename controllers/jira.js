@@ -31,52 +31,36 @@ function mappedColors(color) {
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
   var command = request.payload.text.split(/\s+/).slice(0,1),
-      argString = request.payload.text.replace(command[0], '').trim();
+      argString = request.payload.text.replace(command[0], '').trim(),
+      mechanism;
 
   if (!slackTokenMatch(payload.token)) {
     var message = {
           "response_type": "ephemeral",
           "text": "There was an issue with request token. Please notify the administrator."
         };
-    return reply(message);
+    return reply(message).header('content-type', 'application/json');
   }
 
   if (command[0] === 'issues' || command[0] === 'i') {
-    JIRA.queryIssues(argString)
-      .then((result) => {
-        reply(result);
-      })
-      .catch((err) => {
-        reply(err);
-      });
+    mechanism = JIRA.queryIssues(argString);
   } else if (command[0] === 'states' || command[0] === 's') {
-    
-    JIRA.retrieveTransitions(argString)
-      .then((result) => {
-        reply(result);
-      }) 
-      .catch((err) => {
-        reply(err);
-      });
+    mechanism = JIRA.retrieveTransitions(argString);
   } else if (command[0] === 'details' || command[0] === 'd') {
-    JIRA.issueDetails(argString)
-      .then((result) => {
-        reply(result);
-      })
-      .catch((err) => {
-        reply(err);  
-      });  
+    mechanism = JIRA.issueDetails(argString); 
   } else if (command[0] === 'transition' || command[0] === 't') {
-    JIRA.transitionIssue(argString)
-      .then((result) => {
-        reply(result);
-      })
-      .catch((err) => {
-        reply(err);
-      });
+    mechanism = JIRA.transitionIssue(argString);
   } else if (commandArgs[0] === 'help') {
-    JIRA.help();
+    return reply(JIRA.help()).header('content-type', 'application/json');
   } else {
-    JIRA.help();
+    return reply(JIRA.help()).header('content-type', 'application/json');
   }
+
+  mechanism
+    .then((result) => {
+      reply(result).header('content-type', 'application/json');
+    })
+    .catch((err) => {
+      reply(err).header('content-type', 'application/json');
+    });
 };
