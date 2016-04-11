@@ -66,7 +66,7 @@ module.exports.retrieveTransitions = function(issue) {
 		.then((result) => {
 	        var message = {
 	          "response_type": "ephemeral",
-	          "text": "Transition states available for the issue <" + config.jira.url + '/browse/' + issue + '|' + issue + '>',
+	          "text": "Transition states available for the issue <" + config.jira.url + 'browse/' + issue + '|' + issue + '>',
 	          'attachments': []
 	        };
 
@@ -101,7 +101,7 @@ module.exports.issueDetails = function(issue){
             message = {
 	          'response_type': 'ephemeral',
 	          'attachments' : [{
-	            'pretext': 'Task <' + config.jira.url + '/browse/' + issue + '|' + issue + '>',
+	            'pretext': 'Task <' + config.jira.url + 'browse/' + issue + '|' + issue + '>',
 	            'title': result.fields.summary,
 	            'text': result.fields.description,
 	            'fields': [{
@@ -165,7 +165,7 @@ module.exports.transitionIssue = function(args) {
 		.then((result) => {
 			var message = {
           		"response_type": "ephemeral",
-          		"text": "Issue  <" + config.jira.url + '/browse/' + args + '|' + args + '> has been updated to *something*',
+          		"text": "Issue  <" + config.jira.url + 'browse/' + args + '|' + args + '> has been updated to *something*',
         	};
 			return JSON.stringify(message);
 		})
@@ -189,8 +189,8 @@ module.exports.queryIssues = function(query) {
 
 	      message.attachments = result.issues.map(function(issue){
 	        return {
-	          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + '/browse/' + issue.key,
-	          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issue.key + '>',
+	          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + 'browse/' + issue.key,
+	          'pretext': 'Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>',
 	          'title': issue.fields.summary,
 	          'text': issue.fields.description,
 	          'color': '#F35A00'
