@@ -84,7 +84,7 @@ module.exports.retrieveTransitions = function(issue) {
 	          message.text += '\nThat issue does not exist';
 	        }
 
-	        return JSON.stringify(message)).header('content-type', 'application/json');
+	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
 	    	return 'error';
@@ -134,7 +134,7 @@ module.exports.issueDetails = function(issue){
 	          }]
 	        };
 
-	        return JSON.stringify(message)).header('content-type', 'application/json');
+	        return JSON.stringify(message);
 		})
 		.catch((err) => {
 			return 'error';
@@ -167,7 +167,7 @@ module.exports.transitionIssue = function(args) {
           		"response_type": "ephemeral",
           		"text": "Issue  <" + config.jira.url + '/browse/' + args + '|' + args + '> has been updated to *something*',
         	};
-			return JSON.stringify(message)).header('content-type', 'application/json');
+			return JSON.stringify(message);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -200,7 +200,7 @@ module.exports.queryIssues = function(query) {
 	        message.text += '\nNo issues found';
 	      }
 
-	      return JSON.stringify(message)).header('content-type', 'application/json');
+	      return JSON.stringify(message);
 		})
 		.catch((err) => {
 			return 'error';
