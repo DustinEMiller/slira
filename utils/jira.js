@@ -60,12 +60,15 @@ function isNumber (o) {
 module.exports.retrieveTransitions = function(issue) {
 	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
+	console.log(tester);
 	return getRequest(options);
 }
 
 module.exports.issueDetails = function(issue){
 	var options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
+	var tester = 'slippy';
+	console.log(tester);
 	return getRequest(options);
 }
 
