@@ -60,13 +60,13 @@ function isNumber (o) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
-	var opts = headers;
+	var opts = options;
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
 }
 
 module.exports.issueDetails = function(issue){
-	var opts = headers;
+	var opts = options;
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest(opts);
 }
@@ -85,7 +85,7 @@ module.exports.transitionIssue = function(args) {
 				});	
 				statusId = status.id;
 			}
-			var opts = headers;
+			var opts = options;
 			opts.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			opts.json = {"transition": { "id": statusId }};
 		
@@ -102,7 +102,7 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
-	var opts = headers;
+	var opts = options;
 	opts.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	opts.url = encodeURI(opts.url);
 	return getRequest(opts);
