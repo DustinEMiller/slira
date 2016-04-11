@@ -9,6 +9,7 @@ const headers = {
 		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
 	}	
 };
+var options;
 
 function getRequest(options) {
 	console.log(options);
@@ -56,19 +57,19 @@ function isNumber (o) {
   return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
 }
 
-module.exports.retrieveTransitions = function(issue) {
-	let options = headers;
+exports.retrieveTransitions = function(issue) {
+	options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(options);
 }
 
-module.exports.issueDetails = function(issue){
-	let options = headers;
+exports.issueDetails = function(issue){
+	options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest(options);
 }
 
-module.exports.transitionIssue = function(args) {
+exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
 	args = args.replace(subCommand[0], '').trim();
 
@@ -83,7 +84,7 @@ module.exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 			
-			let options = headers;
+			options = headers;
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json = {"transition": { "id": statusId }};
 		
@@ -99,8 +100,8 @@ module.exports.transitionIssue = function(args) {
 		});
 }
 
-module.exports.queryIssues = function(query) {
-	let options = headers;
+exports.queryIssues = function(query) {
+	options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
 	return getRequest(options);
