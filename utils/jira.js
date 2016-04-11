@@ -295,5 +295,7 @@ module.exports.help = function(isIntentional) {
         'title': '`' + command + ' t [issueIdOrKey] [statusNameOrId]`',
         'text': 'Ex: `'+command+' t COMM-4 In Progress` Changes the status of issue. Both [issueIdOrKey] AND [statusNameOrId] must be present. To see valid states for an issue, see `'+command+' s`',
         'color': '#E6E2EE'	
-    };;
+    };
+
+    return message;
 }
