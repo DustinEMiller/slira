@@ -268,7 +268,7 @@ module.exports.help = function(isIntentional) {
     	message.text = 'That command does not exist. Here are the ' + command + ' help topics.';	
     }
 
-    message.attachments = {
+    message.attachments = [{
     	'fallback': 'Viewing issues assigned to user.' + '`'+ command + ' i [name]`',
         'pretext': 'Viewing issues assigned to user.',
         'title': '`' + command + ' i [name]`',
@@ -295,7 +295,7 @@ module.exports.help = function(isIntentional) {
         'title': '`' + command + ' t [issueIdOrKey] [statusNameOrId]`',
         'text': 'Ex: `'+command+' t COMM-4 In Progress` Changes the status of issue. Both [issueIdOrKey] AND [statusNameOrId] must be present. To see valid states for an issue, see `'+command+' s`',
         'color': '#E6E2EE'	
-    };
+    }];
 
     return message;
 }
