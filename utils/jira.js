@@ -2,14 +2,12 @@
 const Boom = require('boom');
 const req = require('request');
 const config = require('../config');
-const options = {
+var options = {
 	headers: {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
 		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
-	},
-	url: '',
-	json: ''	
+	},	
 };
 
 function getRequest(options) {
@@ -60,16 +58,14 @@ function isNumber (o) {
 }
 
 module.exports.retrieveTransitions = function(issue) {
-	var opts = options;
+	var opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
 }
 
 module.exports.issueDetails = function(issue){
-	var opts = options;
+	var opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
-	console.log('options');
-	console.log(options);
 	return getRequest(opts);
 }
 
@@ -87,7 +83,7 @@ module.exports.transitionIssue = function(args) {
 				});	
 				statusId = status.id;
 			}
-			var opts = options;
+			var opts = Object.create(options);
 			opts.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			opts.json = {"transition": { "id": statusId }};
 		
@@ -104,7 +100,7 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
-	var opts = options;
+	var opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	opts.url = encodeURI(opts.url);
 	return getRequest(opts);
