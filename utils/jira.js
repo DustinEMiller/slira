@@ -177,7 +177,9 @@ module.exports.transitionIssue = function(args) {
 
 module.exports.queryIssues = function(query) {
 	var opts = Object.create(options);
-	opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ("'++'")');
+	opts.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'++'")';
+	opts.url = encodeURI(opts.url);
+	
 	return getRequest(opts)
 		.then((result) => {
 			var message = {
