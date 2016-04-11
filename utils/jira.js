@@ -12,7 +12,7 @@ const headers = {
 var options;
 
 function getRequest(options) {
-	console.log(options);
+
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 
@@ -58,13 +58,13 @@ function isNumber (o) {
 }
 
 exports.retrieveTransitions = function(issue) {
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(options);
 }
 
 exports.issueDetails = function(issue){
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + '/rest/api/2/issue/'+issue;
 	return getRequest(options);
 }
@@ -84,7 +84,7 @@ exports.transitionIssue = function(args) {
 				statusId = status.id;
 			}
 			
-			options = headers;
+			var options = headers;
 			options.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			options.json = {"transition": { "id": statusId }};
 		
@@ -101,7 +101,7 @@ exports.transitionIssue = function(args) {
 }
 
 exports.queryIssues = function(query) {
-	options = headers;
+	var options = headers;
 	options.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
 	options.url = encodeURI(options.url);
 	return getRequest(options);
