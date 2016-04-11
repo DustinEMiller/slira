@@ -34,125 +34,49 @@ module.exports.slackHook = function(request, reply) {
       argString = request.payload.text.replace(command[0], '').trim();
 
   if (!slackTokenMatch(payload.token)) {
-    return reply(Boom.badRequest('Bad Request Token'));
+    var message = {
+          "response_type": "ephemeral",
+          "text": "There was an issue with request token. Please notify the administrator."
+        };
+    return reply(message);
   }
 
-  if (command[0] === 'issues') {
+  if (command[0] === 'issues' || command[0] === 'i') {
     JIRA.queryIssues(argString)
-    .then((result) => {
-
-      var message = {
-          "response_type": "ephemeral",
-          "text": "Issues assigned to: *" + argString + "*",
-          'attachments': []
-        };
-
-      message.attachments = result.issues.map(function(issue){
-        return {
-          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + '/browse/' + issue.key,
-          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issue.key + '>',
-          'title': issue.fields.summary,
-          'text': issue.fields.description,
-          'color': '#F35A00'
-        }
+      .then((result) => {
+        reply(result);
+      })
+      .catch((err) => {
+        reply(err);
       });
-
-      if (message.attachments.length === 0) {
-        message.text += '\nNo issues found';
-      }
-
-      reply(JSON.stringify(message)).header('content-type', 'application/json');
-    })
-    .catch((err) => {
-      reply(Boom.badImplementation(err));
-    });
-  } else if (command[0] === 'states') {
+  } else if (command[0] === 'states' || command[0] === 's') {
     
     JIRA.retrieveTransitions(argString)
       .then((result) => {
-        var message = {
-          "response_type": "ephemeral",
-          "text": "Transition states available for the issue <" + config.jira.url + '/browse/' + argString + '|' + argString + '>',
-          'attachments': []
-        };
-
-        message.attachments = result.transitions.map(function(transition){
-          return {
-            'fallback': 'Name: ' + transition.name + ' ID: ' + transition.id + ': ' + transition.to.description,
-            'title': 'Name: ' + transition.name + ' ID: ' + transition.id, 
-            'text': transition.to.description,
-            'color': mappedColors(transition.to.statusCategory.colorName)
-          }
-
-        });
-
-        if (message.attachments.length === 0) {
-          message.text += '\nThat issue does not exist';
-        }
-
-        reply(JSON.stringify(message)).header('content-type', 'application/json');
+        reply(result);
       }) 
       .catch((err) => {
-        reply(Boom.badImplementation(err));
+        reply(err);
       });
-  } else if (command[0] === 'details') {
+  } else if (command[0] === 'details' || command[0] === 'd') {
     JIRA.issueDetails(argString)
       .then((result) => {
-        var updated = new Date(result.fields.updated).toLocaleString(),
-            message = {
-          'response_type': 'ephemeral',
-          'attachments' : [{
-            'pretext': 'Task <' + config.jira.url + '/browse/' + argString + '|' + argString + '>',
-            'title': result.fields.summary,
-            'text': result.fields.description,
-            'fields': [{
-                'title': 'Assignee',
-                'value': result.fields.assignee.displayName,
-                'short': true
-              },
-              {
-                'title': 'Reporter',
-                'value': result.fields.reporter.displayName,
-                'short': true
-              },
-              {
-                'title': 'Type',
-                'value': result.fields.issuetype.name,
-                'short': true
-              },
-              {
-                'title': 'Status',
-                'value': result.fields.status.statusCategory.name,
-                'short': true
-              },
-              {
-                'title': 'Last Updated',
-                'value': updated,
-                'short': true
-              }
-            ],
-          'color': '#F35A00'
-          }]
-        };
-
-        reply(JSON.stringify(message)).header('content-type', 'application/json');
+        reply(result);
       })
       .catch((err) => {
-        reply(Boom.badImplementation(err));  
+        reply(err);  
       });  
-  } else if (command[0] === 'transition') {
+  } else if (command[0] === 'transition' || command[0] === 't') {
     JIRA.transitionIssue(argString)
       .then((result) => {
-        console.log(result);
         reply(result);
       })
       .catch((err) => {
-        console.log(err);
-        reply(result);
+        reply(err);
       });
   } else if (commandArgs[0] === 'help') {
-
+    JIRA.help();
   } else {
-
+    JIRA.help();
   }
 };

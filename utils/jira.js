@@ -11,7 +11,6 @@ var options = {
 };
 
 function getRequest(options) {
-	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 
@@ -33,7 +32,6 @@ function getRequest(options) {
 }
 
 function postRequest(options) {
-	console.log(options);
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
 			if (err) {
@@ -57,25 +55,100 @@ function isNumber (o) {
   return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
 }
 
-module.exports.retrieveTransitions = function(issue) {
+function queryTransitions (issue) {
 	var opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
 }
 
+module.exports.retrieveTransitions = function(issue) {
+	return queryTransitions(issue)
+		.then((result) => {
+	        var message = {
+	          "response_type": "ephemeral",
+	          "text": "Transition states available for the issue <" + config.jira.url + '/browse/' + issue + '|' + issue + '>',
+	          'attachments': []
+	        };
+
+	        message.attachments = result.transitions.map(function(transition){
+	          return {
+	            'fallback': 'Name: ' + transition.name + ' ID: ' + transition.id + ': ' + transition.to.description,
+	            'title': 'Name: ' + transition.name + ' ID: ' + transition.id, 
+	            'text': transition.to.description,
+	            'color': mappedColors(transition.to.statusCategory.colorName)
+	          }
+
+	        });
+
+	        if (message.attachments.length === 0) {
+	          message.text += '\nThat issue does not exist';
+	        }
+
+	        return JSON.stringify(message)).header('content-type', 'application/json');
+	    })
+	    .catch((err) => {
+	    	return 'error';
+	    });
+}
+
 module.exports.issueDetails = function(issue){
 	var opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
-	return getRequest(opts);
+
+	return getRequest(opts)
+		.then((result) => {
+			var updated = new Date(result.fields.updated).toLocaleString(),
+            message = {
+	          'response_type': 'ephemeral',
+	          'attachments' : [{
+	            'pretext': 'Task <' + config.jira.url + '/browse/' + issue + '|' + issue + '>',
+	            'title': result.fields.summary,
+	            'text': result.fields.description,
+	            'fields': [{
+	                'title': 'Assignee',
+	                'value': result.fields.assignee.displayName,
+	                'short': true
+	              },
+	              {
+	                'title': 'Reporter',
+	                'value': result.fields.reporter.displayName,
+	                'short': true
+	              },
+	              {
+	                'title': 'Type',
+	                'value': result.fields.issuetype.name,
+	                'short': true
+	              },
+	              {
+	                'title': 'Status',
+	                'value': result.fields.status.statusCategory.name,
+	                'short': true
+	              },
+	              {
+	                'title': 'Last Updated',
+	                'value': updated,
+	                'short': true
+	              }
+	            ],
+	          'color': '#F35A00'
+	          }]
+	        };
+
+	        return JSON.stringify(message)).header('content-type', 'application/json');
+		})
+		.catch((err) => {
+			return 'error';
+		});
 }
 
 module.exports.transitionIssue = function(args) {
 	var subCommand = args.split(/\s+/).slice(0,1);
 	args = args.replace(subCommand[0], '').trim();
 
-	return exports.retrieveTransitions(subCommand[0])
+	return queryTransitions(subCommand[0])
 		.then((result) => {
-			var statusId = args;
+			var statusId = args,
+				opts = Object.create(options);
 
 			if(!isNumber(args)) {
 				var status = result.transitions.find((state) => {
@@ -83,15 +156,18 @@ module.exports.transitionIssue = function(args) {
 				});	
 				statusId = status.id;
 			}
-			var opts = Object.create(options);
+
 			opts.url = config.jira.url + 'rest/api/2/issue/'+subCommand[0]+'/transitions?expand=transitions.fields';
 			opts.json = {"transition": { "id": statusId }};
 		
 			return postRequest(opts);
 		})
 		.then((result) => {
-			console.log('result');
-			return '1';
+			var message = {
+          		"response_type": "ephemeral",
+          		"text": "Issue  <" + config.jira.url + '/browse/' + args + '|' + args + '> has been updated to *something*',
+        	};
+			return JSON.stringify(message)).header('content-type', 'application/json');
 		})
 		.catch((err) => {
 			console.log(err);
@@ -101,7 +177,35 @@ module.exports.transitionIssue = function(args) {
 
 module.exports.queryIssues = function(query) {
 	var opts = Object.create(options);
-	opts.url = config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")';
-	opts.url = encodeURI(opts.url);
-	return getRequest(opts);
+	opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ("'++'")');
+	return getRequest(opts)
+		.then((result) => {
+			var message = {
+	          "response_type": "ephemeral",
+	          "text": "Issues assigned to: *" + query + "*",
+	          'attachments': []
+	        };
+
+	      message.attachments = result.issues.map(function(issue){
+	        return {
+	          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + '/browse/' + issue.key,
+	          'pretext': 'Task <' + config.jira.url + '/browse/' + issue.key + '|' + issue.key + '>',
+	          'title': issue.fields.summary,
+	          'text': issue.fields.description,
+	          'color': '#F35A00'
+	        }
+	      });
+
+	      if (message.attachments.length === 0) {
+	        message.text += '\nNo issues found';
+	      }
+
+	      return JSON.stringify(message)).header('content-type', 'application/json');
+		})
+		.catch((err) => {
+			return 'error';
+		});
+}
+
+module.exports.help = function() {
 }
