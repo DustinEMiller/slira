@@ -23,8 +23,6 @@ module.exports.slackHook = function(request, reply) {
 
   JIRA.command = payload.command;
 
-  console.log(JIRA.command);
-
   if (!slackTokenMatch(payload.token)) {
     var message = {
           "response_type": "ephemeral",

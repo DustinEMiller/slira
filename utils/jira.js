@@ -158,9 +158,9 @@ module.exports.issueDetails = function(issue){
 		.catch((err) => {
 			var message = {text: err};
 			if (err = '404') {
-				message.text = 'Issue \''+issue+'\' does not exist. Please type `/jira help` for assistance.';
+				message.text = 'Issue \''+issue+'\' does not exist. Please type `'+command+' help` for assistance.';
 			} else {
-				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `/jira help` for further assistance.'
+				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `'+command+' help` for further assistance.'
 			}
 			console.log(err);
 			return JSON.stringify(message);
@@ -214,7 +214,7 @@ module.exports.queryIssues = function(query) {
 	        };
 
 	        if (query === '') {
-	        	message.text = 'No user string found in command. Type /jira help to get details on how to use this command.'
+	        	message.text = 'No user string found in command. Type `'+command+' help` to get details on how to use this command.'
 	        } else {
 	        	message.attachments = result.issues.map(function(issue){
 			        return {
