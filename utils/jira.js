@@ -116,7 +116,7 @@ module.exports.retrieveTransitions = function(issue) {
 
 	    	if (issue === '') {
 	    		message.text = 'No issue name or ID detected in your command. Please type `'+command+' help` for assistance.';
-	    	} else if (err === 'noexist') {
+	    	} else if (err === 'noexist' || err === 'not' || err === '404') {
 	    		message.text = 'Issue '+issue+' does not exist. Please type `'+command+' help` for assistance.';	
 	    	}
 
