@@ -15,13 +15,13 @@ function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
 	    	console.log(err);
-	    	
-	    	if (err.errorMessages.toLowerCase() === 'issue does not exist') {
-	    		return reject('noexist');
-	    	}
 
 			if (err) {
-				return reject(new Error(err));
+				if (err.errorMessages.toLowerCase() === 'issue does not exist') {
+	    			return reject('noexist');
+	    		} else {
+	    			return reject(new Error(err));
+	    		}
 			}
 
 			if (httpResponse.statusCode === 200) {
