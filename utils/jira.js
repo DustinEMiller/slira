@@ -14,8 +14,9 @@ var options = {
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
-	    	console.log(httpResponse);
-	    	console.log(JSON.parse(body));
+	    	console.log(httpResponse.statusCode);
+	    	console.log(err);
+
 			if (err) {
 				return reject(new Error(err));
 			}
@@ -36,8 +37,9 @@ function getRequest(options) {
 function postRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
-	    	console.log(httpResponse);
-	    	console.log(JSON.parse(body));
+	    	console.log(httpResponse.statusCode);
+	    	console.log(err);
+
 			if (err) {
 				return reject(new Error(err));
 			}
@@ -168,7 +170,7 @@ module.exports.issueDetails = function(issue){
 		})
 		.catch((err) => {
 			var message = {text: err};
-			if (err = '404') {
+			if (err === '404') {
 				message.text = 'Issue \''+issue+'\' does not exist. Please type `'+command+' help` for assistance.';
 			} else {
 				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `'+command+' help` for further assistance.'
