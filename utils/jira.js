@@ -260,7 +260,7 @@ module.exports.queryIssues = function(query) {
 module.exports.help = function(isIntentional) {
 	var message = {
       	"response_type": "ephemeral",
-      	"text": command + " help topics.",
+      	"text": '`'+command + " help` topics.",
       	'attachments': []
     };
 
@@ -278,22 +278,22 @@ module.exports.help = function(isIntentional) {
 	{
     	'fallback': 'Viewing details of an issue.' + '`'+ command + ' d [issueIDorKey]`',
         'pretext': '*Viewing details of an issue:* `' + command + ' d [issueIDorKey]`',
-        'text': 'Displays title, summary, assignee, reporter, type, status and last update for the value given inside [issueIDorKey].\n*Ex:* `'+command+' d COMM-4`',
+        'text': 'Displays title, summary, assignee, reporter, type, status and last update for the value given inside `[issueIDorKey]`.\n*Ex:* `'+command+' d COMM-4`',
         'color': '#617C51',
         'mrkdwn_in': ['text','pretext']		
     },
     {
     	'fallback': 'Viewing valid transition states for an issue.' + '`'+ command + ' s [issueIDorKey]`',
         'pretext': '*Viewing valid transition states for an issue:* `' + command + ' s [issueIDorKey]`',
-        'text': 'Displays the ID and name for the transitional states available for [issueIDorKey]\n*Ex:* `'+command+' s COMM-4`',
+        'text': 'Displays the ID and name for the transitional states available for `[issueIDorKey]`\n*Ex:* `'+command+' s COMM-4`',
         'color': '#D6B25E',
         'mrkdwn_in': ['text','pretext']		
     },
     {
     	'fallback': 'Update status of an issue.' + '`'+ command + ' t [issueIdOrKey] [statusNameOrId]`',
         'pretext': '*Update status of an issue:* `' + command + ' t [issueIdOrKey] [statusNameOrId]`',
-        'text': 'Changes the status of issue. Both [issueIdOrKey] AND [statusNameOrId] must be present. To see valid states for an issue, see `'+command+' s`\n*Ex:* `'+command+' t COMM-4 In Progress`',
-        'color': '#E6E2EE',
+        'text': 'Changes the status of issue. Both `[issueIdOrKey]` AND `[statusNameOrId]` must be present. To see valid states for an issue, see `'+command+' s [issueIDorKey]`\n*Ex:* `'+command+' t COMM-4 In Progress`',
+        'color': '#e02e45',
         'mrkdwn_in': ['text','pretext']		
     }];
 
