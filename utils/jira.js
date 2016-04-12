@@ -14,7 +14,8 @@ var options = {
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
-
+	    	console.log(err);
+	    	
 	    	if (err.errorMessages.toLowerCase() === 'issue does not exist') {
 	    		return reject('noexist');
 	    	}
@@ -39,7 +40,6 @@ function getRequest(options) {
 function postRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
-	    	console.log(httpResponse.statusCode);
 	    	console.log(err);
 
 			if (err) {
