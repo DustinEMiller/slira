@@ -271,7 +271,7 @@ module.exports.help = function(isIntentional) {
     message.attachments = [{
     	'fallback': 'Viewing issues assigned to user.' + '`'+ command + ' i [name]`',
         'pretext': '`' + command + ' i [name]`',
-        'title': 'Viewing issues assigned to user.'
+        'title': 'Viewing issues assigned to user.',
         'text': 'Ex: `'+ command + ' i Barry Allen` Displays all the issues assigned to the user inside `[name]`. You may search for JIRA username or their real name, if it is set inside JIRA. \"Fuzzy\" matching does not work. Fully qualified names must be used.',
         'color': '#974A50',
         'mrkdwn_in': ['text','pretext']	
