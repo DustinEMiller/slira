@@ -14,7 +14,8 @@ var options = {
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
-
+	    	console.log(httpResponse);
+	    	console.log(JSON.parse(body));
 			if (err) {
 				return reject(new Error(err));
 			}
@@ -218,7 +219,7 @@ module.exports.transitionIssue = function(args) {
 			console.log(args);
 
 			console.log(err);
-			return JSON.stringify(err);
+			return JSON.stringify(message);
 		});
 }
 
