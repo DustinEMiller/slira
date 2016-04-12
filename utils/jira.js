@@ -14,8 +14,6 @@ var options = {
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
-	    	console.log('get');
-	    	console.log(err);
 
 			if (err) {
 				if (err.errorMessages.toLowerCase() === 'issue does not exist') {
@@ -41,8 +39,6 @@ function getRequest(options) {
 function postRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
-	    	console.log('post');
-	    	console.log(err);
 
 			if (err) {
 				return reject(new Error(err));
@@ -114,7 +110,7 @@ module.exports.retrieveTransitions = function(issue) {
 	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
-	    	var message = {text: err};
+	    	var message = {text: err.toString()};
 
 	    	if (issue === '') {
 	    		message.text = 'No issue name or ID detected in your command. Please type `'+command+' help` for assistance.';
@@ -173,7 +169,7 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: err};
+			var message = {text: err.toString()};
 
 			if (issue === '') {
 				message.text = 'No issue ID or key present in command. Type `/jira help` to get details on how to use this command.';
@@ -216,18 +212,17 @@ module.exports.transitionIssue = function(args) {
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: err};
+			var message = {text: err.toString()};
 			if (issue[0] === '') {
 				message.text = 'No issue detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (args === '') {
 				message.text = 'No transition name or ID detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (err === '404') {
 				message.text = 'Issue `'+issue+'` does not exist. Please type `'+command+' help` for assistance.';	
-			} else if (err === 'not') {
+			} else if (err === 'not' || err instanceof TypeError) {
 				message.text = 'That is not a valid transition state or name. Type `'+command+' s '+issue+'` to see the valid states for this issue.';	
 			}
 
-			console.log('catch');
 			console.log(err);
 			return JSON.stringify(message);
 		});
