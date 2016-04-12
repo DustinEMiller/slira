@@ -184,19 +184,23 @@ module.exports.issueDetails = function(issue){
 }
 
 module.exports.transitionIssue = function(args) {
-	var issue = args.split(/\s+/).slice(0,1);
-	args = args.replace(issue[0], '').trim();
+	var issue = args.split(/\s+/).slice(0,1),
+		status = args.replace(issue[0], '').trim();
 
 	return queryTransitions(issue[0])
 		.then((result) => {
-			var statusId = args,
+			var statusId = status,
 				opts = Object.create(options);
 
-			if(!isNumber(args)) {
-				var status = result.transitions.find((state) => {
-					return state.name.toLowerCase() === args.toLowerCase();
+			if(!isNumber(status)) {
+				var transition = result.transitions.find((state) => {
+					return state.name.toLowerCase() === status.toLowerCase();
 				});	
-				statusId = status.id;
+				statusId = transition.id;
+			} else {
+				status = result.transitions.find((state) => {
+					return state.id === status;
+				});	
 			}
 
 			opts.url = config.jira.url + 'rest/api/2/issue/'+issue[0]+'/transitions?expand=transitions.fields';
@@ -207,7 +211,7 @@ module.exports.transitionIssue = function(args) {
 		.then((result) => {
 			var message = {
           		"response_type": "ephemeral",
-          		"text": "Issue  <" + config.jira.url + 'browse/' + issue + '|' + issue + '> has been updated to `'+args+'`',
+          		"text": "Issue <" + config.jira.url + 'browse/' + issue + '|' + issue + '> has been updated to `'+status+'`',
         	};
 			return JSON.stringify(message);
 		})
@@ -215,7 +219,7 @@ module.exports.transitionIssue = function(args) {
 			var message = {text: err.toString()};
 			if (issue[0] === '') {
 				message.text = 'No issue detected in your command. Please type `'+command+' help` for assistance.';
-			} else if (args === '') {
+			} else if (status === '') {
 				message.text = 'No transition name or ID detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (err === '404') {
 				message.text = 'Issue `'+issue+'` does not exist. Please type `'+command+' help` for assistance.';	
