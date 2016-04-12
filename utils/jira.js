@@ -270,31 +270,35 @@ module.exports.help = function(isIntentional) {
 
     message.attachments = [{
     	'fallback': 'Viewing issues assigned to user.' + '`'+ command + ' i [name]`',
-        'pretext': 'Viewing issues assigned to user.',
-        'title': '`' + command + ' i [name]`',
+        'pretext': '`' + command + ' i [name]`',
+        'title': 'Viewing issues assigned to user.'
         'text': 'Ex: `'+ command + ' i Barry Allen` Displays all the issues assigned to the user inside `[name]`. You may search for JIRA username or their real name, if it is set inside JIRA. \"Fuzzy\" matching does not work. Fully qualified names must be used.',
-        'color': '#974A50'	
+        'color': '#974A50',
+        'mrkdwn_in': ['text','pretext']	
     },
 	{
     	'fallback': 'Viewing details of an issue.' + '`'+ command + ' d [issueIDorKey]`',
-        'pretext': 'Viewing details of an issue.',
-        'title': '`' + command + ' d [issueIDorKey]`',
+        'pretext': '`' + command + ' d [issueIDorKey]`',
+        'title': 'Viewing details of an issue.',
         'text': 'Ex: `'+command+' d COMM-4` Displays title, summary, assignee, reporter, type, status and last update for the value given inside [issueIDorKey].',
-        'color': '#617C51'	
+        'color': '#617C51',
+        'mrkdwn_in': ['text','pretext']		
     },
     {
     	'fallback': 'Viewing valid transition states for an issue.' + '`'+ command + ' s [issueIDorKey]`',
-        'pretext': 'Viewing valid transition states for an issue.',
-        'title': '`' + command + ' s [issueIDorKey]`',
+        'pretext': '`' + command + ' s [issueIDorKey]`',
+        'title': 'Viewing valid transition states for an issue.',
         'text': 'Ex: `'+command+' s COMM-4` Displays the ID and name for the transitional states available for [issueIDorKey]',
-        'color': '#D6B25E'	
+        'color': '#D6B25E',
+        'mrkdwn_in': ['text','pretext']		
     },
     {
     	'fallback': 'Update status of an issue.' + '`'+ command + ' t [issueIdOrKey] [statusNameOrId]`',
-        'pretext': 'Update status of an issue.',
-        'title': '`' + command + ' t [issueIdOrKey] [statusNameOrId]`',
+        'pretext': '`' + command + ' t [issueIdOrKey] [statusNameOrId]`',
+        'title': 'Update status of an issue.',
         'text': 'Ex: `'+command+' t COMM-4 In Progress` Changes the status of issue. Both [issueIdOrKey] AND [statusNameOrId] must be present. To see valid states for an issue, see `'+command+' s`',
-        'color': '#E6E2EE'	
+        'color': '#E6E2EE',
+        'mrkdwn_in': ['text','pretext']		
     }];
 
     return message;
