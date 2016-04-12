@@ -258,7 +258,8 @@ module.exports.queryIssues = function(query) {
 			          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ': ' + config.jira.url + 'browse/' + issue.key,
 			          'pretext': '*Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>*',
 			          'text': issue.fields.summary,
-			          'color': '#974A50'
+			          'color': '#974A50',
+			          'mrkdwn_in': ['text','pretext']	
 			        }
 	      		});
 
