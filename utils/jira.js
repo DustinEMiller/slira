@@ -159,7 +159,7 @@ module.exports.issueDetails = function(issue){
 	                'short': true
 	              }
 	            ],
-	          'color': '#F35A00'
+	          'color': '#617C51'
 	          }]
 	        };
 
@@ -214,6 +214,9 @@ module.exports.transitionIssue = function(args) {
 				message.text = 'No transition name or ID detected in your command. Please type `'+command+' help` for assistance.';
 			}
 
+			console.log(issue[0]);
+			console.log(args);
+
 			console.log(err);
 			return JSON.stringify(err);
 		});
@@ -240,7 +243,7 @@ module.exports.queryIssues = function(query) {
 			          'pretext': 'Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>',
 			          'title': issue.fields.summary,
 			          'text': issue.fields.description,
-			          'color': '#F35A00'
+			          'color': '#974A50'
 			        }
 	      		});
 
