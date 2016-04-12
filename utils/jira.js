@@ -135,7 +135,6 @@ module.exports.issueDetails = function(issue){
 	          'attachments' : [{
 	            'pretext': 'Task <' + config.jira.url + 'browse/' + issue + '|' + issue + '>',
 	            'title': result.fields.summary,
-	            'text': result.fields.description,
 	            'fields': [{
 	                'title': 'Assignee',
 	                'value': result.fields.assignee.displayName,
@@ -197,6 +196,7 @@ module.exports.transitionIssue = function(args) {
 					return state.name.toLowerCase() === status.toLowerCase();
 				});	
 				statusId = transition.id;
+				status = transition.name;
 			} else {
 				var transition = result.transitions.find((state) => {
 					return state.id === status;
@@ -212,7 +212,7 @@ module.exports.transitionIssue = function(args) {
 		.then((result) => {
 			var message = {
           		"response_type": "ephemeral",
-          		"text": "Issue <" + config.jira.url + 'browse/' + issue + '|' + issue + '> has been updated to `'+status+'`',
+          		"text": "Issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>* has been updated to `'+status+'`',
         	};
 			return JSON.stringify(message);
 		})
@@ -235,7 +235,12 @@ module.exports.transitionIssue = function(args) {
 
 module.exports.queryIssues = function(query) {
 	var opts = Object.create(options);
-	opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")');
+
+	if (query.toLowerCase() === 'unassigned') {
+		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in (EMPTY)');
+	} else {
+		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")');	
+	}
 
 	return getRequest(opts)
 		.then((result) => {
@@ -250,10 +255,9 @@ module.exports.queryIssues = function(query) {
 	        } else {
 	        	message.attachments = result.issues.map(function(issue) {
 			        return {
-			          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ' ' + issue.fields.description + ': ' + config.jira.url + 'browse/' + issue.key,
-			          'pretext': 'Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>',
-			          'title': issue.fields.summary,
-			          'text': issue.fields.description,
+			          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ': ' + config.jira.url + 'browse/' + issue.key,
+			          'pretext': '*Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>*',
+			          'text': issue.fields.summary,
 			          'color': '#974A50'
 			        }
 	      		});
@@ -285,7 +289,7 @@ module.exports.help = function(isIntentional) {
     message.attachments = [{
     	'fallback': 'Viewing issues assigned to user.' + '`'+ command + ' i [name]`',
         'pretext': '*Viewing issues assigned to user:* `' + command + ' i [name]`',
-        'text': 'Displays all the issues assigned to the user inside `[name]`. You may search by JIRA username or their real name, if it is set inside JIRA. \"Fuzzy\" matching does not work. Fully qualified names must be used.\n*Ex:* `'+ command + ' i Barry Allen`',
+        'text': 'Displays all the issues assigned to the user inside `[name]`. You may search by JIRA username or their real name, if it is set inside JIRA. \"Fuzzy\" matching does not work. Fully qualified names must be used. To search for unassigned issues, use the string `unassigned` in the `[name]` field.\n*Ex:* `'+ command + ' i Barry Allen`',
         'color': '#974A50',
         'mrkdwn_in': ['text','pretext']	
     },
