@@ -201,7 +201,7 @@ module.exports.transitionIssue = function(args) {
 				var transition = result.transitions.find((state) => {
 					return state.id === status;
 				});	
-				transition = status.name;
+				status = transition.name;
 			}
 
 			opts.url = config.jira.url + 'rest/api/2/issue/'+issue[0]+'/transitions?expand=transitions.fields';
