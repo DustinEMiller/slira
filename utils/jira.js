@@ -121,7 +121,7 @@ module.exports.retrieveTransitions = function(issue) {
 	    	}
 
 	    	console.log(err);
-	    	return JSON.stringify(err);
+	    	return JSON.stringify(message);
 	    });
 }
 
@@ -176,7 +176,7 @@ module.exports.issueDetails = function(issue){
 			if (issue === '') {
 				message.text = 'No issue ID or key present in command. Type `/jira help` to get details on how to use this command.';
 			} else if (err === 'noexist'|| err === 'not' || err === '404') {
-				message.text = 'Issue \''+issue+'\' does not exist. Please type `'+command+' help` for assistance.';
+				message.text = 'Issue `'+issue+'` does not exist. Please type `'+command+' help` for assistance.';
 			} else {
 				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `'+command+' help` for further assistance.'
 			}
