@@ -14,6 +14,7 @@ var options = {
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req(options, function(err, httpResponse, body) {
+	    	console.log('get');
 	    	console.log(err);
 
 			if (err) {
@@ -40,6 +41,7 @@ function getRequest(options) {
 function postRequest(options) {
 	return new Promise((resolve, reject) => {
 	    req.post(options, function(err, httpResponse, body) {
+	    	console.log('post');
 	    	console.log(err);
 
 			if (err) {
@@ -207,10 +209,9 @@ module.exports.transitionIssue = function(args) {
 			return postRequest(opts);
 		})
 		.then((result) => {
-			console.log(result);
 			var message = {
           		"response_type": "ephemeral",
-          		"text": "Issue  <" + config.jira.url + 'browse/' + args + '|' + args + '> has been updated to *something*',
+          		"text": "Issue  <" + config.jira.url + 'browse/' + issue + '|' + issue + '> has been updated to `'+args+'`',
         	};
 			return JSON.stringify(message);
 		})
@@ -220,11 +221,13 @@ module.exports.transitionIssue = function(args) {
 				message.text = 'No issue detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (args === '') {
 				message.text = 'No transition name or ID detected in your command. Please type `'+command+' help` for assistance.';
+			} else if (err === '404') {
+				message.text = 'Issue `'+issue+'` does not exist. Please type `'+command+' help` for assistance.';	
+			} else if (err === 'not') {
+				message.text = 'That is not a valid transition state or name. Type `'+command+' s '+issue'` to see the valid states for this issue.';	
 			}
 
-			console.log(issue[0]);
-			console.log(args);
-
+			console.log('catch');
 			console.log(err);
 			return JSON.stringify(message);
 		});
