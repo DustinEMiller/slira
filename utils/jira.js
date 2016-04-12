@@ -224,7 +224,7 @@ module.exports.transitionIssue = function(args) {
 			} else if (err === '404') {
 				message.text = 'Issue `'+issue+'` does not exist. Please type `'+command+' help` for assistance.';	
 			} else if (err === 'not') {
-				message.text = 'That is not a valid transition state or name. Type `'+command+' s '+issue'` to see the valid states for this issue.';	
+				message.text = 'That is not a valid transition state or name. Type `'+command+' s '+issue+'` to see the valid states for this issue.';	
 			}
 
 			console.log('catch');
