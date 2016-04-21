@@ -278,7 +278,7 @@ module.exports.queryIssues = function(query) {
 
 module.exports.help = function(isIntentional) {
 	var message = {
-      	"response_type": "in_channel",
+      	"response_type": "ephemeral",
       	"text": '`'+command + " help` topics.",
       	'attachments': []
     };
