@@ -30,6 +30,8 @@ function getRequest(options) {
 				return reject('404');
 			}
 			console.log(err);
+			console.log(httpResponse);
+			console.log(body);
 			return reject('not');
 	    });
   	});		
