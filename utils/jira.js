@@ -29,7 +29,7 @@ function getRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-
+			console.log(err);
 			return reject('not');
 	    });
   	});		
@@ -54,7 +54,7 @@ function postRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-
+			console.log(err);
 			return reject('not');
 	    });
   	});		
