@@ -238,7 +238,7 @@ module.exports.queryIssues = function(query) {
 	if (query.toLowerCase() === 'unassigned') {
 		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in (EMPTY)');
 	} else {
-		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ("'+query+'")');	
+		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in ('+query+')');	
 	}
 
 	return getRequest(opts)
@@ -270,8 +270,9 @@ module.exports.queryIssues = function(query) {
 	      	return JSON.stringify(message);
 		})
 		.catch((err) => {
+			var message = {text: 'User ' + query + ' was not found'};
 			console.log(err);
-			return JSON.stringify(err);
+			return JSON.stringify(message);
 		});
 }
 
