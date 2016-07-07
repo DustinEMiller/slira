@@ -133,6 +133,13 @@ module.exports.issueDetails = function(issue){
 	return getRequest(opts)
 		.then((result) => {
 			var updated = new Date(result.fields.updated).toLocaleString(),
+				message,
+				assigneeName = 'Unassigned';
+
+			if(result.fields.assignee.hasOwnProperty(displayName)) {
+				assigneeName = result.fields.assignee.displayName;
+			}
+
             message = {
 	          'response_type': 'ephemeral',
 	          'attachments' : [{
@@ -140,7 +147,7 @@ module.exports.issueDetails = function(issue){
 	            'title': result.fields.summary,
 	            'fields': [{
 	                'title': 'Assignee',
-	                'value': result.fields.assignee.displayName,
+	                'value': assigneeName,
 	                'short': true
 	              },
 	              {
