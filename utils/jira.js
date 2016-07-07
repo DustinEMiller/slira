@@ -1,6 +1,8 @@
 'use strict';
-const req = require('request');
-const config = require('../config');
+
+const req = require('request'),
+	config = require('../config');
+
 var options = {
 	headers: {
 		'X-Atlassian-Token': 'no-check',
@@ -273,6 +275,31 @@ module.exports.queryIssues = function(query) {
 		})
 		.catch((err) => {
 			var message = {text: 'User ' + query + ' was not found'};
+			console.log(err);
+			return JSON.stringify(message);
+		});
+}
+
+module.exports.addComment = function(args) {
+	var issue = args.split(/\s+/).slice(0,1),
+		comment = args.replace(issue[0], '').trim(),
+		opts = Object.create(options);
+	console.log(issue);
+	
+	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
+	opts.json = {"body": comment};
+
+	return postRequest(opts)
+		.then((result) => {
+			var message = {
+          		"response_type": "ephemeral",
+          		"text": "Your comment has been added to issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>*',
+        	};
+
+			return JSON.stringify(message);
+		})
+		.catch((err) => {
+			var message = {text: 'Comment was not found'};
 			console.log(err);
 			return JSON.stringify(message);
 		});

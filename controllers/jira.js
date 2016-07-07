@@ -39,6 +39,8 @@ module.exports.slackHook = function(request, reply) {
     mechanism = JIRA.issueDetails(argString); 
   } else if (command[0] === 'transition' || command[0] === 't') {
     mechanism = JIRA.transitionIssue(argString);
+  } else if (command[0] === 'comment' || command[0] === 'c') {
+    mechanism = JIRA.addComment(argString);
   } else if (command[0] === 'help') {
     return reply(JIRA.help(1)).header('content-type', 'application/json');
   } else {
