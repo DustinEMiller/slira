@@ -288,10 +288,16 @@ module.exports.queryIssues = function(query) {
 }
 
 module.exports.addComment = function(args) {
-	var issue = args.split(/\s+/).slice(0,1),
-		comment = args.replace(issue[0], '').trim(),
+	var issue = "",
+		comment = "",
 		opts = Object.create(options);
-	console.log(args);
+
+	if (args.indexOf(' ') !== -1) {
+        issue = args.substr(0, args.indexOf(' '));
+        comment = ''
+    } else {
+        return ;
+    }
 	
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	opts.json = {"body": comment};
