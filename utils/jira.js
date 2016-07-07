@@ -136,7 +136,7 @@ module.exports.issueDetails = function(issue){
 				message,
 				assigneeName = 'Unassigned';
 
-			if(result.fields.hasOwnProperty('assignee')) {
+			if(result.fields.assignee.hasOwnProperty('displayName')) {
 				assigneeName = result.fields.assignee.displayName;
 			}
 
