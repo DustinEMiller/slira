@@ -2,7 +2,8 @@
 var getEnv = require('getenv');
 
 module.exports = {
-  port: getEnv.int('PORT', 3001),
+  //3001
+  port: getEnv.int('PORT', 3000),
   slack:{
     token: getEnv('SLACK_TOKEN', ''),
     webhooks:{
