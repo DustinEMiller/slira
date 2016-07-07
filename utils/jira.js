@@ -291,7 +291,7 @@ module.exports.addComment = function(args) {
 	var issue = args.split(/\s+/).slice(0,1),
 		comment = args.replace(issue[0], '').trim(),
 		opts = Object.create(options);
-	console.log(issue);
+	console.log(args);
 	
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	opts.json = {"body": comment};
