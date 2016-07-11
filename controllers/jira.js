@@ -17,14 +17,14 @@ function slackTokenMatch(token) {
 
 module.exports.slackHook = function(request, reply) {
   const payload = request.payload;
-  var command = request.payload.text.split(/\s+/).slice(0,1),
+  let command = request.payload.text.split(/\s+/).slice(0,1),
       argString = request.payload.text.replace(command[0], '').trim(),
       mechanism;
       console.log(argString);
   JIRA.command = payload.command;
 
   if (!slackTokenMatch(payload.token)) {
-    var message = {
+    let message = {
           "response_type": "ephemeral",
           "text": "There was an issue with request token. Please notify the administrator."
         };

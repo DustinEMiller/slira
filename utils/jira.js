@@ -3,7 +3,7 @@
 const req = require('request'),
 	config = require('../config');
 
-var options = {
+let options = {
 	headers: {
 		'X-Atlassian-Token': 'no-check',
 		'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ function isNumber (o) {
 }
 
 function mappedColors(color) {
-	var colors = {
+	let colors = {
 	    "blue-gray":"#2E3D54",
 	    "yellow":"#F6C342",
 	    "green":"#14892C"
@@ -82,7 +82,7 @@ function mappedColors(color) {
 }
 
 function queryTransitions (issue) {
-	var opts = Object.create(options);
+	let opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
 }
@@ -90,7 +90,7 @@ function queryTransitions (issue) {
 module.exports.retrieveTransitions = function(issue) {
 	return queryTransitions(issue)
 		.then((result) => {
-	        var message = {
+	        let message = {
 	          "response_type": "ephemeral",
 	          "text": "Transition states available for the issue <" + config.jira.url + 'browse/' + issue + '|' + issue + '>',
 	          'attachments': []
@@ -113,7 +113,7 @@ module.exports.retrieveTransitions = function(issue) {
 	        return JSON.stringify(message);
 	    })
 	    .catch((err) => {
-	    	var message = {text: err.toString()};
+	    	let message = {text: err.toString()};
 
 	    	if (issue === '') {
 	    		message.text = 'No issue name or ID detected in your command. Please type `'+command+' help` for assistance.';
@@ -127,12 +127,12 @@ module.exports.retrieveTransitions = function(issue) {
 }
 
 module.exports.issueDetails = function(issue){
-	var opts = Object.create(options);
+	let opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
 
 	return getRequest(opts)
 		.then((result) => {
-			var updated = new Date(result.fields.updated).toLocaleString(),
+			let updated = new Date(result.fields.updated).toLocaleString(),
 				message,
 				assigneeName = 'Unassigned';
 
@@ -178,7 +178,7 @@ module.exports.issueDetails = function(issue){
 	        return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: err.toString()};
+			let message = {text: err.toString()};
 
 			if (issue === '') {
 				message.text = 'No issue ID or key present in command. Type `/jira help` to get details on how to use this command.';
@@ -193,22 +193,22 @@ module.exports.issueDetails = function(issue){
 }
 
 module.exports.transitionIssue = function(args) {
-	var issue = args.split(/\s+/).slice(0,1),
+	let issue = args.split(/\s+/).slice(0,1),
 		status = args.replace(issue[0], '').trim();
 
 	return queryTransitions(issue[0])
 		.then((result) => {
-			var statusId = status,
+			let statusId = status,
 				opts = Object.create(options);
 
 			if(!isNumber(status)) {
-				var transition = result.transitions.find((state) => {
+				let transition = result.transitions.find((state) => {
 					return state.name.toLowerCase() === status.toLowerCase();
 				});	
 				statusId = transition.id;
 				status = transition.name;
 			} else {
-				var transition = result.transitions.find((state) => {
+				let transition = result.transitions.find((state) => {
 					return state.id === status;
 				});	
 				status = transition.name;
@@ -220,14 +220,14 @@ module.exports.transitionIssue = function(args) {
 			return postRequest(opts);
 		})
 		.then((result) => {
-			var message = {
+			let message = {
           		"response_type": "ephemeral",
           		"text": "Issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>* has been updated to `'+status+'`',
         	};
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: err.toString()};
+			let message = {text: err.toString()};
 			if (issue[0] === '') {
 				message.text = 'No issue detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (status === '') {
@@ -244,7 +244,7 @@ module.exports.transitionIssue = function(args) {
 }
 
 module.exports.queryIssues = function(query) {
-	var opts = Object.create(options);
+	let opts = Object.create(options);
 
 	if (query.toLowerCase() === 'unassigned') {
 		opts.url = encodeURI(config.jira.url + 'rest/api/2/search?jql=assignee in (EMPTY)');
@@ -254,7 +254,7 @@ module.exports.queryIssues = function(query) {
 
 	return getRequest(opts)
 		.then((result) => {
-			var message = {
+			let message = {
 	          "response_type": "ephemeral",
 	          "text": "Issues assigned to: *" + query + "*",
 	          'attachments': []
@@ -281,14 +281,14 @@ module.exports.queryIssues = function(query) {
 	      	return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: 'User ' + query + ' was not found'};
+			let message = {text: 'User ' + query + ' was not found'};
 			console.log(err);
 			return JSON.stringify(message);
 		});
 }
 
 module.exports.addComment = function(args) {
-	var issue = "",
+	let issue = "",
 		comment = "",
 		opts = Object.create(options);
 
@@ -304,7 +304,7 @@ module.exports.addComment = function(args) {
 
 	return postRequest(opts)
 		.then((result) => {
-			var message = {
+			let message = {
           		"response_type": "ephemeral",
           		"text": "Your comment has been added to issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>*',
         	};
@@ -312,14 +312,14 @@ module.exports.addComment = function(args) {
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
-			var message = {text: 'Comment was not found'};
+			let message = {text: 'Comment was not found'};
 			console.log(err);
 			return JSON.stringify(message);
 		});
 }
 
 module.exports.help = function(isIntentional) {
-	var message = {
+	let message = {
       	"response_type": "ephemeral",
       	"text": '`'+command + " help` topics.",
       	'attachments': []
