@@ -20,7 +20,6 @@ module.exports.slackHook = function(request, reply) {
   let command = request.payload.text.split(/\s+/).slice(0,1),
       argString = request.payload.text.replace(command[0], '').trim(),
       mechanism;
-      console.log(argString);
   JIRA.command = payload.command;
 
   if (!slackTokenMatch(payload.token)) {

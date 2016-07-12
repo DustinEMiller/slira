@@ -58,6 +58,7 @@ function postRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
+			console.log(httpResponse.statusCode);
 			console.log(err);
 			return reject('not');
 	    });
@@ -296,7 +297,7 @@ module.exports.addComment = function(args) {
         issue = args.substr(0, args.indexOf(' '));
         comment = ''
     } else {
-        return ;
+        return;
     }
 	
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
