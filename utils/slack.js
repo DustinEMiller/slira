@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = internals.Slack = function(options) {
+module.exports = function(options) {
   this.token = options.token;
 };
