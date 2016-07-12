@@ -58,8 +58,7 @@ function postRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-			console.log(httpResponse);
-			console.log(body);
+			console.log(httpResponse.statusCode);
 			console.log(err);
 			return reject('not');
 	    });
@@ -87,6 +86,10 @@ function queryTransitions (issue) {
 	let opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
+}
+
+module.exports.setCommand = function(cmd) {
+	command = cmd;
 }
 
 module.exports.retrieveTransitions = function(issue) {
@@ -296,13 +299,15 @@ module.exports.addComment = function(args) {
 
 	if (args.indexOf(' ') !== -1) {
         issue = args.substr(0, args.indexOf(' '));
-        comment = ''
+        comment = 'test';
     } else {
         return;
     }
 	
-	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
+	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/comment';
 	opts.json = {"body": comment};
+
+	console.log(opts);
 
 	return postRequest(opts)
 		.then((result) => {
@@ -314,7 +319,12 @@ module.exports.addComment = function(args) {
 			return JSON.stringify(message);
 		})
 		.catch((err) => {
-			let message = {text: 'Comment was not found'};
+			let message = {text: err.toString()};
+
+			if (comment === '') {
+				message.text = 'There was no comment attached to the command. Please try again.';
+			}
+
 			console.log(err);
 			return JSON.stringify(message);
 		});

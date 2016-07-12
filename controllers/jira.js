@@ -1,57 +1,56 @@
 'use strict';
-const Boom = require('boom');
-const config = require('../config');
-const Slack = require('../utils/slack');
-const JIRA = require('../utils/jira');
-
-const slack = new Slack({
-  token: config.slack.token
-});
+const Boom = require('boom'),
+      config = require('../config'),
+      Slack = require('../utils/slack'),
+      JIRA = require('../utils/jira'),
+      slack = new Slack({
+        token: config.slack.token
+      });
 
 function slackTokenMatch(token) {
-  const tokens = config.slack.webhooks.requestTokens;
-  const match = tokens.filter((t) => t === token);
+  const tokens = config.slack.webhooks.requestTokens,
+        match = tokens.filter((t) => t === token);
 
   return match.length > 0;
 }
 
 module.exports.slackHook = function(request, reply) {
-  const payload = request.payload;
-  let command = request.payload.text.split(/\s+/).slice(0,1),
-      argString = request.payload.text.replace(command[0], '').trim(),
-      mechanism;
-  JIRA.command = payload.command;
-  console.log(request);
+    const payload = request.payload;
+    let command = payload .text.split(/\s+/).slice(0,1),
+        argString = payload.text.replace(command[0], '').trim(),
+        mechanism;
 
-  if (!slackTokenMatch(payload.token)) {
-    let message = {
-          "response_type": "ephemeral",
-          "text": "There was an issue with request token. Please notify the administrator."
-        };
-    return reply(message).header('content-type', 'application/json');
-  }
+    JIRA.setCommand(payload.command);
 
-  if (command[0] === 'issues' || command[0] === 'i') {
-    mechanism = JIRA.queryIssues(argString);
-  } else if (command[0] === 'states' || command[0] === 's') {
-    mechanism = JIRA.retrieveTransitions(argString);
-  } else if (command[0] === 'details' || command[0] === 'd') {
-    mechanism = JIRA.issueDetails(argString); 
-  } else if (command[0] === 'transition' || command[0] === 't') {
-    mechanism = JIRA.transitionIssue(argString);
-  } else if (command[0] === 'comment' || command[0] === 'c') {
-    mechanism = JIRA.addComment(argString);
-  } else if (command[0] === 'help') {
-    return reply(JIRA.help(1)).header('content-type', 'application/json');
-  } else {
-    return reply(JIRA.help(0)).header('content-type', 'application/json');
-  }
+    if (!slackTokenMatch(payload.token)) {
+      let message = {
+            "response_type": "ephemeral",
+            "text": "There was an issue with request token. Please notify the administrator."
+          };
+      return reply(message).header('content-type', 'application/json');
+    }
 
-  mechanism
-    .then((result) => {
-      reply(result).header('content-type', 'application/json');
-    })
-    .catch((err) => {
-      reply(err).header('content-type', 'application/json');
+    if (command[0] === 'issues' || command[0] === 'i') {
+        mechanism = JIRA.queryIssues(argString);
+    } else if (command[0] === 'states' || command[0] === 's') {
+        mechanism = JIRA.retrieveTransitions(argString);
+    } else if (command[0] === 'details' || command[0] === 'd') {
+        mechanism = JIRA.issueDetails(argString); 
+    } else if (command[0] === 'transition' || command[0] === 't') {
+        mechanism = JIRA.transitionIssue(argString);
+    } else if (command[0] === 'comment' || command[0] === 'c') {
+        mechanism = JIRA.addComment(argString);
+    } else if (command[0] === 'help') {
+        return reply(JIRA.help(1)).header('content-type', 'application/json');
+    } else {
+        return reply(JIRA.help(0)).header('content-type', 'application/json');
+    }
+
+    mechanism
+      .then((result) => {
+        reply(result).header('content-type', 'application/json');
+      })
+      .catch((err) => {
+        reply(err).header('content-type', 'application/json');
     });
 };
