@@ -58,7 +58,8 @@ function postRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-			console.log(httpResponse.statusCode);
+			console.log(httpResponse);
+			console.log(body);
 			console.log(err);
 			return reject('not');
 	    });
