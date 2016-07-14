@@ -299,15 +299,12 @@ module.exports.addComment = function(args) {
 
 	if (args.indexOf(' ') !== -1) {
         issue = args.substr(0, args.indexOf(' '));
-        comment = 'test';
-    } else {
-        return;
+        console.log(args);
+        comment = '';
     }
 	
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/comment';
 	opts.json = {"body": comment};
-
-	console.log(opts);
 
 	return postRequest(opts)
 		.then((result) => {

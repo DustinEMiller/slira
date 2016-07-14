@@ -13,6 +13,6 @@ module.exports = {
   	jira:{
 		username: getEnv('JIRA_USERNAME', ''),
 	    password: getEnv('JIRA_PASSWORD', ''),
-	    url: "https://jira.healthalliance.org/"//getEnv('JIRA_URL', 'http://127.0.0.1'),
+	    url: getEnv('JIRA_URL', 'http://127.0.0.1'),
   	}
 };

@@ -16,7 +16,7 @@ function slackTokenMatch(token) {
 
 module.exports.slackHook = function(request, reply) {
     const payload = request.payload;
-    let command = payload .text.split(/\s+/).slice(0,1),
+    let command = payload.text.split(/\s+/).slice(0,1),
         argString = payload.text.replace(command[0], '').trim(),
         mechanism;
 
@@ -53,4 +53,8 @@ module.exports.slackHook = function(request, reply) {
       .catch((err) => {
         reply(err).header('content-type', 'application/json');
     });
+};
+
+module.exports.issueUpdatedHook = function(request, reply) {
+    console.log(request);
 };

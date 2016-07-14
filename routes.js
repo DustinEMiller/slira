@@ -9,3 +9,11 @@ module.exports = [
     handler: jira.slackHook,
   }
 ];
+
+module.exports = [
+  {
+    path:'/webhooks/issueUpdated',
+    method:'POST',
+    handler: jira.issueUpdatedHook,
+  }
+];
