@@ -56,5 +56,11 @@ module.exports.slackHook = function(request, reply) {
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {
-    console.log(request);
+    if (request.payload.hasOwnProperty("comment")) {
+    	//console.log(request.payload.comment);
+    	console.log(request.payload.issue);
+    	//request.payload.issue.assignee
+    	//request.payload.issue.reporter
+    	//request.payload.issue.watches.self (api call url);
+    }
 };
