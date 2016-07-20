@@ -11,16 +11,13 @@
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
+    "boom": "^3.2.2",
     "getenv": "^0.6.0",
     "hapi": "^13.2.2",
-    "hapi-auth-basic": "^4.1.0",
-    "hapi-auth-jwt2": "^7.0.1",
-    "joi": "^8.0.5",
-    "jwt-simple": "^0.5.0",
+    "hapi-auth-jwt": "^4.0.0",
+    "joi": "^8.4.2",
     "mongoose": "^4.5.4",
     "node-uuid": "^1.4.7",
-    "passport": "^0.3.2",
-    "passport-jwt": "^2.1.0",
     "request": "^2.69.0"
   },
   "engines": {
