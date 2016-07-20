@@ -14,6 +14,7 @@
     "getenv": "^0.6.0",
     "hapi": "^13.2.2",
     "hapi-auth-basic": "^4.1.0",
+    "hapi-auth-jwt2": "^7.0.1",
     "joi": "^8.0.5",
     "jwt-simple": "^0.5.0",
     "mongoose": "^4.5.4",
