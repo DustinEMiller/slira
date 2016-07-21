@@ -3,7 +3,8 @@
 
 const Hapi = require('hapi'),
 	config = require('./config'),
-	server = new Hapi.Server();
+	server = new Hapi.Server(),
+	mongoose = require('mongoose');
 
 server.connection({
 	port: config.port,
@@ -26,7 +27,7 @@ server.register(require('hapi-auth-jwt'),(err) => {
     		throw err;
   		}
 
-  		mongoose.connect(dbUrl, {}, (err) => {
+  		mongoose.connect(config.mongo.url, {}, (err) => {
     		if (err) {
       			throw err;
     		}

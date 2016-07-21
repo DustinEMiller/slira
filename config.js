@@ -13,10 +13,10 @@ module.exports = {
   	jira:{
 		username: getEnv('JIRA_USERNAME', ''),
 	    password: getEnv('JIRA_PASSWORD', ''),
-	    url: getEnv('JIRA_URL', 'http://127.0.0.1'),
+	    url: getEnv('SIRA_URL', 'http://54.244.59.52/'),
   	},
   	mongo: {
-  		url: getEnv('SLIRA_MONGO_URL', '');
+  		url: getEnv('SLIRA_MONGO_URL', 'mongodb://localhost:27017/slira-dev')
   	},
   	jwtSecret: getEnv('SLIRA_JWT_SECRET', 'default')
 };

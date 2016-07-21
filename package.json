@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "boom": "^3.2.2",
     "getenv": "^0.6.0",

@@ -1,7 +1,7 @@
 'use strict'
 
 const jira = require('./controllers/jira'),
-	user = require('./controllers/users'),
+	user = require('./controllers/user'),
 	Joi = require('joi');
 
 

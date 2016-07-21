@@ -1,24 +1,23 @@
 'use strict'
 
 let mongoose = require('mongoose'),
-	Schema = mongoose.schema,
-	bcrypt = require('bcrypt');
-
-let UserSchema = new Schema({
-	userName: {
-		type: String,
-		unique: true,
-		required: true
-	},
-	password: {
-		type: String,
-		required: true
-	},
-	slackUserName: {
-		type: String,
-		required: true
-	}
-});
+	Schema = mongoose.Schema,
+	bcrypt = require('bcryptjs'),
+    UserSchema = new Schema({
+    	userName: {
+    		type: String,
+    		unique: true,
+    		required: true
+    	},
+    	password: {
+    		type: String,
+    		required: true
+    	},
+    	slackUserName: {
+    		type: String,
+    		required: true
+    	}
+    });
 
 UserSchema.pre('save', function(next) {
 	let user = this;
