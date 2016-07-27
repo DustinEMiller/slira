@@ -4,12 +4,21 @@ let mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	bcrypt = require('bcryptjs'),
     UserSchema = new Schema({
-    	userName: {
+        email: { 
+            type: String, 
+            required: true, 
+            index: { unique: true } 
+        },
+        password: { 
+            type: String, 
+            required: true 
+        },
+    	jiraUserName: {
     		type: String,
     		unique: true,
     		required: true
     	},
-    	password: {
+    	jiraPassword: {
     		type: String,
     		required: true
     	},
@@ -31,6 +40,12 @@ UserSchema.pre('save', function(next) {
                     return next(err);
                 }
                 user.password = hash;
+            });
+            bcrypt.hash(user.jiraPassword, salt, function (err, hash) {
+                if (err) {
+                    return next(err);
+                }
+                user.jiraPassword = hash;
                 next();
             });
         });

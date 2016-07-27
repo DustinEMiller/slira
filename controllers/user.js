@@ -3,7 +3,8 @@
 const User = require('../models/User'),
 	req = require('request'),
 	Boom = require('Boom'),
-	config = require('../config');
+	config = require('../config'),
+	userUtils = require('../utils/user')
 
 function existingJiraUser(options) {
 	return new Promise((resolve, reject) => {
@@ -17,15 +18,17 @@ module.exports.addNew = function(request, reply) {
 	let user = new User(),
 		userCheck;
 
-	user.userName = request.payload.userName;
+	user.email = request.payload.email;
 	user.password = request.payload.password;
+	user.jiraUserName = request.payload.jiraUserName;
+	user.jiraPassword = request.payload.jiraPassword;
 	user.slackUserName = request.payload.slackUserName;
 
 	let options = {
 		headers: {
 			'X-Atlassian-Token': 'no-check',
 			'Content-Type': 'application/json',
-			'Authorization': 'Basic ' + new Buffer(user.userName + ":" + user.password).toString('base64')
+			'Authorization': 'Basic ' + new Buffer(user.jiraUserName + ":" + user.jiraPassword).toString('base64')
 		},	
 	};
 
@@ -43,7 +46,7 @@ module.exports.addNew = function(request, reply) {
 				if (err) {
 					return reply(Boom.badRequest('User already exists'));
 				}
-				return reply({success: true, msg: 'Successful created new user.'}).header('content-type', 'application/json');
+				return reply({success: true, msg: 'Successful created new user.', token: userUtils.createToken(userUtils.createToken)}).header('content-type', 'application/json');
 			});
 		})
 		.catch((err) => {
