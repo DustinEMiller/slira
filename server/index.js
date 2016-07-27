@@ -33,6 +33,6 @@ server.register(require('hapi-auth-jwt'),(err) => {
     		}
   		});
 
-		console.log('Server running at:', config.mongo.url);
+		console.log('Server running on port:', config.port);
 	});
 });

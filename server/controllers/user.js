@@ -46,10 +46,10 @@ module.exports.addNew = function(request, reply) {
 				if (err) {
 					return reply(Boom.badRequest('User already exists'));
 				}
-				return reply({success: true, msg: 'Successful created new user.', token: userUtils.createToken(userUtils.createToken)}).header('content-type', 'application/json');
+				return reply({success: true, msg: 'Successful created new user.', token: userUtils.createToken(user)}).header('content-type', 'application/json');
 			});
 		})
 		.catch((err) => {
-			reply(err).header('content-type', 'application/json');
+			return reply(err).header('content-type', 'application/json');
 		});
 }

@@ -2,14 +2,13 @@
   "name": "slira",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "server/app.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon --debug index.js",
     "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors."
   },
   "dependencies": {
-    "bcrypt": "^0.8.7",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "boom": "^3.2.2",

@@ -1,17 +1,17 @@
 'use strict';
 const Boom = require('boom'),
-      config = require('../config'),
-      Slack = require('../utils/slack'),
-      JIRA = require('../utils/jira'),
-      slack = new Slack({
-        token: config.slack.token
-      });
+    config = require('../config'),
+    Slack = require('../utils/slack'),
+    JIRA = require('../utils/jira'),
+    slack = new Slack({
+    token: config.slack.token
+    });
 
 function slackTokenMatch(token) {
-  const tokens = config.slack.webhooks.requestTokens,
-        match = tokens.filter((t) => t === token);
+    const tokens = config.slack.webhooks.requestTokens,
+    match = tokens.filter((t) => t === token);
 
-  return match.length > 0;
+    return match.length > 0;
 }
 
 module.exports.slackHook = function(request, reply) {
@@ -23,11 +23,11 @@ module.exports.slackHook = function(request, reply) {
     JIRA.setCommand(payload.command);
 
     if (!slackTokenMatch(payload.token)) {
-      let message = {
+        let message = {
             "response_type": "ephemeral",
             "text": "There was an issue with request token. Please notify the administrator."
-          };
-      return reply(message).header('content-type', 'application/json');
+        };
+        return reply(message).header('content-type', 'application/json');
     }
 
     if (command[0] === 'issues' || command[0] === 'i') {
@@ -40,6 +40,8 @@ module.exports.slackHook = function(request, reply) {
         mechanism = JIRA.transitionIssue(argString);
     } else if (command[0] === 'comment' || command[0] === 'c') {
         mechanism = JIRA.addComment(argString);
+    } else if (command[0] === 'connect') {
+        mechanism = JIRA.createConnectionLink(request.payload);
     } else if (command[0] === 'help') {
         return reply(JIRA.help(1)).header('content-type', 'application/json');
     } else {

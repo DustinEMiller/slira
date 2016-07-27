@@ -2,6 +2,7 @@
 
 const req = require('request'),
 	config = require('../config');
+	ConnectRequest = require('../models/ConnectRequest');
 
 let options = {
 	headers: {
@@ -88,11 +89,11 @@ function queryTransitions (issue) {
 	return getRequest(opts);
 }
 
-module.exports.setCommand = function(cmd) {
+module.exports.setCommand = (cmd) => {
 	command = cmd;
 }
 
-module.exports.retrieveTransitions = function(issue) {
+module.exports.retrieveTransitions = (issue) => {
 	return queryTransitions(issue)
 		.then((result) => {
 	        let message = {
@@ -131,7 +132,7 @@ module.exports.retrieveTransitions = function(issue) {
 	    });
 }
 
-module.exports.issueDetails = function(issue){
+module.exports.issueDetails = (issue) => {
 	let opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
 
@@ -197,7 +198,7 @@ module.exports.issueDetails = function(issue){
 		});
 }
 
-module.exports.transitionIssue = function(args) {
+module.exports.transitionIssue = (args) => {
 	let issue = args.split(/\s+/).slice(0,1),
 		status = args.replace(issue[0], '').trim();
 
@@ -248,7 +249,7 @@ module.exports.transitionIssue = function(args) {
 		});
 }
 
-module.exports.queryIssues = function(query) {
+module.exports.queryIssues = (query) => {
 	let opts = Object.create(options);
 
 	if (query.toLowerCase() === 'unassigned') {
@@ -292,7 +293,7 @@ module.exports.queryIssues = function(query) {
 		});
 }
 
-module.exports.addComment = function(args) {
+module.exports.addComment = (args) => {
 	let issue = "",
 		comment = "",
 		opts = Object.create(options);
@@ -327,7 +328,14 @@ module.exports.addComment = function(args) {
 		});
 }
 
-module.exports.help = function(isIntentional) {
+module.exports.createConnectionLink = (request, reply) => {
+	let connectRequest = new ConnectRequest();
+
+	connectRequest.email = request.email;
+	connectRequest.slackUserName = request.user_name;
+}
+
+module.exports.help = (isIntentional) => {
 	let message = {
       	"response_type": "ephemeral",
       	"text": '`'+command + " help` topics.",
