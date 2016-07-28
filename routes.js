@@ -54,4 +54,13 @@ module.exports = [
 			}  
 		}
 	}
+	{
+		path: '/{param}',
+		method: 'GET',
+		handler: {
+			directory: {
+				path: Path.join(__dirname, 'client')
+			}
+		}
+	}
 ];

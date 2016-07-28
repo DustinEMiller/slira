@@ -40,4 +40,4 @@ ConnectRequestSchema.pre('save', function(next) {
 	next();		
 });
 
-module.exports = mongoose.model('User', ConnectRequestSchema);
+module.exports = mongoose.model('ConnectRequest', ConnectRequestSchema);

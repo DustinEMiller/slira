@@ -1,7 +1,7 @@
 'use strict';
 
 const req = require('request'),
-	config = require('../config');
+	config = require('../config'),
 	ConnectRequest = require('../models/ConnectRequest'),
 	SlackWebClient = require('@slack/client').WebClient,
 	SlackClient = new SlackWebClient(config.slack.token);
@@ -330,11 +330,15 @@ module.exports.addComment = (args) => {
 		});
 }
 
-module.exports.createConnectionLink = (request, reply) => {
-	let connectRequest = new ConnectRequest();
+module.exports.createConnectionLink = (request) => {
+	let connectRequest = new ConnectRequest(),
+		message = {
+	      	"response_type": "ephemeral",
+	      	"text": "Follow this link to connect your JIRA and Slack Accounts",
+	      	'attachments': []
+    	};
 
 	connectRequest.slackUserName = request.user_name;
-	request.user_id;
 
 	chatForeman.users.info(request.user_id)
 		.then((result) => {
@@ -342,17 +346,21 @@ module.exports.createConnectionLink = (request, reply) => {
 			requestSave();
 		})
 		.catch((error) => {
-			requestSave();	
+		})
+		.finally(() => {
+			connectRequest.save((err) => {
+				if (err) {
+					message.text = 'Your connection link could not be created. Please try again or contact the administrator'
+					return message;
+				}
+				message.attachments = [{
+            		"title": "Connect your accounts",
+            		"title_link": "PUT_LINK_HERE"
+				}];
+				return message;
+			});		
 		});
 
-	function requestSave() {
-		connectRequest.save((err) => {
-			if (err) {
-				return reply(Boom.badRequest('User already exists'));
-			}
-			return reply('yes');
-		});
-	}
 }
 
 module.exports.help = (isIntentional) => {
