@@ -2,7 +2,9 @@
 
 const req = require('request'),
 	config = require('../config');
-	ConnectRequest = require('../models/ConnectRequest');
+	ConnectRequest = require('../models/ConnectRequest'),
+	SlackWebClient = require('@slack/client').WebClient,
+	SlackClient = new SlackWebClient(config.slack.token);
 
 let options = {
 	headers: {
@@ -331,8 +333,26 @@ module.exports.addComment = (args) => {
 module.exports.createConnectionLink = (request, reply) => {
 	let connectRequest = new ConnectRequest();
 
-	connectRequest.email = request.email;
 	connectRequest.slackUserName = request.user_name;
+	request.user_id;
+
+	chatForeman.users.info(request.user_id)
+		.then((result) => {
+			connectRequest.email = result.user.profile.email; 
+			requestSave();
+		})
+		.catch((error) => {
+			requestSave();	
+		});
+
+	function requestSave() {
+		connectRequest.save((err) => {
+			if (err) {
+				return reply(Boom.badRequest('User already exists'));
+			}
+			return reply('yes');
+		});
+	}
 }
 
 module.exports.help = (isIntentional) => {

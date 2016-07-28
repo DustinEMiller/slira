@@ -5,9 +5,7 @@ let mongoose = require('mongoose'),
 	crypto = require('crypto'),
     ConnectRequestSchema = new Schema({
     	email: { 
-            type: String, 
-            required: true, 
-            index: { unique: true } 
+            type: String
         },
     	slackUserName: {
     		type: String,

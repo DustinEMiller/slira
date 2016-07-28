@@ -9,6 +9,7 @@
     "lint": "eslint --ext .js --ext .jsx ./ && echo No linting errors."
   },
   "dependencies": {
+    "@slack/client": "^3.5.3",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "boom": "^3.2.2",
