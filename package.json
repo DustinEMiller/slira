@@ -16,10 +16,12 @@
     "getenv": "^0.6.0",
     "hapi": "^13.2.2",
     "hapi-auth-jwt": "^4.0.0",
+    "inert": "^4.0.1",
     "joi": "^8.4.2",
     "mongoose": "^4.5.4",
     "node-uuid": "^1.4.7",
-    "request": "^2.69.0"
+    "request": "^2.69.0",
+    "vision": "^4.1.0"
   },
   "engines": {
     "node": "5.x"
