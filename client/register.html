@@ -1,0 +1,25 @@
+<html>
+    <head>
+    <title>HAMP Communications JIRA for Slack</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="/js/app.js"></script>
+  </head>
+    <body ng-app="app" ng-controller="Main as main">
+    <h1>JIRA for Slack Register</h1>
+
+    <label>Email</label><input type="text" ng-model="main.email" placeholder="email"><br>
+    <label>Password</label><input type="password" ng-model="main.password" placeholder="password"><br>
+    <label>JIRA Username</label><input type="text" ng-model="main.jiraUserName" placeholder="jira username"><br>
+    <label>JIRA Password</label><input type="password" ng-model="main.jiraPassword" placeholder="jira password"><br>
+    <label>Slack Username</label><input type="text" ng-model="main.slackUsername" placeholder="slackusername"><br>
+    <br>
+
+    <button ng-click="main.register()">Register</button>
+    <button ng-click="main.logout()" ng-show="main.isAuthed()">Logout</button>
+
+    <br><br>
+    {{main.message}}
+
+    <br><br><br>
+    </body>
+</html>

@@ -15,6 +15,7 @@ function existingJiraUser(options) {
 }
 
 module.exports.addNew = function(request, reply) {
+	console.log(request.payload);
 	let user = new User(),
 		userCheck;
 

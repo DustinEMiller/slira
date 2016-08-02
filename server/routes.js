@@ -54,11 +54,34 @@ module.exports = [
 			}  
 		}
 	},
+  	/*{
+    	method: 'GET', 
+    	path: '/register/{connectToken}',
+		handler: function(request, reply){
+      		reply.file('register.html')
+    	}
+  	},*/
   	{
     	method: 'GET', 
-    	path: '/',
+    	path: '/register',
 		handler: function(request, reply){
-      		reply.file('index.html')
+      		reply.file('register.html')
     	}
+  	},
+  	{
+    	method: 'GET', 
+    	path: '/login',
+		handler: function(request, reply){
+      		reply.file('login.html')
+    	}
+  	},
+  	{
+  		method: 'GET',
+	  	path: '/js/{file*}',
+	  	handler: {
+		    directory: { 
+		      	path: 'js'
+		    }
+		}
   	}
 ];

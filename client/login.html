@@ -1,0 +1,20 @@
+<html>
+    <head>
+    <title>HAMP Communications JIRA for Slack</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="/js/app.js"></script>
+    </head>
+    <body ng-app="app" ng-controller="Main as main">
+    <h1>JIRA for Slack Log In</h1>
+
+    <label>Email</label><input type="text" ng-model="main.email" placeholder="email"><br>
+    <label>Password</label><input type="password" ng-model="main.password" placeholder="password"><br>
+
+    <button ng-click="main.login()">Log In</button>
+
+    <br><br>
+    {{main.message}}
+
+    <br><br><br>
+    </body>
+</html>

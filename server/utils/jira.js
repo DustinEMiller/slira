@@ -330,7 +330,7 @@ module.exports.addComment = (args) => {
 		});
 }
 
-module.exports.createConnectionLink = (request) => {
+module.exports.createConnectionLink = (request, reply) => {
 	let connectRequest = new ConnectRequest(),
 		message = {
 	      	"response_type": "ephemeral",
@@ -340,23 +340,26 @@ module.exports.createConnectionLink = (request) => {
 
 	connectRequest.slackUserName = request.user_name;
 
-	chatForeman.users.info(request.user_id)
+	return SlackClient.users.info(request.user_id)
 		.then((result) => {
 			connectRequest.email = result.user.profile.email; 
-			requestSave();
 		})
 		.catch((error) => {
 		})
 		.finally(() => {
 			connectRequest.save((err) => {
 				if (err) {
-					message.text = 'Your connection link could not be created. Please try again or contact the administrator'
+					console.log(err);
+					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
 					return message;
 				}
+				console.log('hi');
+				let titleLink = config.url + '/register/' + connectRequest.connect_token;
 				message.attachments = [{
             		"title": "Connect your accounts",
-            		"title_link": "PUT_LINK_HERE"
+            		"title_link": titleLink
 				}];
+				console.log(message);
 				return message;
 			});		
 		});
