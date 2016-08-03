@@ -341,13 +341,9 @@ module.exports.createConnectionLink = (request) => {
 
 	return SlackClient.users.info(request.user_id)
 		.then((result) => {
-			console.log('then');
-			console.log(result);
 			connectRequest.email = result.user.profile.email; 
 		})
 		.catch((error) => {
-			console.log('catch');
-			console.log(error);
 		})
 		.finally(() => {
 			connectRequest.save((err, connection) => {
