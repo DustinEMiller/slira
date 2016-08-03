@@ -45,13 +45,15 @@ module.exports.slackHook = function(request, reply) {
             then((result) => {
                 console.log(result);
             });
+
     } else if (command[0] === 'help') {
         return reply(JIRA.help(1)).header('content-type', 'application/json');
     } else {
         return reply(JIRA.help(0)).header('content-type', 'application/json');
     }
 
-    mechanism
+    if(mechanism) {
+        mechanism
         .then((result) => {
             console.log(result);
             reply(result).header('content-type', 'application/json');
@@ -59,7 +61,8 @@ module.exports.slackHook = function(request, reply) {
         .catch((err) => {
             console.log(err);
             reply(err).header('content-type', 'application/json');
-        })
+        });
+    }
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {
