@@ -4,7 +4,8 @@ const req = require('request'),
 	config = require('../config'),
 	ConnectRequest = require('../models/ConnectRequest'),
 	SlackWebClient = require('@slack/client').WebClient,
-	SlackClient = new SlackWebClient(config.slack.token);
+	SlackClient = new SlackWebClient(config.slack.token),
+	crypto = require('crypto');
 
 let options = {
 	headers: {
@@ -352,7 +353,7 @@ module.exports.createConnectionLink = (request) => {
 				}
   				connectRequest.connect_token = buffer.toString('hex');
 			});
-				
+
 			connectRequest.save((err, connection) => {
 				console.log(connection);
 				if (err) {

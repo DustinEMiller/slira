@@ -2,7 +2,6 @@
 
 let mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	crypto = require('crypto'),
     ConnectRequestSchema = new Schema({
     	email: { 
             type: String
