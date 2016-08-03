@@ -12,12 +12,10 @@ let mongoose = require('mongoose'),
     		required: true
     	},
     	created_at: {
-    		type: Date,
-    		required: true
+    		type: Date
     	},
-    	expires: {
-    		type: Date,
-    		required: true
+    	delete_at: {
+    		type: Date
     	},
     	spent: {
     		type: Boolean,
@@ -25,16 +23,17 @@ let mongoose = require('mongoose'),
     		default: false
     	},
     	connect_token: {
-    		type: String,
-    		required: true
+    		type: String
     	}
     });
 
 ConnectRequestSchema.pre('save', function(next) {
 	this.created_at = new Date();
+	this.delete_at = new Date(this.created_at);
 	this.delete_at.setTime(this.created_at.getTime() + 30*60000); 
 		
 	crypto.randomBytes(48, function(err, buffer) {
+		console.log(err);
   		this.connect_token = buffer.toString('hex');
 	});
 	next();		
