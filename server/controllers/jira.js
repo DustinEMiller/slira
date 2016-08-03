@@ -49,14 +49,18 @@ module.exports.slackHook = function(request, reply) {
     }
 
     mechanism
-      .then((result) => {
-        console.log(result);
-        reply(result).header('content-type', 'application/json');
-      })
-      .catch((err) => {
-        console.log(err);
-        reply(err).header('content-type', 'application/json');
-    });
+        .then((result) => {
+            console.log(result);
+            reply(result).header('content-type', 'application/json');
+        })
+        .catch((err) => {
+            console.log(err);
+            reply(err).header('content-type', 'application/json');
+        })
+        .finally((result) => {
+            console.log(result);
+            reply(result).header('content-type', 'application/json');
+        });
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {

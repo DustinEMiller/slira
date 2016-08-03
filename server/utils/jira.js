@@ -339,13 +339,20 @@ module.exports.createConnectionLink = (request) => {
 
 	connectRequest.slackUserName = request.user_name;
 
-	SlackClient.users.info(request.user_id)
+	return SlackClient.users.info(request.user_id)
 		.then((result) => {
 			connectRequest.email = result.user.profile.email; 
 		})
 		.catch((error) => {
 		})
 		.finally(() => {
+			crypto.randomBytes(48, function(err, buffer) {
+				if(err) {
+		            return JSON.stringify(err);
+				}
+  				connectRequest.connect_token = buffer.toString('hex');
+			});
+				
 			connectRequest.save((err, connection) => {
 				console.log(connection);
 				if (err) {
