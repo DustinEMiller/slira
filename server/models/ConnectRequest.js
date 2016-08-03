@@ -33,10 +33,13 @@ ConnectRequestSchema.pre('save', function(next) {
 	this.delete_at.setTime(this.created_at.getTime() + 30*60000); 
 		
 	crypto.randomBytes(48, function(err, buffer) {
-		if (err) {
+		if(err) {
+			console.log('error');
             return next(err);
+		}
         }	
   		this.connect_token = buffer.toString('hex');
+  		console.log(this.connect_token);
   		next();
 	});	
 });
