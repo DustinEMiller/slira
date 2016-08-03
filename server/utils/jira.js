@@ -340,12 +340,12 @@ module.exports.createConnectionLink = (request) => {
 
 	connectRequest.slackUserName = request.user_name;
 
-	/*crypto.randomBytes(48, function(err, buffer) {
+	crypto.randomBytes(48, function(err, buffer) {
 		if(err) {
             return JSON.stringify(err);
 		}
 			connectRequest.connect_token = buffer.toString('hex');
-	});*/
+	});
 
 	return SlackClient.users.info(request.user_id)
 		.then((result) => {

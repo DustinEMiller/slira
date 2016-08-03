@@ -31,6 +31,7 @@ ConnectRequestSchema.pre('save', function(next) {
 	this.created_at = new Date();
 	this.delete_at = new Date(this.created_at);
 	this.delete_at.setTime(this.created_at.getTime() + 30*60000);
+	next();
 });
 
 module.exports = mongoose.model('ConnectRequest', ConnectRequestSchema);
