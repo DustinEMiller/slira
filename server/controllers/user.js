@@ -2,7 +2,7 @@
 
 const User = require('../models/User'),
 	req = require('request'),
-	Boom = require('Boom'),
+	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user')
 
