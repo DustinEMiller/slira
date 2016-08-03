@@ -339,7 +339,7 @@ module.exports.createConnectionLink = (request) => {
 
 	connectRequest.slackUserName = request.user_name;
 
-	return SlackClient.users.info(request.user_id)
+	SlackClient.users.info(request.user_id)
 		.then((result) => {
 			connectRequest.email = result.user.profile.email; 
 		})
