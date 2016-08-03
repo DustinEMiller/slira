@@ -353,7 +353,7 @@ module.exports.createConnectionLink = (request) => {
 			connectRequest.email = result.user.profile.email; 
 			
 			console.log('yes');
-			connectRequest.save((err, connection) => {
+			return connectRequest.save((err, connection) => {
 				console.log(connection);
 				if (err) {
 					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
@@ -369,7 +369,6 @@ module.exports.createConnectionLink = (request) => {
 			});	
 		})
 		.catch((error) => {
-			console.log('error')
 		});
 
 }
