@@ -27,6 +27,7 @@ let mongoose = require('mongoose'),
     });
 
 ConnectRequestSchema.pre('save', function(next) {
+	console.log('save');
 	this.created_at = new Date();
 	this.delete_at = new Date(this.created_at);
 	this.delete_at.setTime(this.created_at.getTime() + 30*60000);
