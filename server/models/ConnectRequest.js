@@ -37,7 +37,6 @@ ConnectRequestSchema.pre('save', function(next) {
 			console.log('error');
             return next(err);
 		}
-        }	
   		this.connect_token = buffer.toString('hex');
   		console.log(this.connect_token);
   		next();
