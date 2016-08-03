@@ -362,7 +362,6 @@ module.exports.createConnectionLink = (request) => {
             		"title": "Connect your accounts",
             		"title_link": titleLink
 				}];
-				console.log(message);
 				return JSON.stringify(message);
 			});	
 		})
