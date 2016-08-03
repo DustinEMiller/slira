@@ -32,6 +32,7 @@ module.exports.slackHook = function(request, reply) {
 
     if (command[0] === 'issues' || command[0] === 'i') {
         mechanism = JIRA.queryIssues(argString);
+        console.log(mechanism);
     } else if (command[0] === 'states' || command[0] === 's') {
         mechanism = JIRA.retrieveTransitions(argString);
     } else if (command[0] === 'details' || command[0] === 'd') {
