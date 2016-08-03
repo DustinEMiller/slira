@@ -354,7 +354,7 @@ module.exports.createConnectionLink = (request) => {
 				console.log(connection);
 				if (err) {
 					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
-					return message;
+					return JSON.stringify(message);
 				}
 				let titleLink = config.url + '/register/' + connection.connect_token;
 				message.attachments = [{
@@ -362,7 +362,7 @@ module.exports.createConnectionLink = (request) => {
             		"title_link": titleLink
 				}];
 				console.log(message);
-				return message;
+				return JSON.stringify(message);
 			});		
 		});
 

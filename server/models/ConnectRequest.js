@@ -33,10 +33,12 @@ ConnectRequestSchema.pre('save', function(next) {
 	this.delete_at.setTime(this.created_at.getTime() + 30*60000); 
 		
 	crypto.randomBytes(48, function(err, buffer) {
-		console.log(err);
+		if (err) {
+            return next(err);
+        }	
   		this.connect_token = buffer.toString('hex');
-	});
-	next();		
+  		next();
+	});	
 });
 
 module.exports = mongoose.model('ConnectRequest', ConnectRequestSchema);
