@@ -352,9 +352,7 @@ module.exports.createConnectionLink = (request) => {
 
 			connectRequest.email = result.user.profile.email; 
 			
-			console.log('yes');
-			return connectRequest.save((err, connection) => {
-				console.log(connection);
+			connectRequest.save((err, connection) => {
 				if (err) {
 					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
 					return JSON.stringify(message);
