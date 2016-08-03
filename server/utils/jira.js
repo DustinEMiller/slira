@@ -343,10 +343,7 @@ module.exports.createConnectionLink = (request) => {
 	return SlackClient.users.info(request.user_id)
 		.then((result) => {
 			connectRequest.email = result.user.profile.email; 
-		})
-		.catch((error) => {
-		})
-		.finally(() => {
+
 			crypto.randomBytes(48, function(err, buffer) {
 				if(err) {
 		            return JSON.stringify(err);
@@ -367,7 +364,9 @@ module.exports.createConnectionLink = (request) => {
 				}];
 				console.log(message);
 				return JSON.stringify(message);
-			});		
+			});	
+		})
+		.catch((error) => {
 		});
 
 }
