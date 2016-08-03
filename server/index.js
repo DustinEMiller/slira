@@ -36,7 +36,7 @@ server.register([require('hapi-auth-jwt'), require('vision'),require('inert')],(
 		if (err) {
     		throw err;
   		}
-
+  		mongoose.Promise = global.Promise;
   		mongoose.connect(config.mongo.url, {}, (err) => {
     		if (err) {
       			throw err;
