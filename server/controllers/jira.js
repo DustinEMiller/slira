@@ -42,6 +42,7 @@ module.exports.slackHook = function(request, reply) {
         mechanism = JIRA.addComment(argString);
     } else if (command[0] === 'connect') {
         mechanism = JIRA.createConnectionLink(request.payload);
+        console.log(mechanism);
     } else if (command[0] === 'help') {
         return reply(JIRA.help(1)).header('content-type', 'application/json');
     } else {
@@ -57,10 +58,6 @@ module.exports.slackHook = function(request, reply) {
             console.log(err);
             reply(err).header('content-type', 'application/json');
         })
-        .finally((result) => {
-            console.log(result);
-            reply(result).header('content-type', 'application/json');
-        });
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {
