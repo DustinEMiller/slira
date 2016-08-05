@@ -352,22 +352,23 @@ module.exports.createConnectionLink = (request) => {
 
 			connectRequest.email = result.user.profile.email; 
 			
-			connectRequest.save((err, connection) => {
-				if (err) {
+			return connectRequest.save()
+				.then((result) => {
+					let titleLink = config.url + '/register/' + result.connect_token;
+					message.attachments = [{
+	            		"title": "Connect your accounts",
+	            		"title_link": titleLink
+					}];
+					return message;
+				})
+				.catch((error) => {
 					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
-					return JSON.stringify(message);
-				}
-				let titleLink = config.url + '/register/' + connection.connect_token;
-				message.attachments = [{
-            		"title": "Connect your accounts",
-            		"title_link": titleLink
-				}];
-				return JSON.stringify(message);
-			});	
+					return message;
+				});
 		})
 		.catch((error) => {
+			console.log(error);
 		});
-
 }
 
 module.exports.help = (isIntentional) => {

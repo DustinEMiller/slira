@@ -1,7 +1,11 @@
+(function() {
+
+});
+
+
 ;(function(){
     function authInterceptor(API, auth) {
         return {
-            // automatically attach Authorization header
             request: function(config) {
                 var token = auth.getToken();
 
@@ -12,7 +16,6 @@
                 return config;
             },
 
-            // If a token was sent back, save it
             response: function(res) {
                 if(res.config.url.indexOf(API) === 0 && res.data.token) {
                     auth.saveToken(res.data.token);
@@ -77,7 +80,6 @@ function userService($http, API, auth) {
 
 }
 
-// We won't touch anything in here
 function MainCtrl(user, auth) {
     var self = this;
 
