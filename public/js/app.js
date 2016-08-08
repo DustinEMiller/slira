@@ -2,10 +2,10 @@
 
     angular.module('slira', ['ngRoute']);
 
-    function config ($routeProvider, $locationProvider) {
+    function config ($routeProvider, $locationProvider, $templateCache) {
         $routeProvider
         .when('/', {
-            templateUrl: 'index/index.view.html',
+            templateUrl: $templateCache.get('../client/js/index/index.view.html'),
             controller: 'indexCtrl',
         })
         //.when('/register', {
@@ -13,7 +13,7 @@
             //controller: 'registerCtrl',
         //})
         .when('/login', {
-            templateUrl: '/auth/login/login.view.html',
+            templateUrl: $templateCache.get('../client/js/auth/login/login.view.html'),
             controller: 'loginCtrl',
         })
         //.when('/account', {
