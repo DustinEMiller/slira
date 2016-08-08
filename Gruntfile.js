@@ -7,18 +7,12 @@ module.exports = function(grunt) {
                 dest: 'tmp/templates.js'
             }
         },
-        browserify: {
-            client: {
-                src: ['client/js/*.js', 'client/js/**/*.js'],
-                dest: 'tmp/browserify.js*'
-            }
-        },
         concat: {
             options: {
                 separator: ';'
             },
             dist: {
-                src: [ 'tmp/*.js' ],
+                src: [ 'client/js/*.js', 'client/js/**/*.js', 'tmp/*.js' ],
                 dest: 'public/js/app.js'
             }
         },
@@ -40,14 +34,14 @@ module.exports = function(grunt) {
         watch: {
             dev:{
                 files: [ 'Gruntfile.js', 'client/js/*.js', 'client/js/**/*.js'],
-                tasks: [ 'browserify', 'html2js:dist', 'concat:dist', 'clean:temp'],
+                tasks: [ 'html2js:dist', 'concat:dist', 'clean:temp'],
                 options: {
                     atBegin: true
                 }    
             },
             min: {
                 files: [ 'Gruntfile.js', 'client/js/*.js', 'client/js/**/*.js'],
-                tasks: [ 'browserify' , 'html2js:dist', 'concat:dist', 'clean:temp', 'uglify:dist'],
+                tasks: [ 'html2js:dist', 'concat:dist', 'clean:temp', 'uglify:dist'],
                 options: {
                     atBegin: true
                 }
@@ -55,7 +49,6 @@ module.exports = function(grunt) {
         }
         
     });
-    grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');

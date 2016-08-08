@@ -31,7 +31,10 @@ module.exports.verifyUniqueUser = (request, reply) => {
 }
 
 module.exports.createToken = (user) => {
-	return jwt.sign({ id: user._id, email: user.email}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
+	let expiration = new Date();
+	expiration.setDate(expiration.getDate() + 7);
+	
+	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTIme() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
 }
 
 module.exports.verifyCredentials = (request, reply) => {

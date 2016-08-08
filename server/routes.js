@@ -61,4 +61,15 @@ module.exports = [
       		reply.file('index.html')
     	}
   	},
+  	{
+    	method: 'GET', 
+    	path: '/{param*}',
+		handler: {
+          	directory: {
+				path: './../public',
+				redirectToSlash: true,
+				index: false
+      		}
+      	}
+  	},
 ];
