@@ -1,34 +1,34 @@
 (function() {
 
-    angular.module('slira', ['ngRoute']);
+    angular.module('slira', ['ngRoute', 'templates-dist']);
 
-    function config ($routeProvider, $locationProvider, $templateCache) {
+    function config ($routeProvider, $locationProvider) {
         $routeProvider
         .when('/', {
-            templateUrl: $templateCache.get('../client/js/index/index.view.html'),
+            templateUrl: '../client/js/index/index.view.html',
             controller: 'indexCtrl',
         })
-        //.when('/register', {
-           // templateUrl: '/auth/register/register.view.html',
-            //controller: 'registerCtrl',
-        //})
+        .when('/register/:registrationToken', {
+           templateUrl: '../client/js/auth/register/register.view.html',
+            controller: 'registerCtrl',
+        })
         .when('/login', {
-            templateUrl: $templateCache.get('../client/js/auth/login/login.view.html'),
+            templateUrl: '../client/js/auth/login/login.view.html',
             controller: 'loginCtrl',
         })
-        //.when('/account', {
-            //templateUrl: '/account/account.view.html',
-            //controller: 'accountCtrl',
-        //})
+        .when('/account', {
+            templateUrl: '../client/js/account/account.view.html',
+            controller: 'accountCtrl',
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
 }
 
-function run($rootScope, $location, authentication) {
+function run($rootScope, $location, $templateCache, authentication) {
     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-        if ($location.path() === '/profile' && !authentication.isLoggedIn()) {
+        if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }
     });
@@ -39,6 +39,26 @@ angular
 .config(['$routeProvider', '$locationProvider', config])
 .run(['$rootScope', '$location', 'authentication', run]);
 
+})();;(function() {
+  
+  angular
+    .module('slira')
+    .controller('accountCtrl', accountCtrl);
+
+    accountCtrl.$inject = ['$location', 'sliraData'];
+    function accountCtrl($location, sliraData) {
+        var sl = this;
+
+        sl.user = {};
+
+    sliraData.getProfile()
+        .success(function(data) {
+            sl.user = data;
+        })
+        .error(function (e) {
+            console.log(e);
+        });
+    }
 })();;(function () {
 
   angular
@@ -73,20 +93,26 @@ angular
     .module('slira')
     .controller('registerCtrl', registerCtrl);
 
-  registerCtrl.$inject = ['$location', 'authentication'];
-    function registerCtrl($location, authentication) {
+  registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
+    function registerCtrl($location, authentication, $routeParams, $scope) {
+        console.log($routeParams);
         var sl = this;
 
+        $scope.invalidToken = false;
+        $scope.message = ''
+
         sl.credentials = {
-            name : "",
             email : "",
             password : ""
         };
 
+        if (!authentication.validAccessToken($routeParams.registrationToken)) {
+        }
+
         sl.onSubmit = function () {
             console.log('Submitting registration');
             authentication
-                .register(vm.credentials)
+                .register(sl.credentials)
                 .error(function(err){
                     alert(err);
                 })
@@ -141,19 +167,23 @@ angular
             }
         };
 
-        register = function(user) {
+        var validAccessToken = function (registrationToken) {
+            console.log($http.post('/api/user/registrationRequest', registrationToken));
+        };
+
+        var register = function(user) {
             return $http.post('/api/user/create', user).success(function(data){
                 saveToken(data.token);
             });
         };
 
-        login = function(user) {
+        var login = function(user) {
             return $http.post('/api/user/authenticate', user).success(function(data) {
                 saveToken(data.token);
             });
         };
 
-        logout = function() {
+        var logout = function() {
             $window.localStorage.removeItem('slira-token');
         };
 
@@ -163,6 +193,7 @@ angular
             getToken : getToken,
             isLoggedIn : isLoggedIn,
             register : register,
+            validAccessToken : validAccessToken,
             login : login,
             logout : logout
         };
@@ -192,37 +223,39 @@ angular
 	};
   }
 
-})();;(function() {
+})();;(function($templateCache) {
   
   angular
     .module('slira')
     .controller('indexCtrl', indexCtrl);
 
     function indexCtrl () {
-    	console.log('Index controller is running');
     }
 
-})();;(function() {
-  
-  angular
-    .module('slira')
-    .controller('profileCtrl', profileCtrl);
+})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/index/index.view.html']);
 
-    profileCtrl.$inject = ['$location', 'sliraData'];
-    function profileCtrl($location, meanData) {
-        var sl = this;
-
-        sl.user = {};
-
-    sliraData.getProfile()
-        .success(function(data) {
-            sl.user = data;
-        })
-        .error(function (e) {
-            console.log(e);
-        });
-    }
-})();;angular.module('templates-dist', ['../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/index/index.view.html', '../client/js/profile/profile.view.html']);
+angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/account/account.view.html",
+    "<navigation></navigation>\n" +
+    "\n" +
+    "<div class=\"container\">\n" +
+    "    <div class=\"row\">\n" +
+    "        <div class=\"col-md-6\">\n" +
+    "            <h1 class=\"form-signin-heading\">Your profile</h1>\n" +
+    "            <form  class=\"form-horizontal\">\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"col-sm-3 control-label\">Full name</label>\n" +
+    "                    <p class=\"form-control-static\">{{ vm.user.name }}</p>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"col-sm-3 control-label\">Email</label>\n" +
+    "                    <p class=\"form-control-static\">{{ vm.user.email }}</p>\n" +
+    "                </div>\n" +
+    "            </form>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
 
 angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/auth/login/login.view.html",
@@ -263,21 +296,18 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "<div class=\"row\">\n" +
     "    <div class=\"col-md-6\">\n" +
     "        <h1>Register</h1>\n" +
-    "        <p class=\"lead\">Already a member? Please <a href=\"login\">log in</a> instead.</p>\n" +
+    "        {{message}}\n" +
+    "        <p class=\"lead\">If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
     "        <form ng-submit=\"sl.onSubmit()\">\n" +
     "            <div class=\"form-group\">\n" +
-    "                <label for=\"name\">Full name</label>\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Enter your name\" ng-model=\"sl.credentials.name\">\n" +
-    "            </div>\n" +
-    "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"sl.credentials.email\">\n" +
+    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"sl.credentials.email\" ng-disabled=\"invalidToken\">\n" +
     "            </div>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"sl.credentials.password\">\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"sl.credentials.password\" ng-disabled=\"invalidToken\">\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\">Register!</button>\n" +
+    "            <button type=\"submit\" class=\"btn btn-default\">Register</button>\n" +
     "        </form>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -289,29 +319,6 @@ angular.module("../client/js/index/index.view.html", []).run(["$templateCache", 
     "<navigation></navigation>\n" +
     "<div class=\"container\">\n" +
     "	<h1>Greetings</h1>\n" +
-    "	<p>Please <a href=\"login\">sign in</a> or <a href=\"register\">register</a>?</p>\n" +
-    "</div>");
-}]);
-
-angular.module("../client/js/profile/profile.view.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("../client/js/profile/profile.view.html",
-    "<navigation></navigation>\n" +
-    "\n" +
-    "<div class=\"container\">\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-md-6\">\n" +
-    "            <h1 class=\"form-signin-heading\">Your profile</h1>\n" +
-    "            <form  class=\"form-horizontal\">\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Full name</label>\n" +
-    "                    <p class=\"form-control-static\">{{ vm.user.name }}</p>\n" +
-    "                </div>\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Email</label>\n" +
-    "                    <p class=\"form-control-static\">{{ vm.user.email }}</p>\n" +
-    "                </div>\n" +
-    "            </form>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
+    "	<p>Please <a href=\"login\">sign in</a> or <a href=\"register\">register</a></p>\n" +
     "</div>");
 }]);

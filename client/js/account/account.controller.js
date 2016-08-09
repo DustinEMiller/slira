@@ -2,10 +2,10 @@
   
   angular
     .module('slira')
-    .controller('profileCtrl', profileCtrl);
+    .controller('accountCtrl', accountCtrl);
 
-    profileCtrl.$inject = ['$location', 'sliraData'];
-    function profileCtrl($location, meanData) {
+    accountCtrl.$inject = ['$location', 'sliraData'];
+    function accountCtrl($location, sliraData) {
         var sl = this;
 
         sl.user = {};

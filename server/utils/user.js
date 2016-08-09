@@ -2,6 +2,7 @@
 
 const Boom = require('boom'),
 User = require('../models/User'),
+ConnectRequest = require('../models/ConnectRequest'),
 config = require('../config'),
 jwt = require('jsonwebtoken'),
 Joi = require('joi'),
@@ -54,5 +55,21 @@ module.exports.verifyCredentials = (request, reply) => {
 		} else {
 			return reply(Boom.badRequest('Incorrect email!'));
 		}
+	});
+}
+
+module.exports.registrationRequest = (request, reply) => {
+	ConnectRequest.findOne({connect_token: request.registrationToken}, (err, token) => {
+		//test if exists then test if expires
+	    /*if (token) {
+	    	if (user.email === request.payload.email) {
+	    		return reply(Boom.badRequest('Email taken'));
+	    	}
+	    	if (user.jiraUserName === request.payload.jiraUserName) {
+	    		return reply(Boom.badRequest('Username taken'));
+	    	}
+	    }*/
+
+	    return reply(token);
 	});
 }

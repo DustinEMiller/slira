@@ -54,9 +54,42 @@ module.exports = [
 			}  
 		}
 	},
+	{
+		path:'/api/user/registrationRequest',
+		method:'POST',
+		handler: userUtils.registrationRequest
+	},
+	{
+		path: '/api/user/information',
+		method: 'GET',
+		handler: (request, reply) => {
+	  		//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
+		}
+	},
   	{
     	method: 'GET', 
     	path: '/',
+		handler: function(request, reply){
+      		reply.file('index.html')
+    	}
+  	},
+  	{
+    	method: 'GET', 
+    	path: '/login',
+		handler: function(request, reply){
+      		reply.file('index.html')
+    	}
+  	},
+  	{
+    	method: 'GET', 
+    	path: '/register/{connectToken}',
+		handler: function(request, reply){
+      		reply.file('index.html')
+    	}
+  	},
+  	{
+    	method: 'GET', 
+    	path: '/account',
 		handler: function(request, reply){
       		reply.file('index.html')
     	}

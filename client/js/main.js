@@ -1,34 +1,34 @@
 (function() {
 
-    angular.module('slira', ['ngRoute']);
+    angular.module('slira', ['ngRoute', 'templates-dist']);
 
-    function config ($routeProvider, $locationProvider, $templateCache) {
+    function config ($routeProvider, $locationProvider) {
         $routeProvider
         .when('/', {
-            templateUrl: $templateCache.get('../client/js/index/index.view.html'),
+            templateUrl: '../client/js/index/index.view.html',
             controller: 'indexCtrl',
         })
-        //.when('/register', {
-           // templateUrl: '/auth/register/register.view.html',
-            //controller: 'registerCtrl',
-        //})
+        .when('/register/:registrationToken', {
+           templateUrl: '../client/js/auth/register/register.view.html',
+            controller: 'registerCtrl',
+        })
         .when('/login', {
-            templateUrl: $templateCache.get('../client/js/auth/login/login.view.html'),
+            templateUrl: '../client/js/auth/login/login.view.html',
             controller: 'loginCtrl',
         })
-        //.when('/account', {
-            //templateUrl: '/account/account.view.html',
-            //controller: 'accountCtrl',
-        //})
+        .when('/account', {
+            templateUrl: '../client/js/account/account.view.html',
+            controller: 'accountCtrl',
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
 }
 
-function run($rootScope, $location, authentication) {
+function run($rootScope, $location, $templateCache, authentication) {
     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-        if ($location.path() === '/profile' && !authentication.isLoggedIn()) {
+        if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }
     });

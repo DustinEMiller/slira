@@ -4,20 +4,26 @@
     .module('slira')
     .controller('registerCtrl', registerCtrl);
 
-  registerCtrl.$inject = ['$location', 'authentication'];
-    function registerCtrl($location, authentication) {
+  registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
+    function registerCtrl($location, authentication, $routeParams, $scope) {
+        console.log($routeParams);
         var sl = this;
 
+        $scope.invalidToken = false;
+        $scope.message = ''
+
         sl.credentials = {
-            name : "",
             email : "",
             password : ""
         };
 
+        if (!authentication.validAccessToken($routeParams.registrationToken)) {
+        }
+
         sl.onSubmit = function () {
             console.log('Submitting registration');
             authentication
-                .register(vm.credentials)
+                .register(sl.credentials)
                 .error(function(err){
                     alert(err);
                 })

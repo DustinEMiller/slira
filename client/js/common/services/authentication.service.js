@@ -43,19 +43,23 @@
             }
         };
 
-        register = function(user) {
+        var validAccessToken = function (registrationToken) {
+            console.log($http.post('/api/user/registrationRequest', registrationToken));
+        };
+
+        var register = function(user) {
             return $http.post('/api/user/create', user).success(function(data){
                 saveToken(data.token);
             });
         };
 
-        login = function(user) {
+        var login = function(user) {
             return $http.post('/api/user/authenticate', user).success(function(data) {
                 saveToken(data.token);
             });
         };
 
-        logout = function() {
+        var logout = function() {
             $window.localStorage.removeItem('slira-token');
         };
 
@@ -65,6 +69,7 @@
             getToken : getToken,
             isLoggedIn : isLoggedIn,
             register : register,
+            validAccessToken : validAccessToken,
             login : login,
             logout : logout
         };

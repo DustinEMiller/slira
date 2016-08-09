@@ -25,7 +25,7 @@ module.exports.slackHook = function(request, reply) {
     if (!slackTokenMatch(payload.token)) {
         let message = {
             "response_type": "ephemeral",
-            "text": "There was an issue with request token. Please notify the administrator."
+            "text": "There was an issue with the request token. Please notify the administrator."
         };
         return reply(message).header('content-type', 'application/json');
     }
