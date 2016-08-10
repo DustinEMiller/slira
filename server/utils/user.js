@@ -59,17 +59,23 @@ module.exports.verifyCredentials = (request, reply) => {
 }
 
 module.exports.registrationRequest = (request, reply) => {
-	ConnectRequest.findOne({connect_token: request.registrationToken}, (err, token) => {
-		//test if exists then test if expires
-	    /*if (token) {
-	    	if (user.email === request.payload.email) {
-	    		return reply(Boom.badRequest('Email taken'));
-	    	}
-	    	if (user.jiraUserName === request.payload.jiraUserName) {
-	    		return reply(Boom.badRequest('Username taken'));
-	    	}
-	    }*/
+	ConnectRequest.findOne({connect_token: request.payload.token}, (err, token) => {
 
-	    return reply(token);
+	    if(err) {
+	    	console.log(err);
+	    	return reply({status:'error'});	
+	    }
+
+	    var currentDate = new Date();
+
+	    if(!token) {
+	    	return reply({status:'notFound'});		
+	    } else if(token.delete_at - currentDate < 0) {
+	    	return reply({status:'expired'});	
+	    } else if(token.spent) {
+	    	return reply({status:'spent'});		
+	    } else {
+	    	return reply({status:'good'});		
+	    }    
 	});
 }

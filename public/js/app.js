@@ -79,11 +79,11 @@ angular
         sl.onSubmit = function () {
             authentication
             .login(sl.credentials)
-            .error(function(err){
-                alert(err);
-            })
             .then(function(){
-                $location.path('profile');
+                $location.path('account');
+            })
+            .catch(function(err){
+                alert(err);
             });
         };
     }
@@ -99,26 +99,46 @@ angular
         var sl = this;
 
         $scope.invalidToken = false;
-        $scope.message = ''
+        $scope.message = "";
 
         sl.credentials = {
             email : "",
             password : ""
         };
 
-        if (!authentication.validAccessToken($routeParams.registrationToken)) {
-        }
+        authentication.validAccessToken($routeParams.registrationToken)
+            .then(function(data){
+
+                switch(data) {
+                    case 'notFound':
+                        $scope.invalidToken = true;
+                        $scope.message = "The supplied registration token does not exist.";
+                        break;
+                    case 'expired':
+                        $scope.invalidToken = true;
+                        $scope.message = "The supplied registration token has expired.";
+                        break;
+                    case 'spent':
+                        $scope.invalidToken = true;
+                        $scope.message = "The supplied registration token has already been used.";
+                        break;
+                }
+            })
+            .catch(function(err){
+                $scope.invalidToken = true;
+                $scope.message = "Internal error. Please try again";
+            })
 
         sl.onSubmit = function () {
             console.log('Submitting registration');
             authentication
                 .register(sl.credentials)
-                .error(function(err){
+                .then(function(){
+                    $location.path('account');
+                })
+                .catch(function(err){
                     alert(err);
                 })
-                .then(function(){
-                    $location.path('profile');
-                });
         };
 
     }
@@ -167,23 +187,29 @@ angular
             }
         };
 
-        var validAccessToken = function (registrationToken) {
-            console.log($http.post('/api/user/registrationRequest', registrationToken));
+        validAccessToken = function validAccessToken(registrationToken) {
+            return $http.post('/api/user/registrationRequest', {token: registrationToken})
+                .then(function (request) {
+                    return request.data.status;
+                })
+                .catch(function (data) {
+                    return data.status;
+                });
         };
 
-        var register = function(user) {
-            return $http.post('/api/user/create', user).success(function(data){
+        register = function(user) {
+            return $http.post('/api/user/create', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        var login = function(user) {
-            return $http.post('/api/user/authenticate', user).success(function(data) {
+        login = function(user) {
+            return $http.post('/api/user/authenticate', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        var logout = function() {
+        logout = function() {
             $window.localStorage.removeItem('slira-token');
         };
 

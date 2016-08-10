@@ -18,11 +18,11 @@
         sl.onSubmit = function () {
             authentication
             .login(sl.credentials)
-            .error(function(err){
-                alert(err);
-            })
             .then(function(){
-                $location.path('profile');
+                $location.path('account');
+            })
+            .catch(function(err){
+                alert(err);
             });
         };
     }

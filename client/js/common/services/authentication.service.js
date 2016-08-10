@@ -43,23 +43,29 @@
             }
         };
 
-        var validAccessToken = function (registrationToken) {
-            console.log($http.post('/api/user/registrationRequest', registrationToken));
+        validAccessToken = function validAccessToken(registrationToken) {
+            return $http.post('/api/user/registrationRequest', {token: registrationToken})
+                .then(function (request) {
+                    return request.data.status;
+                })
+                .catch(function (data) {
+                    return data.status;
+                });
         };
 
-        var register = function(user) {
-            return $http.post('/api/user/create', user).success(function(data){
+        register = function(user) {
+            return $http.post('/api/user/create', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        var login = function(user) {
-            return $http.post('/api/user/authenticate', user).success(function(data) {
+        login = function(user) {
+            return $http.post('/api/user/authenticate', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        var logout = function() {
+        logout = function() {
             $window.localStorage.removeItem('slira-token');
         };
 
