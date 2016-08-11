@@ -17,7 +17,7 @@
 
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(data){
-
+                console.log(data);
                 if(data.success) {
                     $scope.credentials.email = data.email;   
                 } else {
