@@ -46,18 +46,19 @@
        var registrationToken = function (registrationToken) {
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
-                    console.log('then');
-                    return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
+                    return request;
                 })
                 .catch(function (data) {
-                    console.log('catch');
-                    return {status: data.status};
+                    return data;
                 });
         };
 
         var register = function(user) {
             return $http.post('/api/user/create', user).then(function (data) {
-                saveToken(data.token);
+                if(data.success) {
+                    saveToken(data.token);    
+                }
+                return data;
             });
         };
 
@@ -85,3 +86,27 @@
 
 
 })();
+
+/*self.parseJwt = function(token) {
+        var base64Url = token.split('.')[1],
+            base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse($window.atob(base64));
+    }
+
+    self.saveToken = function(token) {
+        $window.localStorage['jwtToken'] = token;
+    }
+
+    self.getToken = function() {
+        return $window.localStorage['jwtToken'];
+    }
+
+    self.isAuthed = function() {
+        var token = self.getToken();
+        if(token) {
+            var params = self.parseJwt(token);
+            return Math.round(new Date().getTime() / 1000) <= params.exp;
+        } else {
+            return false;
+        }
+    }*/

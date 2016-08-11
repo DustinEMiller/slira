@@ -107,23 +107,11 @@ angular
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(data){
 
-                switch(data.status) {
-                    case 'notFound':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token does not exist.";
-                        break;
-                    case 'expired':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token has expired.";
-                        break;
-                    case 'spent':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token has already been used.";
-                        break;
-                    case 'good':
-                        console.log(data);
-                        $scope.credentials.email = data.email;
-                        break;
+                if(data.success) {
+                    $scope.credentials.email = data.email;   
+                } else {
+                    $scope.invalidToken = true;
+                    $scope.message = data.msg;   
                 }
             })
             .catch(function(err){
@@ -134,11 +122,16 @@ angular
         $scope.onSubmit = function () {
             authentication
                 .register($scope.credentials)
-                .then(function(){
-                    $location.path('account');
+                .then(function(data){
+                    if(data.success){
+                        $location.path('account');
+                    } else {
+                        $scope.message = data.msg;
+                    }
+                    
                 })
                 .catch(function(err){
-                    alert(err);
+                    $scope.message = err.msg;
                 })
         };
 
@@ -191,18 +184,19 @@ angular
        var registrationToken = function (registrationToken) {
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
-                    console.log('then');
-                    return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
+                    return request;
                 })
                 .catch(function (data) {
-                    console.log('catch');
-                    return {status: data.status};
+                    return data;
                 });
         };
 
         var register = function(user) {
             return $http.post('/api/user/create', user).then(function (data) {
-                saveToken(data.token);
+                if(data.success) {
+                    saveToken(data.token);    
+                }
+                return data;
             });
         };
 
@@ -229,7 +223,31 @@ angular
     }
 
 
-})();;(function() {
+})();
+
+/*self.parseJwt = function(token) {
+        var base64Url = token.split('.')[1],
+            base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse($window.atob(base64));
+    }
+
+    self.saveToken = function(token) {
+        $window.localStorage['jwtToken'] = token;
+    }
+
+    self.getToken = function() {
+        return $window.localStorage['jwtToken'];
+    }
+
+    self.isAuthed = function() {
+        var token = self.getToken();
+        if(token) {
+            var params = self.parseJwt(token);
+            return Math.round(new Date().getTime() / 1000) <= params.exp;
+        } else {
+            return false;
+        }
+    }*/;(function() {
 
   angular
 	.module('slira')
@@ -252,7 +270,29 @@ angular
 	};
   }
 
-})();;(function($templateCache) {
+})();
+
+/*return {
+            // automatically attach Authorization header
+            request: function(config) {
+                var token = auth.getToken();
+
+                if(config.url.indexOf(API) === 0 && token) {
+                    config.headers.Authorization = 'Bearer ' + token;
+                }
+
+                return config;
+            },
+
+            // If a token was sent back, save it
+            response: function(res) {
+                if(res.config.url.indexOf(API) === 0 && res.data.token) {
+                    auth.saveToken(res.data.token);
+                }
+
+                return res;
+            },
+        }*/;(function($templateCache) {
   
   angular
     .module('slira')

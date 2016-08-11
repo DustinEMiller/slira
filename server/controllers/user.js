@@ -8,13 +8,13 @@ const User = require('../models/User'),
 
 function existingJiraUser(options) {
 	return new Promise((resolve, reject) => {
-	    req(options, function(err, httpResponse, body) {
+	    req(options, (err, httpResponse, body) => {
 			return resolve(httpResponse);
 	    });
   	});	
 }
 
-module.exports.addNew = function(request, reply) {
+module.exports.addNew = (request, reply) => {
 	let user = new User(),
 		userCheck;
 
@@ -22,15 +22,29 @@ module.exports.addNew = function(request, reply) {
 	user.password = request.payload.password;
 
 	userUtils.registrationRequest(request.payload.token)
-		.then(function (request) {
-            return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
+		.then((request) => {
+
+			let msg = userUtils.tokenMessage()
+
+			if(!request.data.success) {
+				return reply(request.data);
+			}
+
+			user.slackUserName = request.data.slackUserName;
+
+			user.save((err) => {
+				if (err) {
+					return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
+				}
+				return reply({success: true, token: userUtils.createToken(user)}).header('content-type', 'application/json');
+			});
         })
-        .catch(function (data) {
-            return {status: data.status};
+        .catch((error) => {
+            return reply({success: false , msg: 'There was an issue saving your account. Please try again.'}));
         });
 }
 
-module.exports.updateAccount = function(request, reply) {
+module.exports.updateAccount = (request, reply) => {
 	let user = new User(),
 		userCheck;
 

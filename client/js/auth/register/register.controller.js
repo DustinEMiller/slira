@@ -18,23 +18,11 @@
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(data){
 
-                switch(data.status) {
-                    case 'notFound':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token does not exist.";
-                        break;
-                    case 'expired':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token has expired.";
-                        break;
-                    case 'spent':
-                        $scope.invalidToken = true;
-                        $scope.message = "The supplied registration token has already been used.";
-                        break;
-                    case 'good':
-                        console.log(data);
-                        $scope.credentials.email = data.email;
-                        break;
+                if(data.success) {
+                    $scope.credentials.email = data.email;   
+                } else {
+                    $scope.invalidToken = true;
+                    $scope.message = data.msg;   
                 }
             })
             .catch(function(err){
@@ -45,11 +33,16 @@
         $scope.onSubmit = function () {
             authentication
                 .register($scope.credentials)
-                .then(function(){
-                    $location.path('account');
+                .then(function(data){
+                    if(data.success){
+                        $location.path('account');
+                    } else {
+                        $scope.message = data.msg;
+                    }
+                    
                 })
                 .catch(function(err){
-                    alert(err);
+                    $scope.message = err.msg;
                 })
         };
 

@@ -8,6 +8,18 @@ jwt = require('jsonwebtoken'),
 Joi = require('joi'),
 bcrypt = require('bcryptjs');
 
+function tokenMessage = (token) => {
+	if(!token) {
+    	return {success: false, msg: "The supplied registration token does not exist."};		
+    } else if(token.delete_at - currentDate < 0) {
+    	return {success: false, msg: "The supplied registration token has expired."};	
+    } else if(token.spent) {
+    	return {success: false, msg: "The supplied registration token has already been used."};	
+    } else {
+    	return {success: true, email: token.email};		
+    } 
+}
+
 module.exports.verifyUniqueUser = (request, reply) => {
 
 	User.findOne({
@@ -62,20 +74,11 @@ module.exports.registrationRequest = (request, reply) => {
 	ConnectRequest.findOne({connect_token: request.payload.token}, (err, token) => {
 
 	    if(err) {
-	    	console.log(err);
-	    	return reply({status:'error'});	
+	    	return reply({success: false, msg: "There was an error verifying your token. Please try again"});	
 	    }
+	    // Change from status string to success true or false with messages
+	    let currentDate = new Date();
 
-	    var currentDate = new Date();
-
-	    if(!token) {
-	    	return reply({status:'notFound'});		
-	    } else if(token.delete_at - currentDate < 0) {
-	    	return reply({status:'expired'});	
-	    } else if(token.spent) {
-	    	return reply({status:'spent'});		
-	    } else {
-	    	return reply({status:'good', email: token.email, slackUserName: token.slackUserName});		
-	    }    
+	    return reply(this.tokenMessage(token));  
 	});
 }
