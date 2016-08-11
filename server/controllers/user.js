@@ -15,12 +15,25 @@ function existingJiraUser(options) {
 }
 
 module.exports.addNew = function(request, reply) {
-	console.log(request.payload);
 	let user = new User(),
 		userCheck;
 
 	user.email = request.payload.email;
 	user.password = request.payload.password;
+
+	userUtils.registrationRequest(request.payload.token)
+		.then(function (request) {
+            return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
+        })
+        .catch(function (data) {
+            return {status: data.status};
+        });
+}
+
+module.exports.updateAccount = function(request, reply) {
+	let user = new User(),
+		userCheck;
+
 	user.jiraUserName = request.payload.jiraUserName;
 	user.jiraPassword = request.payload.jiraPassword;
 	user.slackUserName = request.payload.slackUserName;

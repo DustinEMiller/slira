@@ -10,8 +10,9 @@
         $scope.message = "";
 
         $scope.credentials = {
-            email : "",
-            password : "",
+            email: "",
+            password: "",
+            token: $routeParams.registrationToken
         };
 
         authentication.registrationToken($routeParams.registrationToken)
@@ -42,9 +43,8 @@
             })
 
         $scope.onSubmit = function () {
-            console.log('Submitting registration');
             authentication
-                .register(sl.credentials)
+                .register($scope.credentials)
                 .then(function(){
                     $location.path('account');
                 })

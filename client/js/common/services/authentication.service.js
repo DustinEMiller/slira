@@ -46,9 +46,11 @@
        var registrationToken = function (registrationToken) {
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
+                    console.log('then');
                     return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
                 })
                 .catch(function (data) {
+                    console.log('catch');
                     return {status: data.status};
                 });
         };

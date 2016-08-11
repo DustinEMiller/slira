@@ -28,7 +28,7 @@ module.exports = [
 			validate: {
 				payload: {
 					email: Joi.string().email(),
-					password: Joi.string().required(),
+					password: Joi.string().required().min(6),
 					jiraUserName: Joi.string().min(2),
 					jiraPassword: Joi.string().required(),
 					slackUserName: Joi.string().required()

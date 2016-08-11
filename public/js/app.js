@@ -99,8 +99,9 @@ angular
         $scope.message = "";
 
         $scope.credentials = {
-            email : "",
-            password : "",
+            email: "",
+            password: "",
+            token: $routeParams.registrationToken
         };
 
         authentication.registrationToken($routeParams.registrationToken)
@@ -131,9 +132,8 @@ angular
             })
 
         $scope.onSubmit = function () {
-            console.log('Submitting registration');
             authentication
-                .register(sl.credentials)
+                .register($scope.credentials)
                 .then(function(){
                     $location.path('account');
                 })
@@ -191,9 +191,11 @@ angular
        var registrationToken = function (registrationToken) {
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
+                    console.log('then');
                     return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
                 })
                 .catch(function (data) {
+                    console.log('catch');
                     return {status: data.status};
                 });
         };
