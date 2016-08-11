@@ -106,12 +106,16 @@ angular
 
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(response){
-
+                console.log(response);
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
                     $scope.invalidToken = true;
-                    $scope.message = response.data.msg;   
+                    if(response.error) {
+                        $scope.message = response.message; 
+                    } else {
+                        $scope.message = response.data.msg;    
+                    }       
                 }
             })
             .catch(function(err){
