@@ -130,7 +130,7 @@ angular
                 $scope.message = "Internal error. Please try again";
             })
 
-        sl.onSubmit = function () {
+        $scope.onSubmit = function () {
             console.log('Submitting registration');
             authentication
                 .register(sl.credentials)
@@ -325,7 +325,7 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "        <h1>Register</h1>\n" +
     "        {{message}}\n" +
     "        <p class=\"lead\">If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
-    "        <form ng-submit=\"sl.onSubmit()\">\n" +
+    "        <form ng-submit=\"onSubmit()\">\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
     "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"credentials.email\" ng-disabled=\"invalidToken\">\n" +
