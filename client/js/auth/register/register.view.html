@@ -9,11 +9,11 @@
         <form ng-submit="sl.onSubmit()">
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="sl.credentials.email" ng-disabled="invalidToken">
+                <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="credentials.email" ng-disabled="invalidToken">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" ng-model="sl.credentials.password" ng-disabled="invalidToken">
+                <input type="password" class="form-control" id="password" placeholder="Password" ng-model="credentials.password" ng-disabled="invalidToken">
             </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>

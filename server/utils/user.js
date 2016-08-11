@@ -75,7 +75,6 @@ module.exports.registrationRequest = (request, reply) => {
 	    } else if(token.spent) {
 	    	return reply({status:'spent'});		
 	    } else {
-	    	console.log(token);
 	    	return reply({status:'good', email: token.email, slackUserName: token.slackUserName});		
 	    }    
 	});

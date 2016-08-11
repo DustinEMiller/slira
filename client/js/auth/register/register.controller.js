@@ -6,13 +6,10 @@
 
   registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
     function registerCtrl($location, authentication, $routeParams, $scope) {
-        console.log($routeParams);
-        var sl = this;
-
         $scope.invalidToken = false;
         $scope.message = "";
 
-        sl.credentials = {
+        $scope.credentials = {
             email : "",
             password : "",
         };
@@ -34,7 +31,8 @@
                         $scope.message = "The supplied registration token has already been used.";
                         break;
                     case 'good':
-                        sl.credentials.email = data.email;
+                        console.log(data);
+                        $scope.credentials.email = data.email;
                         break;
                 }
             })

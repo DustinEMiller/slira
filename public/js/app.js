@@ -95,13 +95,10 @@ angular
 
   registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
     function registerCtrl($location, authentication, $routeParams, $scope) {
-        console.log($routeParams);
-        var sl = this;
-
         $scope.invalidToken = false;
         $scope.message = "";
 
-        sl.credentials = {
+        $scope.credentials = {
             email : "",
             password : "",
         };
@@ -123,7 +120,8 @@ angular
                         $scope.message = "The supplied registration token has already been used.";
                         break;
                     case 'good':
-                        sl.credentials.email = data.email;
+                        console.log(data);
+                        $scope.credentials.email = data.email;
                         break;
                 }
             })
@@ -330,11 +328,11 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "        <form ng-submit=\"sl.onSubmit()\">\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"sl.credentials.email\" ng-disabled=\"invalidToken\">\n" +
+    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"credentials.email\" ng-disabled=\"invalidToken\">\n" +
     "            </div>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"sl.credentials.password\" ng-disabled=\"invalidToken\">\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\">\n" +
     "            </div>\n" +
     "            <button type=\"submit\" class=\"btn btn-default\">Register</button>\n" +
     "        </form>\n" +
