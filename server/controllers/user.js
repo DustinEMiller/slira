@@ -40,7 +40,7 @@ module.exports.addNew = (request, reply) => {
 			});
         })
         .catch((error) => {
-            return reply({success: false , msg: 'There was an issue saving your account. Please try again.'}));
+            return reply({success: false , msg: 'There was an issue saving your account. Please try again.'});
         });
 }
 
