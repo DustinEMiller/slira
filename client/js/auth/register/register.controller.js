@@ -17,16 +17,11 @@
 
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(response){
-                console.log(response);
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
                     $scope.invalidToken = true;
-                    if(response.error) {
-                        $scope.message = response.message; 
-                    } else {
-                        $scope.message = response.data.msg;    
-                    }       
+                    $scope.message = response.data.msg;    
                 }
             })
             .catch(function(err){
@@ -38,6 +33,7 @@
             authentication
                 .register($scope.credentials)
                 .then(function(data){
+                    console.log(data);
                     if(data.success){
                         $location.path('account');
                     } else {

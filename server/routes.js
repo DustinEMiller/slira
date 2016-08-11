@@ -29,6 +29,7 @@ module.exports = [
 				payload: {
 					email: Joi.string().email(),
 					password: Joi.string().required().min(6),
+					token: Joi.string().required()
 				} 	
 			}
 		}
