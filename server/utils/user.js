@@ -73,6 +73,7 @@ module.exports.verifyCredentials = (request, reply) => {
 }
 
 module.exports.registrationRequest = (request, reply) => {
+	console.log(request);
 	ConnectRequest.findOne({connect_token: request.payload.token}, (err, token) => {
 
 	    if(err) {
