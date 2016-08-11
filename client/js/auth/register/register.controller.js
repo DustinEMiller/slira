@@ -41,7 +41,7 @@
                 $scope.message = "Internal error. Please try again";
             })
 
-        sl.onSubmit = function () {
+        $scope.onSubmit = function () {
             console.log('Submitting registration');
             authentication
                 .register(sl.credentials)

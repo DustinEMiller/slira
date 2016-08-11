@@ -6,7 +6,7 @@
         <h1>Register</h1>
         {{message}}
         <p class="lead">If you already have an account, please <a href="login">log in</a> instead.</p>
-        <form ng-submit="sl.onSubmit()">
+        <form ng-submit="onSubmit()">
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="credentials.email" ng-disabled="invalidToken">
