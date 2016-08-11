@@ -79,6 +79,6 @@ module.exports.registrationRequest = (request, reply) => {
 	    // Change from status string to success true or false with messages
 	    let currentDate = new Date();
 
-	    return reply(this.tokenMessage(token));  
+	    return reply(tokenMessage(token));  
 	});
 }
