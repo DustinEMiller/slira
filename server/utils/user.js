@@ -8,7 +8,7 @@ jwt = require('jsonwebtoken'),
 Joi = require('joi'),
 bcrypt = require('bcryptjs');
 
-function tokenMessage = (token) => {
+function tokenMessage(token) {
 	if(!token) {
     	return {success: false, msg: "The supplied registration token does not exist."};		
     } else if(token.delete_at - currentDate < 0) {
