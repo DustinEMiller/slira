@@ -9,6 +9,8 @@ Joi = require('joi'),
 bcrypt = require('bcryptjs');
 
 function tokenMessage(token) {
+	let currentDate = new Date();
+	
 	if(!token) {
     	return {success: false, msg: "The supplied registration token does not exist."};		
     } else if(token.delete_at - currentDate < 0) {
@@ -75,9 +77,7 @@ module.exports.registrationRequest = (request, reply) => {
 
 	    if(err) {
 	    	return reply({success: false, msg: "There was an error verifying your token. Please try again"});	
-	    }
-	    // Change from status string to success true or false with messages
-	    let currentDate = new Date();
+	    } 
 
 	    return reply(tokenMessage(token));  
 	});
