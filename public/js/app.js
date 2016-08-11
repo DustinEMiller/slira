@@ -105,13 +105,13 @@ angular
         };
 
         authentication.registrationToken($routeParams.registrationToken)
-            .then(function(data){
-                console.log(data);
-                if(data.success) {
-                    $scope.credentials.email = data.email;   
+            .then(function(respsonse){
+
+                if(response.data.success) {
+                    $scope.credentials.email = response.data.email;   
                 } else {
                     $scope.invalidToken = true;
-                    $scope.message = data.msg;   
+                    $scope.message = response.data.msg;   
                 }
             })
             .catch(function(err){
