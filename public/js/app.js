@@ -103,13 +103,13 @@ angular
 
         sl.credentials = {
             email : "",
-            password : ""
+            password : "",
         };
 
-        authentication.validAccessToken($routeParams.registrationToken)
+        authentication.registrationToken($routeParams.registrationToken)
             .then(function(data){
 
-                switch(data) {
+                switch(data.status) {
                     case 'notFound':
                         $scope.invalidToken = true;
                         $scope.message = "The supplied registration token does not exist.";
@@ -121,6 +121,9 @@ angular
                     case 'spent':
                         $scope.invalidToken = true;
                         $scope.message = "The supplied registration token has already been used.";
+                        break;
+                    case 'good':
+                        sl.credentials.email = data.email;
                         break;
                 }
             })
@@ -187,41 +190,41 @@ angular
             }
         };
 
-        validAccessToken = function validAccessToken(registrationToken) {
+       var registrationToken = function (registrationToken) {
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
-                    return request.data.status;
+                    return {status: request.data.status, email: request.data.email, slackUserName: request.data.slackUserName};
                 })
                 .catch(function (data) {
-                    return data.status;
+                    return {status: data.status};
                 });
         };
 
-        register = function(user) {
+        var register = function(user) {
             return $http.post('/api/user/create', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        login = function(user) {
+        var login = function(user) {
             return $http.post('/api/user/authenticate', user).then(function (data) {
                 saveToken(data.token);
             });
         };
 
-        logout = function() {
+        var logout = function() {
             $window.localStorage.removeItem('slira-token');
         };
 
         return {
-            currentUser : currentUser,
-            saveToken : saveToken,
-            getToken : getToken,
-            isLoggedIn : isLoggedIn,
-            register : register,
-            validAccessToken : validAccessToken,
-            login : login,
-            logout : logout
+            currentUser: currentUser,
+            saveToken: saveToken,
+            getToken: getToken,
+            isLoggedIn: isLoggedIn,
+            register: register,
+            registrationToken: registrationToken,
+            login: login,
+            logout: logout
         };
     }
 

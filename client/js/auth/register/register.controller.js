@@ -14,13 +14,13 @@
 
         sl.credentials = {
             email : "",
-            password : ""
+            password : "",
         };
 
-        authentication.validAccessToken($routeParams.registrationToken)
+        authentication.registrationToken($routeParams.registrationToken)
             .then(function(data){
 
-                switch(data) {
+                switch(data.status) {
                     case 'notFound':
                         $scope.invalidToken = true;
                         $scope.message = "The supplied registration token does not exist.";
@@ -32,6 +32,9 @@
                     case 'spent':
                         $scope.invalidToken = true;
                         $scope.message = "The supplied registration token has already been used.";
+                        break;
+                    case 'good':
+                        sl.credentials.email = data.email;
                         break;
                 }
             })
