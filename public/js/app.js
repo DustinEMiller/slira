@@ -106,6 +106,7 @@ angular
 
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(response){
+                console.log(response);
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
@@ -114,6 +115,7 @@ angular
                 }
             })
             .catch(function(err){
+                console.log(err);
                 $scope.invalidToken = true;
                 $scope.message = "Internal error. Please try again";
             })
@@ -197,7 +199,6 @@ angular
                 if(data.success) {
                     saveToken(data.token);    
                 }
-                console.log(data);
                 return data;
             });
         };

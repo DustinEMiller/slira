@@ -17,6 +17,7 @@
 
         authentication.registrationToken($routeParams.registrationToken)
             .then(function(response){
+                console.log(response);
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
@@ -25,6 +26,7 @@
                 }
             })
             .catch(function(err){
+                console.log(err);
                 $scope.invalidToken = true;
                 $scope.message = "Internal error. Please try again";
             })
