@@ -197,6 +197,7 @@ angular
                 if(data.success) {
                     saveToken(data.token);    
                 }
+                console.log(data);
                 return data;
             });
         };
