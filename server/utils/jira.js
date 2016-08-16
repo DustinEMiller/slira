@@ -35,9 +35,6 @@ function getRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-			console.log(err);
-			console.log(httpResponse);
-			console.log(body);
 			return reject('not');
 	    });
   	});		

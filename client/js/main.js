@@ -27,7 +27,7 @@
 }
 
 function run($rootScope, $location, $templateCache, authentication) {
-    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute, authentication) {
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }

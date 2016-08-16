@@ -22,9 +22,6 @@ module.exports = [
 		method: 'POST',
 		handler: user.addNew,
 		config: {
-			pre: [
-				{method: userUtils.verifyUniqueUser}
-			],
 			validate: {
 				payload: {
 					email: Joi.string().email(),

@@ -27,7 +27,7 @@
 }
 
 function run($rootScope, $location, $templateCache, authentication) {
-    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute, authentication) {
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }
@@ -96,7 +96,7 @@ angular
   registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
     function registerCtrl($location, authentication, $routeParams, $scope) {
         $scope.invalidToken = false;
-        $scope.message = "";
+        $scope.registration.message = "";
 
         $scope.credentials = {
             email: "",
@@ -105,38 +105,44 @@ angular
         };
 
         authentication.registrationToken($routeParams.registrationToken)
-            .then(function(response){
-                console.log(response);
+            .then(function(response) {
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
                     $scope.invalidToken = true;
-                    $scope.message = response.data.msg;    
+                    $scope.registration.message = response.data.msg;    
                 }
             })
-            .catch(function(err){
-                console.log(err);
+            .catch(function(err) {
                 $scope.invalidToken = true;
-                $scope.message = "Internal error. Please try again";
+                $scope.registration.message = "Internal error. Please try again";
             })
 
-        $scope.onSubmit = function () {
-            authentication
+        $scope.onSubmit = function(isValid) {
+            if(isValid) {
+                authentication
                 .register($scope.credentials)
-                .then(function(data){
-                    console.log(data);
-                    if(data.success){
+                .then(function(response) {
+                    if(response.data.success) {
                         $location.path('account');
                     } else {
-                        $scope.message = data.msg;
+                        $scope.registration.message = response.data.msg;
                     }
                     
                 })
-                .catch(function(err){
-                    $scope.message = err.msg;
-                })
+                .catch(function(err) {
+                    if(err.data.message == 'child "password" fails because ["password" is not allowed to be empty]') {
+                        $scope.registration.message = "Password must not be empty";
+                    } else if (err.data.message == 'child "password" fails because ["password" length must be at least 6 characters long]') {
+                        $scope.registration.message = "Password must be at least 6 characters longs";    
+                    } else if (err.data.message == 'child "email" fails because ["email" is not allowed to be empty]') {
+                        $scope.registration.message = "Email must not be empty";
+                    } else {
+                        $scope.registration.message = "There was an error. Please try again.";    
+                    }
+                });    
+            }
         };
-
     }
 })();;(function () {
 
@@ -194,7 +200,6 @@ angular
         };
 
         var register = function(user) {
-            console.log(user);
             return $http.post('/api/user/create', user).then(function (data) {
                 if(data.success) {
                     saveToken(data.token);    
@@ -368,18 +373,21 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "<div class=\"row\">\n" +
     "    <div class=\"col-md-6\">\n" +
     "        <h1>Register</h1>\n" +
-    "        {{message}}\n" +
     "        <p class=\"lead\">If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
-    "        <form ng-submit=\"onSubmit()\">\n" +
+    "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
+    "            <p ng-show=\"invalidToken\" class=\"help-block\">{{registration.message}}</p>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"credentials.email\" ng-disabled=\"invalidToken\">\n" +
+    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
+    "                <p ng-show=\"registration.email.$invalid && !email.$pristine\" ng-hide=\"invalidToken\" class=\"help-block\">A proper email address is required.</p>\n" +
     "            </div>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\">\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name='password'ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
+    "                <p ng-show=\"registration.password.$error.minlength\" ng-hide=\"invalidToken\" class=\"help-block\">Password must be at least 6 characters long.</p>\n" +
+    "                <p ng-show=\"registration.password.$invalid\" ng-hide=\"invalidToken\" class=\"help-block\">Password is required.</p>\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\">Register</button>\n" +
+    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
     "        </form>\n" +
     "    </div>\n" +
     "</div>\n" +

@@ -16,11 +16,9 @@ let mongoose = require('mongoose'),
     	jiraUserName: {
     		type: String,
     		unique: true,
-    		required: true
     	},
     	jiraPassword: {
-    		type: String,
-    		required: true
+    		type: String
     	},
     	slackUserName: {
     		type: String,
@@ -40,12 +38,6 @@ UserSchema.pre('save', function(next) {
                     return next(err);
                 }
                 user.password = hash;
-            });
-            bcrypt.hash(user.jiraPassword, salt, function (err, hash) {
-                if (err) {
-                    return next(err);
-                }
-                user.jiraPassword = hash;
                 next();
             });
         });

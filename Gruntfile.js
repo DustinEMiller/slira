@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         },
         watch: {
             dev:{
-                files: [ 'client/js/*.js', 'client/js/**/*.js'],
+                files: [ 'client/js/*.js', 'client/js/**/*.js', 'client/js/*.html', 'client/js/**/*.html'],
                 tasks: [ 'html2js:dist', 'concat:dist', 'clean:temp'],
                 options: {
                     atBegin: true

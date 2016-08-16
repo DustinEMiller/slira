@@ -1,55 +1,40 @@
 'use strict'
 
 const Boom = require('boom'),
-User = require('../models/User'),
-ConnectRequest = require('../models/ConnectRequest'),
-config = require('../config'),
-jwt = require('jsonwebtoken'),
-Joi = require('joi'),
-bcrypt = require('bcryptjs');
+	User = require('../models/User'),
+	ConnectRequest = require('../models/ConnectRequest'),
+	config = require('../config'),
+	jwt = require('jsonwebtoken'),
+	Joi = require('joi'),
+	bcrypt = require('bcryptjs');
 
-function tokenMessage(token) {
-	let currentDate = new Date();
-	
-	if(!token) {
-    	return {success: false, msg: "The supplied registration token does not exist."};		
-    } else if(token.delete_at - currentDate < 0) {
-    	return {success: false, msg: "The supplied registration token has expired."};	
-    } else if(token.spent) {
-    	return {success: false, msg: "The supplied registration token has already been used."};	
-    } else {
-    	return {success: true, email: token.email};		
-    } 
+function findRegistrationToken(token) {
+	return ConnectRequest.findOne({connect_token: token}).exec();	
 }
 
-module.exports.verifyUniqueUser = (request, reply) => {
+module.exports.isUniqueUser = (email) => {
 
-	User.findOne({
-		$or: [
-		{ email: request.payload.email },
-		{ jiraUserName: request.payload.jiraUserName }
-		]
-	}, (err, user) => {
+	User.findOne({ email: email}, 
+		(err, user) => {
     // Check whether the jira username or email
     // is already taken and error out if so
     if (user) {
-    	if (user.email === request.payload.email) {
-    		return reply(Boom.badRequest('Email taken'));
-    	}
-    	if (user.jiraUserName === request.payload.jiraUserName) {
-    		return reply(Boom.badRequest('Username taken'));
+    	if (user.email === email) {
+    		return false;
     	}
     }
 
-    return reply(request.payload);
+    return true;
 });
 }
 
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);
-	
-	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTIme() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
+	console.log('user');
+	console.log(user);
+	console.log(config.jwtSecret);
+	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
 }
 
 module.exports.verifyCredentials = (request, reply) => {
@@ -72,15 +57,25 @@ module.exports.verifyCredentials = (request, reply) => {
 	});
 }
 
-module.exports.registrationRequest = (request, reply) => {
+module.exports.tokenMessage = (token) => {
+	let currentDate = new Date();
 	
-	ConnectRequest.findOne({connect_token: request.payload.token}, 
-		(err, token) => {
+	if(!token) {
+    	return {success: false, msg: "The supplied registration token does not exist."};		
+    } else if(token.delete_at - currentDate < 0) {
+    	return {success: false, msg: "The supplied registration token has expired."};	
+    } else if(token.spent) {
+    	return {success: false, msg: "The supplied registration token has already been used."};	
+    } else {
+    	return {success: true, email: token.email};		
+    } 
+};
 
-	    if(err) {
-	    	return reply({success: false, msg: "There was an error verifying your token. Please try again"});	
-	    } 
-
-	    return reply(tokenMessage(token));  
-	});
+module.exports.registrationRequest = (request, reply) => {
+	ConnectRequest.findOne({connect_token: request.payload.token}).exec()
+		.then((response) => {
+			return reply(module.exports.tokenMessage(response));
+		}).catch((error) => {
+			return reply({success: false, msg: "There was an error verifying your token. Please try again"});
+		});
 }
