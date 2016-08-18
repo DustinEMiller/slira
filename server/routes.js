@@ -53,9 +53,7 @@ module.exports = [
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
-			handler: (request, reply) => {
-	  			//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-			},
+			handler: user.getAccount,
 			auth: {
 	      		strategy: 'jwt'
 	    	}	
