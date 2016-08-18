@@ -4,9 +4,9 @@
   .module('slira')
   .controller('loginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$location', 'authentication'];
+    loginCtrl.$inject = ['$location', 'authentication', '$scope'];
 
-    function loginCtrl($location, authentication) {
+    function loginCtrl($location, authentication, $scope) {
 
         $scope.credentials = {
             email : "",
