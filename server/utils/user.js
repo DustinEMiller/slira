@@ -28,6 +28,7 @@ module.exports.verifyCredentials = (request, reply) => {
 			bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
 				if (isValid) {
 					return reply(user);
+					console.log(user);
 				}
 				else {
 					return reply(Boom.badRequest('Incorrect password!'));

@@ -35,6 +35,7 @@ module.exports = [
 		path: '/api/user/authenticate',
 		method: 'POST',
 		handler: (request, reply) => {
+			console.log(request.pre);
 	  		reply({ token: userUtils.createToken(request.pre.user) }).code(201);
 		},
 		config: {
