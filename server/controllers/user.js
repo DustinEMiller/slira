@@ -57,6 +57,7 @@ module.exports.addNew = (request, reply) => {
 }
 
 module.exports.getAccount = (request, reply) => {
+	console.log(request);
 	if (!request.payload._id) {
 		reply.status(401).json({"message" : "UnauthorizedError: private profile"});
 	} else {
