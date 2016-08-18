@@ -8,6 +8,7 @@
     function authentication ($http, $window) {
 
         var saveToken = function (token) {
+            console.log(token);
             $window.localStorage['slira-token'] = token;
         };
 
@@ -45,7 +46,6 @@
         };
 
        var registrationToken = function (registrationToken) {
-            console.log(registrationToken);
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
                     return request;

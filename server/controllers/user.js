@@ -34,7 +34,6 @@ module.exports.addNew = (request, reply) => {
 			
 			ConnectRequest.findOne({connect_token: request.payload.token}).exec()
 				.then((response) => {
-					console.log(response);
 					let msg = userUtils.tokenMessage(response);
 
 					if(!msg.success) {
@@ -48,6 +47,7 @@ module.exports.addNew = (request, reply) => {
 							return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
 						}
 						let tkn = userUtils.createToken(user);
+						console.log(tkn);
 						return reply({success: true, token: tkn});
 					});
 
