@@ -39,6 +39,6 @@ function run($rootScope, $location, $templateCache, authentication) {
 angular
 .module('slira')
 .config(['$routeProvider', '$locationProvider', config])
-.run(['$rootScope', '$location', 'authentication', run]);
+.run(['$rootScope', '$location', '$templateCache', 'authentication', run]);
 
 })();
