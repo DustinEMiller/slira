@@ -57,6 +57,7 @@ module.exports.addNew = (request, reply) => {
 }
 
 module.exports.getAccount = (request, reply) => {
+	console.log(request.payload);
 	if(request.auth.isAuthenticated && request.auth.credentials){
 		User.findById(request.payload._id)
 	  		.exec(function(err, user) {
