@@ -58,11 +58,15 @@ module.exports.addNew = (request, reply) => {
 
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
-		console.log(request.auth.credentials);
-		User.findById(request.auth.credentials._id).exec()
+
+		User.findById(request.auth.credentials.id).exec()
 	  		.then((response) => {
-	  			console.log(response);
-	    		return reply(response);
+	  			if(response) {
+	  				return reply({success: true, response: response});
+	  			} else {
+	  				return reply({success: false, msg: "Unable to retrive profile information"});	
+	  			}
+	    		
 	  		})
 	  		.catch((error) => {
 	  			return reply({success: false, msg: "Unable to retrive profile information"});		
