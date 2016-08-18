@@ -62,7 +62,6 @@ module.exports.getAccount = (request, reply) => {
 	  		.exec(function(err, user) {
 	    		reply.status(200).json(user);
 	  		});
-		}
 	} else {
 		reply.status(401).json({"message" : "UnauthorizedError: private profile"});	
 	}
