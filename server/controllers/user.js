@@ -24,8 +24,6 @@ module.exports.addNew = (request, reply) => {
 
 	User.findOne({ email: user.email}).exec()
 		.then((response) => {
-			console.log(response);
-			console.log(user);
 			if(response) {
 				if(response.email === user.email) {
 					return reply({success: false , msg: 'There is already an account associated with that email address.'});
@@ -47,7 +45,6 @@ module.exports.addNew = (request, reply) => {
 							return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
 						}
 						let tkn = userUtils.createToken(user);
-						console.log(tkn);
 						return reply({success: true, token: tkn});
 					});
 
