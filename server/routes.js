@@ -59,7 +59,10 @@ module.exports = [
 		method: 'GET',
 		handler: (request, reply) => {
 	  		//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-		}
+		},
+		auth: {
+      		strategy: 'jwt'
+    	}
 	},
   	{
     	method: 'GET', 
