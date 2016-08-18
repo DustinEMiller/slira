@@ -5,7 +5,8 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
-	ConnectRequest = require('../models/ConnectRequest');
+	ConnectRequest = require('../models/ConnectRequest'),
+	User = require('../models/User');
 
 function existingJiraUser(options) {
 	return new Promise((resolve, reject) => {
@@ -27,25 +28,33 @@ module.exports.addNew = (request, reply) => {
 		return reply({success: false , msg: 'There is already an account associated with that email address.'});
 	}
 
-	ConnectRequest.findOne({connect_token: request.payload.token}).exec()
+	User.findOne({ email: user.email}).exec()
 		.then((response) => {
-			let msg = userUtils.tokenMessage(response);
-
-			if(!msg.success) {
-				return reply(msg);	
+			if(repsonse.email === user.email) {
+				return reply({success: false , msg: 'There is already an account associated with that email address.'});	
 			}
+			
+			ConnectRequest.findOne({connect_token: request.payload.token}).exec()
+				.then((response) => {
+					let msg = userUtils.tokenMessage(response);
 
-			user.slackUserName = response.slackUserName;
+					if(!msg.success) {
+						return reply(msg);	
+					}
 
-			user.save((err) => {
-				if (err) {
-					return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
-				}
-				let tkn = userUtils.createToken(user);
-				return reply({success: true, token: tkn});
-			});
+					user.slackUserName = response.slackUserName;
 
-		}).catch((error) => {
+					user.save((err) => {
+						if (err) {
+							return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
+						}
+						let tkn = userUtils.createToken(user);
+						return reply({success: true, token: tkn});
+					});
+
+				})		
+		})
+		.catch((error) => {
 			return reply({success: false, msg: "There was an error creating your account. Please try again"});
 		});
 }
