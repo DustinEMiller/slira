@@ -5,8 +5,7 @@ const Boom = require('boom'),
 	ConnectRequest = require('../models/ConnectRequest'),
 	config = require('../config'),
 	jwt = require('jsonwebtoken'),
-	Joi = require('joi'),
-	bcrypt = require('bcryptjs');
+	Joi = require('joi');
 
 function findRegistrationToken(token) {
 	return ConnectRequest.findOne({connect_token: token}).exec();	
