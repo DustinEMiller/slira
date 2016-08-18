@@ -57,12 +57,26 @@ module.exports = [
 	{
 		path: '/api/user/information',
 		method: 'GET',
-		handler: (request, reply) => {
-	  		//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-		},
-		auth: {
-      		strategy: 'jwt'
-    	}
+		config: {
+			handler: (request, reply) => {
+	  			//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
+			},
+			auth: {
+	      		strategy: 'jwt'
+	    	}	
+		}	
+	},
+	{
+		path: '/api/user/information',
+		method: 'POST',
+		config: {
+			handler: (request, reply) => {
+	  			//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
+			},
+			auth: {
+      			strategy: 'jwt'
+    		}
+		}	
 	},
   	{
     	method: 'GET', 
