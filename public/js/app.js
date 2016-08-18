@@ -1,6 +1,6 @@
 (function() {
 
-    angular.module('slira', ['ngRoute', 'templates-dist']);
+    angular.module('slira', ['ngRoute', 'templates-dist', 'ngMessages']);
 
     function config ($routeProvider, $locationProvider) {
         $routeProvider
@@ -27,7 +27,9 @@
 }
 
 function run($rootScope, $location, $templateCache, authentication) {
-    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute, authentication) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+        console.log($location.path());
+        console.log(!authentication.isLoggedIn());
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }
@@ -95,8 +97,9 @@ angular
 
   registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
     function registerCtrl($location, authentication, $routeParams, $scope) {
+        $scope.message = "";
         $scope.invalidToken = false;
-        $scope.registration.message = "";
+        $scope.invalidRegistration = false;
 
         $scope.credentials = {
             email: "",
@@ -109,13 +112,15 @@ angular
                 if(response.data.success) {
                     $scope.credentials.email = response.data.email;   
                 } else {
+                    $scope.registration.$error.formLevel = true;
                     $scope.invalidToken = true;
-                    $scope.registration.message = response.data.msg;    
+                    $scope.message = response.data.msg;    
                 }
             })
             .catch(function(err) {
+                $scope.registration.$error.formLevel = true;
                 $scope.invalidToken = true;
-                $scope.registration.message = "Internal error. Please try again";
+                $scope.message = "Internal error. Please try again";
             })
 
         $scope.onSubmit = function(isValid) {
@@ -126,19 +131,20 @@ angular
                     if(response.data.success) {
                         $location.path('account');
                     } else {
-                        $scope.registration.message = response.data.msg;
+                        $scope.invalidRegistration = true;
+                        $scope.registrationMessage = response.data.msg;
                     }
                     
                 })
                 .catch(function(err) {
                     if(err.data.message == 'child "password" fails because ["password" is not allowed to be empty]') {
-                        $scope.registration.message = "Password must not be empty";
+                        $scope.registrationMessage = "Password must not be empty";
                     } else if (err.data.message == 'child "password" fails because ["password" length must be at least 6 characters long]') {
-                        $scope.registration.message = "Password must be at least 6 characters longs";    
-                    } else if (err.data.message == 'child "email" fails because ["email" is not allowed to be empty]') {
-                        $scope.registration.message = "Email must not be empty";
+                        $scope.message = "Password must be at least 6 characters longs";    
+                    } else if (err.data.registrationMessage == 'child "email" fails because ["email" is not allowed to be empty]') {
+                        $scope.registrationMessage = "Email must not be empty";
                     } else {
-                        $scope.registration.message = "There was an error. Please try again.";    
+                        $scope.registrationMessage = "There was an error. Please try again.";    
                     }
                 });    
             }
@@ -190,6 +196,7 @@ angular
         };
 
        var registrationToken = function (registrationToken) {
+            console.log(registrationToken);
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
                     return request;
@@ -375,17 +382,28 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "        <h1>Register</h1>\n" +
     "        <p class=\"lead\">If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
     "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <p ng-show=\"invalidToken\" class=\"help-block\">{{registration.message}}</p>\n" +
+    "            <div ng-show=\"invalidToken\">\n" +
+    "                <div class=\"alert alert-danger\">{{message}}</div>\n" +
+    "            </div>\n" +
+    "            <div ng-show=\"invalidRegistration\">\n" +
+    "                <div class=\"alert alert-danger\">{{registrationMessage}}</div>\n" +
+    "            </div>\n" +
+    "\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
     "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
-    "                <p ng-show=\"registration.email.$invalid && !email.$pristine\" ng-hide=\"invalidToken\" class=\"help-block\">A proper email address is required.</p>\n" +
+    "                <div ng-messages=\"registration.email.$error\" ng-hide=\"invalidToken\">\n" +
+    "                    <div ng-message=\"required\">Email is required.</div>\n" +
+    "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name='password'ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
-    "                <p ng-show=\"registration.password.$error.minlength\" ng-hide=\"invalidToken\" class=\"help-block\">Password must be at least 6 characters long.</p>\n" +
-    "                <p ng-show=\"registration.password.$invalid\" ng-hide=\"invalidToken\" class=\"help-block\">Password is required.</p>\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
+    "                <div ng-messages=\"registration.password.$error\" ng-hide=\"invalidToken\">\n" +
+    "                    <div ng-message=\"required\">Password is required.</div>\n" +
+    "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
     "        </form>\n" +

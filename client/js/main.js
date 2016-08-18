@@ -1,6 +1,6 @@
 (function() {
 
-    angular.module('slira', ['ngRoute', 'templates-dist']);
+    angular.module('slira', ['ngRoute', 'templates-dist', 'ngMessages']);
 
     function config ($routeProvider, $locationProvider) {
         $routeProvider
@@ -27,7 +27,9 @@
 }
 
 function run($rootScope, $location, $templateCache, authentication) {
-    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute, authentication) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+        console.log($location.path());
+        console.log(!authentication.isLoggedIn());
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }

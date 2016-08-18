@@ -44,6 +44,7 @@
         };
 
        var registrationToken = function (registrationToken) {
+            console.log(registrationToken);
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
                     return request;
