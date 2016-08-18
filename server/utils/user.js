@@ -15,29 +15,29 @@ function findRegistrationToken(token) {
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);
-	console.log(user);
 	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
 }
 
 module.exports.verifyCredentials = (request, reply) => {
-
-	User.findOne({
-		email: request.payload.email
-	}, (err, user) => {
-		if (user) {
-			bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
-				if (isValid) {
-					return reply(user);
-					console.log(user);
-				}
-				else {
-					return reply(Boom.badRequest('Incorrect password!'));
-				}
-			});
-		} else {
-			return reply(Boom.badRequest('Incorrect email!'));
-		}
-	});
+	User.findOne({email: request.payload.email}).exec()
+		.then((response) => {
+			console.log(response);
+			if(response) {
+				bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
+					if (isValid) {
+						return reply({success: true, token: userUtils.createToken(user) });
+					}
+					else {
+						return reply({success: false, msg: "The email or password was incorrect."});
+					}
+				});
+			} else {
+				return reply({success: false, msg: "The email or password was incorrect."});
+			}
+		})
+		.catch((error) => {
+			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
+		});
 }
 
 module.exports.tokenMessage = (token) => {

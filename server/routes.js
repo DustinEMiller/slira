@@ -34,14 +34,8 @@ module.exports = [
 	{
 		path: '/api/user/authenticate',
 		method: 'POST',
-		handler: (request, reply) => {
-			console.log(request.pre);
-	  		reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-		},
+		handler: userUtils.verifyCredentials,
 		config: {
-			pre: [
-			  {method: userUtils.verifyCredentials}
-			],
 			validate: {
 			  	payload: Joi.object({
 					email: Joi.string().email().required(),
