@@ -38,8 +38,9 @@
                 payload = JSON.parse(payload);
                 console.log(payload);
                 return {
+                    id: payload.id,
                     email : payload.email,
-                    name : payload.name
+                    exp : payload.expiration
                 };
             }
         };

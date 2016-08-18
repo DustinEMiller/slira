@@ -15,9 +15,6 @@ function findRegistrationToken(token) {
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);
-	console.log('user');
-	console.log(user);
-	console.log(config.jwtSecret);
 	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
 }
 
