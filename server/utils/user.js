@@ -12,22 +12,6 @@ function findRegistrationToken(token) {
 	return ConnectRequest.findOne({connect_token: token}).exec();	
 }
 
-module.exports.isUniqueUser = (email) => {
-
-	User.findOne({ email: email}, 
-		(err, user) => {
-    // Check whether the jira username or email
-    // is already taken and error out if so
-    if (user) {
-    	if (user.email === email) {
-    		return false;
-    	}
-    }
-
-    return true;
-});
-}
-
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);

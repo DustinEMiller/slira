@@ -5,8 +5,7 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
-	ConnectRequest = require('../models/ConnectRequest'),
-	User = require('../models/User');
+	ConnectRequest = require('../models/ConnectRequest');
 
 function existingJiraUser(options) {
 	return new Promise((resolve, reject) => {
