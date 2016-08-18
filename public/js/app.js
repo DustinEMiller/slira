@@ -193,7 +193,7 @@ angular
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
                 return {
-                    id: payload.id,
+                    _id: payload.id,
                     email : payload.email,
                     exp : payload.expiration
                 };
@@ -333,11 +333,49 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "    <div class=\"row\">\n" +
     "        <div class=\"col-md-6\">\n" +
     "            <h1 class=\"form-signin-heading\">Your profile</h1>\n" +
-    "            <form  class=\"form-horizontal\">\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Email</label>\n" +
-    "                    <p class=\"form-control-static\">{{email}}</p>\n" +
-    "                </div>\n" +
+    "            <form class=\"form-horizontal\" id=\"general\">\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
+    "                </dl>\n" +
+    "\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
+    "                </dl>\n" +
+    "            </form>\n" +
+    "\n" +
+    "            <form class=\"form-horizontal\" id=\"account-pw\">\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
+    "                </dl>\n" +
+    "\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
+    "                </dl>\n" +
+    "            </form>\n" +
+    "\n" +
+    "            <form class=\"form-horizontal\" id=\"jira-un\">\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Jira User Name</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{jiraUserName}}</p></dd>\n" +
+    "                </dl>\n" +
+    "            </form>\n" +
+    "\n" +
+    "            <form class=\"form-horizontal\" id=\"jira-pw\">\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
+    "                </dl>\n" +
+    "\n" +
+    "                <dl>\n" +
+    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
+    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
+    "                </dl>\n" +
+    "            </form>\n" +
+    "\n" +
     "                <div class=\"form-group\">\n" +
     "                    <label class=\"col-sm-3 control-label\">Password</label>\n" +
     "                    <p class=\"form-control-static\">{{password}}</p>\n" +
@@ -350,10 +388,9 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                    <label class=\"col-sm-3 control-label\">Jira Password</label>\n" +
     "                    <p class=\"form-control-static\">{{jiraPassword}}</p>\n" +
     "                </div>\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Slack User Name</label>\n" +
-    "                    <p class=\"form-control-static\">{{slackUserName}}</p>\n" +
-    "                </div>\n" +
+    "    \n" +
+    "\n" +
+    "\n" +
     "            </form>\n" +
     "        </div>\n" +
     "    </div>\n" +

@@ -37,7 +37,7 @@
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
                 return {
-                    id: payload.id,
+                    _id: payload.id,
                     email : payload.email,
                     exp : payload.expiration
                 };

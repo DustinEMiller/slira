@@ -4,11 +4,49 @@
     <div class="row">
         <div class="col-md-6">
             <h1 class="form-signin-heading">Your profile</h1>
-            <form  class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Email</label>
-                    <p class="form-control-static">{{email}}</p>
-                </div>
+            <form class="form-horizontal" id="general">
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Email</label></dt>
+                    <dd><p class="form-control-static">{{email}}</p></dd>
+                </dl>
+
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
+                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
+                </dl>
+            </form>
+
+            <form class="form-horizontal" id="account-pw">
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Email</label></dt>
+                    <dd><p class="form-control-static">{{email}}</p></dd>
+                </dl>
+
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
+                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
+                </dl>
+            </form>
+
+            <form class="form-horizontal" id="jira-un">
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Jira User Name</label></dt>
+                    <dd><p class="form-control-static">{{jiraUserName}}</p></dd>
+                </dl>
+            </form>
+
+            <form class="form-horizontal" id="jira-pw">
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Email</label></dt>
+                    <dd><p class="form-control-static">{{email}}</p></dd>
+                </dl>
+
+                <dl>
+                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
+                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
+                </dl>
+            </form>
+
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Password</label>
                     <p class="form-control-static">{{password}}</p>
@@ -21,10 +59,9 @@
                     <label class="col-sm-3 control-label">Jira Password</label>
                     <p class="form-control-static">{{jiraPassword}}</p>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Slack User Name</label>
-                    <p class="form-control-static">{{slackUserName}}</p>
-                </div>
+    
+
+
             </form>
         </div>
     </div>

@@ -59,10 +59,16 @@ module.exports.addNew = (request, reply) => {
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
-		User.findById(request.auth.credentials.id).exec()
+		User.findById(request.auth.credentials._id).exec()
 	  		.then((response) => {
 	  			if(response) {
-	  				return reply({success: true, response: response});
+	  				let user = {
+	  					_id: response._id,
+	  					email: response.email,
+	  					slackUserName: response.slackUserName,
+	  					jiraUserName: response.jiraUserName
+	  				};
+	  				return reply({success: true, user: user});
 	  			} else {
 	  				return reply({success: false, msg: "Unable to retrive profile information"});	
 	  			}
