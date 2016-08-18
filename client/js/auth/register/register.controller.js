@@ -38,7 +38,7 @@
                 .register($scope.credentials)
                 .then(function(response) {
                     if(response.data.success) {
-                        //$location.path('account');
+                        $location.path('account');
                     } else {
                         $scope.invalidRegistration = true;
                         $scope.registrationMessage = response.data.msg;

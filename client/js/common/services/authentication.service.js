@@ -8,7 +8,6 @@
     function authentication ($http, $window) {
 
         var saveToken = function (token) {
-            console.log(token);
             $window.localStorage['slira-token'] = token;
         };
 
