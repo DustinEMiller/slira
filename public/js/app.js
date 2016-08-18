@@ -46,15 +46,16 @@ angular
     .controller('accountCtrl', accountCtrl);
 
     accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
-    
+
     function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
 
     sliraData.getProfile()
-        .success(function(data) {
+        .then(function(data) {
+            console.log(data)
             $scope.user = data;
         })
-        .error(function (e) {
+        .catch(function (e) {
             console.log(e);
         });
     }
