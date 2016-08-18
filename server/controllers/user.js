@@ -58,13 +58,16 @@ module.exports.addNew = (request, reply) => {
 
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
-		User.findById(request.auth.credentials._id)
-	  		.exec(function(err, user) {
-	  			console.log(user);
-	    		return reply(user);
-	  		});
+		User.findById(request.auth.credentials._id).exec()
+	  		.then((response) => {
+	  			console.log(response);
+	    		return reply(response);
+	  		})
+	  		.catch((error) => {
+	  			return reply({success: false, msg: "Unable to retrive profile information"});		
+	  		})
 	} else {
-		return reply({"message" : "UnauthorizedError: private profile"});	
+		return reply({success: false, msg: "UnauthorizedError: private profile"});	
 	}
 }
 
