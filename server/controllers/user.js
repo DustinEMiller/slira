@@ -24,7 +24,7 @@ module.exports.addNew = (request, reply) => {
 
 	User.findOne({ email: user.email}).exec()
 		.then((response) => {
-			if(repsonse.email === user.email) {
+			if(response.email === user.email) {
 				return reply({success: false , msg: 'There is already an account associated with that email address.'});	
 			}
 			
