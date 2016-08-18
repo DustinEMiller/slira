@@ -38,6 +38,7 @@ module.exports.verifyCredentials = (request, reply) => {
 			}
 		})
 		.catch((error) => {
+			console.log(error);
 			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
 		});
 }
