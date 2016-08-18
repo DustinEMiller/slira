@@ -21,13 +21,11 @@ module.exports.createToken = (user) => {
 module.exports.verifyCredentials = (request, reply) => {
 	User.findOne({email: request.payload.email}).exec()
 		.then((response) => {
-			console.log(response);
+
 			if(response) {
-				bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
-					console.log(isValid);
-					console.log(err);
+				bcrypt.compare(request.payload.password, response.password, (err, isValid) => {
 					if (isValid) {
-						return reply({success: true, token: userUtils.createToken(user) });
+						return reply({success: true, token: userUtils.createToken(response) });
 					}
 					else {
 						return reply({success: false, msg: "The email or password was incorrect."});
