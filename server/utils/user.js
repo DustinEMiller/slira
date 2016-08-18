@@ -24,6 +24,8 @@ module.exports.verifyCredentials = (request, reply) => {
 			console.log(response);
 			if(response) {
 				bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
+					console.log(isValid);
+					console.log(err);
 					if (isValid) {
 						return reply({success: true, token: userUtils.createToken(user) });
 					}
