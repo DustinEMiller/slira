@@ -206,12 +206,11 @@ angular
         };
 
         var register = function(user) {
-            return $http.post('/api/user/create', user).then(function (data) {
-                console.log(data);
-                if(data.success) {
-                    saveToken(data.token);    
+            return $http.post('/api/user/create', user).then(function(response) {
+                if(response.data.success) {
+                    saveToken(response.data.token);    
                 }
-                return data;
+                return response;
             });
         };
 
