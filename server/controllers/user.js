@@ -60,6 +60,7 @@ module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 		User.findById(request.auth.credentials._id)
 	  		.exec(function(err, user) {
+	  			console.log(user);
 	    		return reply(user);
 	  		});
 	} else {
