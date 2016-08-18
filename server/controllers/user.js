@@ -57,14 +57,14 @@ module.exports.addNew = (request, reply) => {
 }
 
 module.exports.getAccount = (request, reply) => {
-	console.log(request);
-	if (!request.payload._id) {
-		reply.status(401).json({"message" : "UnauthorizedError: private profile"});
+	if(request.auth.isAuthenticated && request.auth.credentials){
+		User.findById(request.payload._id)
+	  		.exec(function(err, user) {
+	    		reply.status(200).json(user);
+	  		});
+		}
 	} else {
-	User.findById(request.payload._id)
-	  .exec(function(err, user) {
-	    res.status(200).json(user);
-	  });
+		reply.status(401).json({"message" : "UnauthorizedError: private profile"});	
 	}
 }
 
