@@ -57,6 +57,7 @@
 
         var register = function(user) {
             return $http.post('/api/user/create', user).then(function (data) {
+                console.log(data);
                 if(data.success) {
                     saveToken(data.token);    
                 }
