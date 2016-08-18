@@ -8,21 +8,24 @@
 
     function loginCtrl($location, authentication) {
 
-        var sl = this;
-
-        sl.credentials = {
+        $scope.credentials = {
             email : "",
             password : ""
         };
 
-        sl.onSubmit = function () {
+        $scope.onSubmit = function () {
             authentication
-            .login(sl.credentials)
-            .then(function(){
-                $location.path('account');
+            .login($scope.credentials)
+            .then(function(response){
+                if(response.data.success) {
+                    $location.path('account');
+                } else {
+                    $scope.invalidLogin = true;
+                    $scope.message = response.data.msg;
+                }
             })
             .catch(function(err){
-                alert(err);
+                $scope.message = "There was an error logging in. Please try again.";
             });
         };
     }

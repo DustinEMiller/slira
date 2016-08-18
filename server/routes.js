@@ -39,7 +39,7 @@ module.exports = [
 		},
 		config: {
 			pre: [
-			  {method: userUtils.verifyCredentials, assign: 'user'}
+			  {method: userUtils.verifyCredentials}
 			],
 			validate: {
 			  	payload: Joi.object({

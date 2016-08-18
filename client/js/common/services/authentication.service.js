@@ -36,7 +36,6 @@
                 var payload = token.split('.')[1];
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
-                console.log(payload);
                 return {
                     id: payload.id,
                     email : payload.email,
@@ -65,8 +64,11 @@
         };
 
         var login = function(user) {
-            return $http.post('/api/user/authenticate', user).then(function (data) {
-                saveToken(data.token);
+            return $http.post('/api/user/authenticate', user).then(function(response) {
+                if(response.data.success) {
+                    saveToken(response.data.token);    
+                }
+                return response;
             });
         };
 

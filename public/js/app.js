@@ -69,21 +69,24 @@ angular
 
     function loginCtrl($location, authentication) {
 
-        var sl = this;
-
-        sl.credentials = {
+        $scope.credentials = {
             email : "",
             password : ""
         };
 
-        sl.onSubmit = function () {
+        $scope.onSubmit = function () {
             authentication
-            .login(sl.credentials)
-            .then(function(){
-                $location.path('account');
+            .login($scope.credentials)
+            .then(function(response){
+                if(response.data.success) {
+                    $location.path('account');
+                } else {
+                    $scope.invalidLogin = true;
+                    $scope.message = response.data.msg;
+                }
             })
             .catch(function(err){
-                alert(err);
+                $scope.message = "There was an error logging in. Please try again.";
             });
         };
     }
@@ -186,7 +189,6 @@ angular
                 var payload = token.split('.')[1];
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
-                console.log(payload);
                 return {
                     id: payload.id,
                     email : payload.email,
@@ -215,8 +217,11 @@ angular
         };
 
         var login = function(user) {
-            return $http.post('/api/user/authenticate', user).then(function (data) {
-                saveToken(data.token);
+            return $http.post('/api/user/authenticate', user).then(function(response) {
+                if(response.data.success) {
+                    saveToken(response.data.token);    
+                }
+                return response;
             });
         };
 
@@ -351,18 +356,29 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "    <div class=\"col-md-6\">\n" +
     "\n" +
     "      <h1 class=\"form-signin-heading\">Sign in</h1>\n" +
-    "      <p class=\"lead\">Not a member? Please <a href=\"register\">register</a> instead.</p>\n" +
     "\n" +
-    "        <form ng-submit=\"sl.onSubmit()\">\n" +
+    "        <form name=\"login\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
+    "            <div ng-show=\"invalidLogin\">\n" +
+    "                <div class=\"alert alert-danger\">{{message}}</div>\n" +
+    "            </div>\n" +
+    "\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" ng-model=\"sl.credentials.email\">\n" +
+    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
+    "                <div ng-messages=\"login.email.$error\">\n" +
+    "                    <div ng-message=\"required\">Email is required.</div>\n" +
+    "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"form-group\">\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" ng-model=\"sl.credentials.password\">\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
+    "                <div ng-messages=\"login.password.$error\">\n" +
+    "                    <div ng-message=\"required\">Password is required.</div>\n" +
+    "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\">Sign in!</button>\n" +
+    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!login.$valid || invalidLogin\">Sign in</button>\n" +
     "        </form>\n" +
     "\n" +
     "    </div>\n" +
@@ -383,9 +399,6 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
     "            <div ng-show=\"invalidToken\">\n" +
     "                <div class=\"alert alert-danger\">{{message}}</div>\n" +
-    "            </div>\n" +
-    "            <div ng-show=\"invalidRegistration\">\n" +
-    "                <div class=\"alert alert-danger\">{{registrationMessage}}</div>\n" +
     "            </div>\n" +
     "\n" +
     "            <div class=\"form-group\">\n" +
