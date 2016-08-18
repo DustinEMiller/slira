@@ -18,9 +18,7 @@ module.exports.isUniqueUser = (email) => {
 		(err, user) => {
     // Check whether the jira username or email
     // is already taken and error out if so
-    console.log(user);
     if (user) {
-    	console.log('user');
     	if (user.email === email) {
     		return false;
     	}

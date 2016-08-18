@@ -23,6 +23,7 @@ module.exports.addNew = (request, reply) => {
 	user.password = request.payload.password;
 
 	if(!userUtils.isUniqueUser(user.email)) {
+		console.log(userUtils.isUniqueUser(user.email));
 		return reply({success: false , msg: 'There is already an account associated with that email address.'});
 	}
 
