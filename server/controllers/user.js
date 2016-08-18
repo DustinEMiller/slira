@@ -49,6 +49,7 @@ module.exports.addNew = (request, reply) => {
 				})		
 		})
 		.catch((error) => {
+			console.log(error);
 			return reply({success: false, msg: "There was an error creating your account. Please try again"});
 		});
 }
