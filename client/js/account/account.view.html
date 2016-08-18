@@ -6,12 +6,24 @@
             <h1 class="form-signin-heading">Your profile</h1>
             <form  class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Full name</label>
-                    <p class="form-control-static">{{ vm.user.name }}</p>
+                    <label class="col-sm-3 control-label">Email</label>
+                    <p class="form-control-static">{{email}}</p>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Email</label>
-                    <p class="form-control-static">{{ vm.user.email }}</p>
+                    <label class="col-sm-3 control-label">Password</label>
+                    <p class="form-control-static">{{password}}</p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Jira User Name</label>
+                    <p class="form-control-static">{{jiraUserName}}</p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Jira Password</label>
+                    <p class="form-control-static">{{jiraPassword}}</p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Slack User Name</label>
+                    <p class="form-control-static">{{slackUserName}}</p>
                 </div>
             </form>
         </div>

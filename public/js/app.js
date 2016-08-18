@@ -45,15 +45,14 @@ angular
     .module('slira')
     .controller('accountCtrl', accountCtrl);
 
-    accountCtrl.$inject = ['$location', 'sliraData'];
-    function accountCtrl($location, sliraData) {
-        var sl = this;
-
-        sl.user = {};
+    accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
+    
+    function accountCtrl($location, sliraData, $scope) {
+        $scope.user = {};
 
     sliraData.getProfile()
         .success(function(data) {
-            sl.user = data;
+            $scope.user = data;
         })
         .error(function (e) {
             console.log(e);
@@ -68,6 +67,9 @@ angular
     loginCtrl.$inject = ['$location', 'authentication', '$scope'];
 
     function loginCtrl($location, authentication, $scope) {
+        if(authentication.isLoggedIn()) {
+            $location.path('account');    
+        }
 
         $scope.credentials = {
             email : "",
@@ -332,12 +334,24 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "            <h1 class=\"form-signin-heading\">Your profile</h1>\n" +
     "            <form  class=\"form-horizontal\">\n" +
     "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Full name</label>\n" +
-    "                    <p class=\"form-control-static\">{{ vm.user.name }}</p>\n" +
+    "                    <label class=\"col-sm-3 control-label\">Email</label>\n" +
+    "                    <p class=\"form-control-static\">{{email}}</p>\n" +
     "                </div>\n" +
     "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Email</label>\n" +
-    "                    <p class=\"form-control-static\">{{ vm.user.email }}</p>\n" +
+    "                    <label class=\"col-sm-3 control-label\">Password</label>\n" +
+    "                    <p class=\"form-control-static\">{{password}}</p>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"col-sm-3 control-label\">Jira User Name</label>\n" +
+    "                    <p class=\"form-control-static\">{{jiraUserName}}</p>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"col-sm-3 control-label\">Jira Password</label>\n" +
+    "                    <p class=\"form-control-static\">{{jiraPassword}}</p>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"col-sm-3 control-label\">Slack User Name</label>\n" +
+    "                    <p class=\"form-control-static\">{{slackUserName}}</p>\n" +
     "                </div>\n" +
     "            </form>\n" +
     "        </div>\n" +

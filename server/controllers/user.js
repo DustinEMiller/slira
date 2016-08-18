@@ -56,6 +56,17 @@ module.exports.addNew = (request, reply) => {
 		});
 }
 
+module.exports.getAccount = (request, reply) => {
+	if (!request.payload._id) {
+		reply.status(401).json({"message" : "UnauthorizedError: private profile"});
+	} else {
+	User.findById(request.payload._id)
+	  .exec(function(err, user) {
+	    res.status(200).json(user);
+	  });
+	}
+}
+
 module.exports.updateAccount = (request, reply) => {
 	let user = new User(),
 		userCheck;

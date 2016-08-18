@@ -7,6 +7,9 @@
     loginCtrl.$inject = ['$location', 'authentication', '$scope'];
 
     function loginCtrl($location, authentication, $scope) {
+        if(authentication.isLoggedIn()) {
+            $location.path('account');    
+        }
 
         $scope.credentials = {
             email : "",
