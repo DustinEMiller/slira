@@ -22,11 +22,6 @@ module.exports.addNew = (request, reply) => {
 	user.email = request.payload.email;
 	user.password = request.payload.password;
 
-	if(!userUtils.isUniqueUser(user.email)) {
-		console.log(userUtils.isUniqueUser(user.email));
-		return reply({success: false , msg: 'There is already an account associated with that email address.'});
-	}
-
 	User.findOne({ email: user.email}).exec()
 		.then((response) => {
 			if(repsonse.email === user.email) {
