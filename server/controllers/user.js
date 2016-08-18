@@ -60,10 +60,10 @@ module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 		User.findById(request.auth.credentials._id)
 	  		.exec(function(err, user) {
-	    		return reply(user).status(200);
+	    		return reply(user);
 	  		});
 	} else {
-		return reply({"message" : "UnauthorizedError: private profile"}).status(401);	
+		return reply({"message" : "UnauthorizedError: private profile"});	
 	}
 }
 
