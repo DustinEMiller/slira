@@ -92,3 +92,26 @@ module.exports.updateAccount = (request, reply) => {
 			return reply(err).header('content-type', 'application/json');
 		});
 }
+
+module.exports.login = (request, reply) => {
+	User.findOne({email: request.payload.email}).exec()
+		.then((response) => {
+
+			if(response) {
+				bcrypt.compare(request.payload.password, response.password, (err, isValid) => {
+					if (isValid) {
+						return reply({success: true, token: userUtils.createToken(response) });
+					}
+					else {
+						return reply({success: false, msg: "The email or password was incorrect."});
+					}
+				});
+			} else {
+				return reply({success: false, msg: "The email or password was incorrect."});
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
+		});
+}

@@ -18,29 +18,6 @@ module.exports.createToken = (user) => {
 	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
 }
 
-module.exports.verifyCredentials = (request, reply) => {
-	User.findOne({email: request.payload.email}).exec()
-		.then((response) => {
-
-			if(response) {
-				bcrypt.compare(request.payload.password, response.password, (err, isValid) => {
-					if (isValid) {
-						return reply({success: true, token: userUtils.createToken(response) });
-					}
-					else {
-						return reply({success: false, msg: "The email or password was incorrect."});
-					}
-				});
-			} else {
-				return reply({success: false, msg: "The email or password was incorrect."});
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
-		});
-}
-
 module.exports.tokenMessage = (token) => {
 	let currentDate = new Date();
 	

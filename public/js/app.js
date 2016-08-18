@@ -378,7 +378,7 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!login.$valid || invalidLogin\">Sign in</button>\n" +
+    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!login.$valid\">Sign in</button>\n" +
     "        </form>\n" +
     "\n" +
     "    </div>\n" +

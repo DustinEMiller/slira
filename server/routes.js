@@ -34,7 +34,7 @@ module.exports = [
 	{
 		path: '/api/user/authenticate',
 		method: 'POST',
-		handler: userUtils.verifyCredentials,
+		handler: user.login,
 		config: {
 			validate: {
 			  	payload: Joi.object({
