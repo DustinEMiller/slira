@@ -5,56 +5,16 @@ const Boom = require('boom'),
 	ConnectRequest = require('../models/ConnectRequest'),
 	config = require('../config'),
 	jwt = require('jsonwebtoken'),
-	Joi = require('joi'),
-	bcrypt = require('bcryptjs');
+	Joi = require('joi');
 
 function findRegistrationToken(token) {
 	return ConnectRequest.findOne({connect_token: token}).exec();	
 }
 
-module.exports.isUniqueUser = (email) => {
-
-	User.findOne({ email: email}, 
-		(err, user) => {
-    // Check whether the jira username or email
-    // is already taken and error out if so
-    if (user) {
-    	if (user.email === email) {
-    		return false;
-    	}
-    }
-
-    return true;
-});
-}
-
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);
-	console.log('user');
-	console.log(user);
-	console.log(config.jwtSecret);
 	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
-}
-
-module.exports.verifyCredentials = (request, reply) => {
-
-	User.findOne({
-		email: request.payload.email
-	}, (err, user) => {
-		if (user) {
-			bcrypt.compare(request.payload.password, user.password, (err, isValid) => {
-				if (isValid) {
-					return reply(user);
-				}
-				else {
-					return reply(Boom.badRequest('Incorrect password!'));
-				}
-			});
-		} else {
-			return reply(Boom.badRequest('Incorrect email!'));
-		}
-	});
 }
 
 module.exports.tokenMessage = (token) => {

@@ -34,13 +34,8 @@ module.exports = [
 	{
 		path: '/api/user/authenticate',
 		method: 'POST',
-		handler: (request, reply) => {
-	  		reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-		},
+		handler: user.login,
 		config: {
-			pre: [
-			  {method: userUtils.verifyCredentials, assign: 'user'}
-			],
 			validate: {
 			  	payload: Joi.object({
 					email: Joi.string().email().required(),
@@ -57,9 +52,24 @@ module.exports = [
 	{
 		path: '/api/user/information',
 		method: 'GET',
-		handler: (request, reply) => {
-	  		//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-		}
+		config: {
+			handler: user.getAccount,
+			auth: {
+	      		strategy: 'jwt'
+	    	}	
+		}	
+	},
+	{
+		path: '/api/user/information',
+		method: 'POST',
+		config: {
+			handler: (request, reply) => {
+	  			//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
+			},
+			auth: {
+      			strategy: 'jwt'
+    		}
+		}	
 	},
   	{
     	method: 'GET', 

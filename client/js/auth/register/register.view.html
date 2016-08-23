@@ -1,36 +1,31 @@
 <navigation></navigation>
 
-<div class="container">
 <div class="row">
-    <div class="col-md-6">
-        <h1>Register</h1>
-        <p class="lead">If you already have an account, please <a href="login">log in</a> instead.</p>
+    <div class="small-12 columns">
+        <h2>Register</h2>
+        <p>If you already have an account, please <a href="login">log in</a> instead.</p>
         <form name="registration" ng-submit="onSubmit(registration.$valid)" novalidate>
-            <div ng-show="invalidToken">
-                <div class="alert alert-danger">{{message}}</div>
-            </div>
-            <div ng-show="invalidRegistration">
-                <div class="alert alert-danger">{{registrationMessage}}</div>
+            <div class="row"ng-show="invalidToken">
+                <div class="small-12 columns">{{message}}</div>
             </div>
 
-            <div class="form-group">
+            <div>
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name='email' ng-model="credentials.email" ng-disabled="invalidToken" required>
+                <input type="email" id="email" placeholder="Enter email" name='email' ng-model="credentials.email" ng-disabled="invalidToken" required>
                 <div ng-messages="registration.email.$error" ng-hide="invalidToken">
                     <div ng-message="required">Email is required.</div>
                     <div ng-message="email">Your email address is invalid</div>
                 </div>
             </div>
-            <div class="form-group">
+            <div>
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password" ng-model="credentials.password" ng-disabled="invalidToken" ng-minlength="6" required>
+                <input type="password" id="password" placeholder="Password" name="password" ng-model="credentials.password" ng-disabled="invalidToken" ng-minlength="6" required>
                 <div ng-messages="registration.password.$error" ng-hide="invalidToken">
                     <div ng-message="required">Password is required.</div>
                     <div ng-message="minlength">Password must be at least 6 characters long.</div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-default" ng-disabled="!registration.$valid || invalidToken">Register</button>
+            <button type="submit" ng-disabled="!registration.$valid || invalidToken">Register</button>
         </form>
     </div>
-</div>
 </div>

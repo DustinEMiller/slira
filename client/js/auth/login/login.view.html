@@ -1,27 +1,33 @@
 <navigation></navigation>
 
-<div class="container">
-
-  <div class="row">
-
-    <div class="col-md-6">
-
-      <h1 class="form-signin-heading">Sign in</h1>
-      <p class="lead">Not a member? Please <a href="register">register</a> instead.</p>
-
-        <form ng-submit="sl.onSubmit()">
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="sl.credentials.email">
+<div class="row">
+    <div class="small-12 columns">
+      <h1>Sign in</h1>
+        <form name="login" ng-submit="onSubmit(registration.$valid)" novalidate>
+            <div class="row" ng-show="invalidLogin">
+                <div class="small-12 columns">{{message}}</div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" ng-model="sl.credentials.password">
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" placeholder="Enter email" name='email' ng-model="credentials.email" ng-disabled="invalidToken" required>
+                </div>
+                <div class="small-12 columns" ng-messages="login.email.$error">
+                    <div ng-message="required">Email is required.</div>
+                    <div ng-message="email">Your email address is invalid</div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-default">Sign in!</button>
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" name="password" ng-model="credentials.password" ng-disabled="invalidToken" ng-minlength="6" required>
+                </div>
+                <div class="small-12 columns" ng-messages="login.password.$error">
+                    <div ng-message="required">Password is required.</div>
+                    <div ng-message="minlength">Password must be at least 6 characters long.</div>
+                </div>
+            </div>
+            <button class="button" type="submit" ng-disabled="!login.$valid">Sign in</button>
         </form>
-
     </div>
-</div>
-
 </div>

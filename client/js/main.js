@@ -28,8 +28,6 @@
 
 function run($rootScope, $location, $templateCache, authentication) {
     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-        console.log($location.path());
-        console.log(!authentication.isLoggedIn());
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
             $location.path('/');
         }
@@ -39,6 +37,6 @@ function run($rootScope, $location, $templateCache, authentication) {
 angular
 .module('slira')
 .config(['$routeProvider', '$locationProvider', config])
-.run(['$rootScope', '$location', 'authentication', run]);
+.run(['$rootScope', '$location', '$templateCache', 'authentication', run]);
 
 })();

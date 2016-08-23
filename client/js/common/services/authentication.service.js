@@ -37,14 +37,14 @@
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
                 return {
+                    _id: payload.id,
                     email : payload.email,
-                    name : payload.name
+                    exp : payload.expiration
                 };
             }
         };
 
        var registrationToken = function (registrationToken) {
-            console.log(registrationToken);
             return $http.post('/api/user/registrationRequest', {token: registrationToken})
                 .then(function (request) {
                     return request;
@@ -55,17 +55,20 @@
         };
 
         var register = function(user) {
-            return $http.post('/api/user/create', user).then(function (data) {
-                if(data.success) {
-                    saveToken(data.token);    
+            return $http.post('/api/user/create', user).then(function(response) {
+                if(response.data.success) {
+                    saveToken(response.data.token);    
                 }
-                return data;
+                return response;
             });
         };
 
         var login = function(user) {
-            return $http.post('/api/user/authenticate', user).then(function (data) {
-                saveToken(data.token);
+            return $http.post('/api/user/authenticate', user).then(function(response) {
+                if(response.data.success) {
+                    saveToken(response.data.token);    
+                }
+                return response;
             });
         };
 

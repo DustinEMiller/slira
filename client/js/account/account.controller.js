@@ -4,17 +4,17 @@
     .module('slira')
     .controller('accountCtrl', accountCtrl);
 
-    accountCtrl.$inject = ['$location', 'sliraData'];
-    function accountCtrl($location, sliraData) {
-        var sl = this;
+    accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
 
-        sl.user = {};
+    function accountCtrl($location, sliraData, $scope) {
+        $scope.user = {};
 
     sliraData.getProfile()
-        .success(function(data) {
-            sl.user = data;
+        .then(function(data) {
+            console.log(data)
+            $scope.user = data;
         })
-        .error(function (e) {
+        .catch(function (e) {
             console.log(e);
         });
     }
