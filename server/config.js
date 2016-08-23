@@ -7,6 +7,8 @@ module.exports = {
   url: getEnv('SLIRA_URL', 'http://localhost:3000'),
 	slack:{
 	    token: getEnv('SLACK_TOKEN', ''),
+      password: getEnv('SLACK_OAUTH_PASSWORD','default')
+      oauthSecret: getEnv('SLACK_OAUTH_SECRET', '')
 	    webhooks:{
       		requestTokens: getEnv('SLIRA_SLACK_WEBHOOK_TOKENS', '').split(',')
 	    }

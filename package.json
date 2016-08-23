@@ -11,6 +11,7 @@
   "dependencies": {
     "@slack/client": "^3.5.3",
     "bcryptjs": "^2.3.0",
+    "bell": "^8.1.1",
     "body-parser": "^1.15.2",
     "boom": "^3.2.2",
     "getenv": "^0.6.0",

@@ -45,6 +45,14 @@ module.exports = [
 		}
 	},
 	{
+		path: '/api/slack/authenticate',
+		method: 'POST',
+		handler: user.slack,
+		config: {
+			auth: 'slack'
+		}
+	},
+	{
 		path:'/api/user/registrationRequest',
 		method:'POST',
 		handler: userUtils.registrationRequest
