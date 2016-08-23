@@ -329,69 +329,81 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
   $templateCache.put("../client/js/account/account.view.html",
     "<navigation></navigation>\n" +
     "\n" +
-    "<div class=\"container\">\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-md-6\">\n" +
-    "            <h1 class=\"form-signin-heading\">Your profile</h1>\n" +
-    "            <form class=\"form-horizontal\" id=\"general\">\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
-    "                </dl>\n" +
-    "\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
-    "                </dl>\n" +
-    "            </form>\n" +
-    "\n" +
-    "            <form class=\"form-horizontal\" id=\"account-pw\">\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
-    "                </dl>\n" +
-    "\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
-    "                </dl>\n" +
-    "            </form>\n" +
-    "\n" +
-    "            <form class=\"form-horizontal\" id=\"jira-un\">\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Jira User Name</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{jiraUserName}}</p></dd>\n" +
-    "                </dl>\n" +
-    "            </form>\n" +
-    "\n" +
-    "            <form class=\"form-horizontal\" id=\"jira-pw\">\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Email</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{email}}</p></dd>\n" +
-    "                </dl>\n" +
-    "\n" +
-    "                <dl>\n" +
-    "                    <dt><label class=\"col-sm-3 control-label\">Slack User Name</label></dt>\n" +
-    "                    <dd><p class=\"form-control-static\">{{slackUserName}}</p></dd>\n" +
-    "                </dl>\n" +
-    "            </form>\n" +
-    "\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Password</label>\n" +
-    "                    <p class=\"form-control-static\">{{password}}</p>\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"small-12 columns\">\n" +
+    "        <h2>Your Account</h2>\n" +
+    "        \n" +
+    "        <div> \n" +
+    "        <form id=\"general\">\n" +
+    "            <fieldset class=\"fieldset\">\n" +
+    "            <legend>Change Account Information</legend>\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"email\">Email</label>\n" +
+    "                    <input id=\"email\" name=\"email\" size=\"30\" type=\"text\" value=\"{{email}}\">\n" +
     "                </div>\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Jira User Name</label>\n" +
-    "                    <p class=\"form-control-static\">{{jiraUserName}}</p>\n" +
-    "                </div>\n" +
-    "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Jira Password</label>\n" +
-    "                    <p class=\"form-control-static\">{{jiraPassword}}</p>\n" +
-    "                </div>\n" +
-    "    \n" +
+    "            </div>\n" +
     "\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"slack-user-name\">Slack User Name</label>\n" +
+    "                    <input id=\"slack-user-name\" name=\"slack-user-name\" size=\"30\" type=\"text\" value=\"{{slackUserName}}\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
     "\n" +
-    "            </form>\n" +
+    "            <div class=\"row\">\n" +
+    "                 <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"jira-user-name\">Jira Username</label>\n" +
+    "                    <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "            <button class=\"button\" type=\"submit\">Change Information</button>\n" +
+    "            </fieldset>\n" +
+    "        </form>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div>\n" +
+    "        <form id=\"account-pw\">\n" +
+    "            <fieldset class=\"fieldset\">\n" +
+    "            <legend>Change Account Password</legend>\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"old-account-password\">Old Account Password</label>\n" +
+    "                    <input id=\"old-account-password\" name=\"old-account-password\" size=\"30\" type=\"password\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"new-account-password\">New Account Password</label>\n" +
+    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "            <button class=\"button\" type=\"submit\">Change Account Password</button>\n" +
+    "            </fieldset>\n" +
+    "        </form>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div>\n" +
+    "        <form id=\"jira-pw\">\n" +
+    "            <fieldset class=\"fieldset\">\n" +
+    "            <legend>Update Jira Password</legend>\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"new-account-password\">Old Jira Password</label>\n" +
+    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"new-account-password\">New Jira Password</label>\n" +
+    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "            <button class=\"button\" type=\"submit\">Update Jira Password</button>\n" +
+    "            </fieldset>\n" +
+    "        </form>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>");
@@ -401,41 +413,36 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
   $templateCache.put("../client/js/auth/login/login.view.html",
     "<navigation></navigation>\n" +
     "\n" +
-    "<div class=\"container\">\n" +
-    "\n" +
-    "  <div class=\"row\">\n" +
-    "\n" +
-    "    <div class=\"col-md-6\">\n" +
-    "\n" +
-    "      <h1 class=\"form-signin-heading\">Sign in</h1>\n" +
-    "\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"small-12 columns\">\n" +
+    "      <h1>Sign in</h1>\n" +
     "        <form name=\"login\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <div ng-show=\"invalidLogin\">\n" +
-    "                <div class=\"alert alert-danger\">{{message}}</div>\n" +
+    "            <div class=\"row\" ng-show=\"invalidLogin\">\n" +
+    "                <div class=\"small-12 columns\">{{message}}</div>\n" +
     "            </div>\n" +
-    "\n" +
-    "            <div class=\"form-group\">\n" +
-    "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
-    "                <div ng-messages=\"login.email.$error\">\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"email\">Email address</label>\n" +
+    "                    <input type=\"email\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
+    "                </div>\n" +
+    "                <div class=\"small-12 columns\" ng-messages=\"login.email.$error\">\n" +
     "                    <div ng-message=\"required\">Email is required.</div>\n" +
     "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"form-group\">\n" +
-    "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
-    "                <div ng-messages=\"login.password.$error\">\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"password\">Password</label>\n" +
+    "                    <input type=\"password\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
+    "                </div>\n" +
+    "                <div class=\"small-12 columns\" ng-messages=\"login.password.$error\">\n" +
     "                    <div ng-message=\"required\">Password is required.</div>\n" +
     "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!login.$valid\">Sign in</button>\n" +
+    "            <button class=\"button\" type=\"submit\" ng-disabled=\"!login.$valid\">Sign in</button>\n" +
     "        </form>\n" +
-    "\n" +
     "    </div>\n" +
-    "</div>\n" +
-    "\n" +
     "</div>");
 }]);
 
@@ -443,44 +450,42 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
   $templateCache.put("../client/js/auth/register/register.view.html",
     "<navigation></navigation>\n" +
     "\n" +
-    "<div class=\"container\">\n" +
     "<div class=\"row\">\n" +
-    "    <div class=\"col-md-6\">\n" +
-    "        <h1>Register</h1>\n" +
-    "        <p class=\"lead\">If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
+    "    <div class=\"small-12 columns\">\n" +
+    "        <h2>Register</h2>\n" +
+    "        <p>If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
     "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <div ng-show=\"invalidToken\">\n" +
-    "                <div class=\"alert alert-danger\">{{message}}</div>\n" +
+    "            <div class=\"row\"ng-show=\"invalidToken\">\n" +
+    "                <div class=\"small-12 columns\">{{message}}</div>\n" +
     "            </div>\n" +
     "\n" +
-    "            <div class=\"form-group\">\n" +
+    "            <div>\n" +
     "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
+    "                <input type=\"email\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
     "                <div ng-messages=\"registration.email.$error\" ng-hide=\"invalidToken\">\n" +
     "                    <div ng-message=\"required\">Email is required.</div>\n" +
     "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"form-group\">\n" +
+    "            <div>\n" +
     "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
+    "                <input type=\"password\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
     "                <div ng-messages=\"registration.password.$error\" ng-hide=\"invalidToken\">\n" +
     "                    <div ng-message=\"required\">Password is required.</div>\n" +
     "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <button type=\"submit\" class=\"btn btn-default\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
+    "            <button type=\"submit\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
     "        </form>\n" +
     "    </div>\n" +
-    "</div>\n" +
     "</div>");
 }]);
 
 angular.module("../client/js/index/index.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/index/index.view.html",
     "<navigation></navigation>\n" +
-    "<div class=\"container\">\n" +
+    "<div>\n" +
     "	<h1>Greetings</h1>\n" +
-    "	<p>Please <a href=\"login\">sign in</a> or <a href=\"register\">register</a></p>\n" +
+    "	<p>Please <a href=\"login\">sign in</a></p>\n" +
     "</div>");
 }]);

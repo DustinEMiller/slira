@@ -1,68 +1,80 @@
 <navigation></navigation>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h1 class="form-signin-heading">Your profile</h1>
-            <form class="form-horizontal" id="general">
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Email</label></dt>
-                    <dd><p class="form-control-static">{{email}}</p></dd>
-                </dl>
-
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
-                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
-                </dl>
-            </form>
-
-            <form class="form-horizontal" id="account-pw">
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Email</label></dt>
-                    <dd><p class="form-control-static">{{email}}</p></dd>
-                </dl>
-
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
-                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
-                </dl>
-            </form>
-
-            <form class="form-horizontal" id="jira-un">
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Jira User Name</label></dt>
-                    <dd><p class="form-control-static">{{jiraUserName}}</p></dd>
-                </dl>
-            </form>
-
-            <form class="form-horizontal" id="jira-pw">
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Email</label></dt>
-                    <dd><p class="form-control-static">{{email}}</p></dd>
-                </dl>
-
-                <dl>
-                    <dt><label class="col-sm-3 control-label">Slack User Name</label></dt>
-                    <dd><p class="form-control-static">{{slackUserName}}</p></dd>
-                </dl>
-            </form>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Password</label>
-                    <p class="form-control-static">{{password}}</p>
+<div class="row">
+    <div class="small-12 columns">
+        <h2>Your Account</h2>
+        
+        <div> 
+        <form id="general">
+            <fieldset class="fieldset">
+            <legend>Change Account Information</legend>
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" size="30" type="text" value="{{email}}">
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Jira User Name</label>
-                    <p class="form-control-static">{{jiraUserName}}</p>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Jira Password</label>
-                    <p class="form-control-static">{{jiraPassword}}</p>
-                </div>
-    
+            </div>
 
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="slack-user-name">Slack User Name</label>
+                    <input id="slack-user-name" name="slack-user-name" size="30" type="text" value="{{slackUserName}}">
+                </div>
+            </div>
 
-            </form>
+            <div class="row">
+                 <div class="small-12 columns">
+                    <label for="jira-user-name">Jira Username</label>
+                    <input id="jira-user-name" name="jira-user-name" size="30" type="text" value="{{jiraUserName}}">
+                </div>
+            </div>
+            <button class="button" type="submit">Change Information</button>
+            </fieldset>
+        </form>
+        </div>
+
+        <div>
+        <form id="account-pw">
+            <fieldset class="fieldset">
+            <legend>Change Account Password</legend>
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="old-account-password">Old Account Password</label>
+                    <input id="old-account-password" name="old-account-password" size="30" type="password">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="new-account-password">New Account Password</label>
+                    <input id="new-account-password" name="account-password" size="30" type="password">
+                </div>
+            </div>
+            <button class="button" type="submit">Change Account Password</button>
+            </fieldset>
+        </form>
+        </div>
+
+        <div>
+        <form id="jira-pw">
+            <fieldset class="fieldset">
+            <legend>Update Jira Password</legend>
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="new-account-password">Old Jira Password</label>
+                    <input id="new-account-password" name="account-password" size="30" type="password">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 columns">
+                    <label for="new-account-password">New Jira Password</label>
+                    <input id="new-account-password" name="account-password" size="30" type="password">
+                </div>
+            </div>
+            <button class="button" type="submit">Update Jira Password</button>
+            </fieldset>
+        </form>
         </div>
     </div>
 </div>
