@@ -142,3 +142,7 @@ module.exports.login = (request, reply) => {
 			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
 		});
 }
+
+module.exports.slackAuth = (request, reply) => {
+	console.log(request);
+}
