@@ -143,6 +143,7 @@ module.exports.login = (request, reply) => {
 		});
 }
 
-module.exports.slackAuth = (request, reply) => {
+module.exports.authenticate = (request, reply) => {
 	console.log(request);
+	return reply.redirect('/login');
 }

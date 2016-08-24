@@ -34,21 +34,8 @@ module.exports = [
 	},
 	{
 		path: '/api/user/authenticate',
-		method: 'POST',
-		handler: user.login,
-		config: {
-			validate: {
-			  	payload: Joi.object({
-					email: Joi.string().email().required(),
-					password: Joi.string().required()
-				})
-			}  
-		}
-	},
-	{
-		path: '/api/slack/authenticate',
-		method: 'POST',
-		handler: user.slackAuth,
+		method: '[GET', 'POST'],
+		handler: user.authenticate,
 		config: {
 			auth: 'slack'
 		}

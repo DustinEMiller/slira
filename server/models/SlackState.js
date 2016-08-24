@@ -26,13 +26,11 @@ SlackStateSchema.pre('save', function(next) {
 	slackState.delete_at = new Date(slackState.created_at);
 	slackState.delete_at.setTime(slackState.created_at.getTime() + 1440*60000);
 
-    console.log(this);
-
     crypto.randomBytes(48, function(err, buffer) {
         if(err) {
             return next(err);
         }
-        console.log(this);
+
         slackState.state = buffer.toString('hex');
         next();
     });

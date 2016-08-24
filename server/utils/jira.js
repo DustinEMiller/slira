@@ -328,16 +328,15 @@ module.exports.signinLink = (request) => {
 	let slackState = new SlackState(),
 		message = {
 	      	"response_type": "ephemeral",
-	      	"text": "Follow this link to connect your JIRA and Slack Accounts",
+	      	"text": "Follow this link to begin the process of connecting your JIRA and Slack Accounts",
 	      	'attachments': []
     	};
 		
 	return slackState.save()
 		.then((result) => {
-			console.log(result);
-			let titleLink = 'https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id='+config.slack.clientId+'&state='+result.code;
+			let titleLink = 'https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id='+config.slack.clientId+'&state='+result.state;
 			message.attachments = [{
-        		"title": "Connect your accounts",
+        		"title": "Connect your JIRA and Slack Accounts",
         		"title_link": titleLink
 			}];
 			return message;
