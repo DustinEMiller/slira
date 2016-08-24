@@ -87,6 +87,7 @@ module.exports = [
     	method: 'GET', 
     	path: '/login',
 		handler: function(request, reply){
+			console.log(request);
       		reply.file('index.html')
     	},
     	config: {
