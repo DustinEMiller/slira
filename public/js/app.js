@@ -164,8 +164,8 @@ angular
     .module('slira')
     .controller('slackCtrl', slackCtrl);
 
-  registerCtrl.$inject = ['$location', 'authentication', '$slackParams', '$scope'];
-    function registerCtrl($location, authentication, $slackParams, $scope) {
+  slackCtrl.$inject = ['$location', 'authentication', '$slackParams', '$scope'];
+    function slackCtrl($location, authentication, $slackParams, $scope) {
         console.log($routeParams);
 
         $scope.onSubmit = function(isValid) {
