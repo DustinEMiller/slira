@@ -67,11 +67,6 @@ module.exports = [
 		}
 	},
 	{
-		path:'/api/user/registrationRequest',
-		method:'POST',
-		handler: userUtils.registrationRequest
-	},
-	{
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
