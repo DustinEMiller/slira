@@ -19,7 +19,7 @@ let mongoose = require('mongoose'),
     	}
     });
 
-SlackState.pre('save', function(next) {
+SlackStateSchema.pre('save', function(next) {
 	this.created_at = new Date();
 	this.delete_at = new Date(this.created_at);
 	this.delete_at.setTime(this.created_at.getTime() + 1440*60000);
