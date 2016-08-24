@@ -4,9 +4,9 @@
     .module('slira')
     .controller('slackCtrl', slackCtrl);
 
-  slackCtrl.$inject = ['$location', 'authentication', '$slackParams', '$scope'];
-    function slackCtrl($location, authentication, $slackParams, $scope) {
-        console.log($routeParams);
+  slackCtrl.$inject = ['$location', 'authentication', '$scope'];
+    function slackCtrl($location, authentication, $scope) {
+        console.log($location.search());
 
         $scope.onSubmit = function(isValid) {
             if(isValid) {
