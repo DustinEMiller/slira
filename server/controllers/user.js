@@ -144,6 +144,7 @@ module.exports.login = (request, reply) => {
 }
 
 module.exports.authenticate = (request, reply) => {
+	console.log('authentications')
 	console.log(request);
-	return reply.redirect('/login');
+	//return reply.redirect('/login');
 }
