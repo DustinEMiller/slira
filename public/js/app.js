@@ -16,6 +16,10 @@
             templateUrl: '../client/js/auth/login/login.view.html',
             controller: 'loginCtrl',
         })
+        .when('/slack', {
+            templateUrl: '../client/js/auth/slack/slack.view.html',
+            controller: 'slackCtrl',
+        })
         .when('/account', {
             templateUrl: '../client/js/account/account.view.html',
             controller: 'accountCtrl',
@@ -25,7 +29,7 @@
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
 }
-
+//https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581
 function run($rootScope, $location, $templateCache, authentication) {
     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {
@@ -126,6 +130,43 @@ angular
                 $scope.invalidToken = true;
                 $scope.message = "Internal error. Please try again";
             })
+
+        $scope.onSubmit = function(isValid) {
+            if(isValid) {
+                authentication
+                .register($scope.credentials)
+                .then(function(response) {
+                    if(response.data.success) {
+                        $location.path('account');
+                    } else {
+                        $scope.invalidRegistration = true;
+                        $scope.registrationMessage = response.data.msg;
+                    }
+                    
+                })
+                .catch(function(err) {
+                    if(err.data.message == 'child "password" fails because ["password" is not allowed to be empty]') {
+                        $scope.registrationMessage = "Password must not be empty";
+                    } else if (err.data.message == 'child "password" fails because ["password" length must be at least 6 characters long]') {
+                        $scope.message = "Password must be at least 6 characters longs";    
+                    } else if (err.data.registrationMessage == 'child "email" fails because ["email" is not allowed to be empty]') {
+                        $scope.registrationMessage = "Email must not be empty";
+                    } else {
+                        $scope.registrationMessage = "There was an error. Please try again.";    
+                    }
+                });    
+            }
+        };
+    }
+})();;(function () {
+
+  angular
+    .module('slira')
+    .controller('slackCtrl', slackCtrl);
+
+  registerCtrl.$inject = ['$location', 'authentication', '$slackParams', '$scope'];
+    function registerCtrl($location, authentication, $slackParams, $scope) {
+        console.log($routeParams);
 
         $scope.onSubmit = function(isValid) {
             if(isValid) {
@@ -323,7 +364,7 @@ angular
     function indexCtrl () {
     }
 
-})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/index/index.view.html']);
+})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/auth/slack/slack.view.html', '../client/js/index/index.view.html']);
 
 angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/account/account.view.html",
@@ -443,6 +484,9 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "            <button class=\"button\" type=\"submit\" ng-disabled=\"!login.$valid\">Sign in</button>\n" +
     "        </form>\n" +
     "    </div>\n" +
+    "    <div class=\"small-12 columns\">\n" +
+    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
+    "    </div>\n" +
     "</div>");
 }]);
 
@@ -477,6 +521,17 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "            </div>\n" +
     "            <button type=\"submit\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
     "        </form>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
+angular.module("../client/js/auth/slack/slack.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/auth/slack/slack.view.html",
+    "<navigation></navigation>\n" +
+    "\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"small-12 columns\">\n" +
+    "    Things are hapenning\n" +
     "    </div>\n" +
     "</div>");
 }]);
