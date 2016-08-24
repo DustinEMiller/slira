@@ -27,13 +27,12 @@ SlackStateSchema.pre('save', function(next) {
 
     crypto.randomBytes(48, function(err, buffer) {
         if(err) {
-            console.log(err);
             return next(err);
         }
 
         this.state = buffer.toString('hex');
         console.log(this.state);
-        next();
+        return next();
     });
 });
 
