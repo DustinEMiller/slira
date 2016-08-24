@@ -4,7 +4,7 @@ const jira = require('./controllers/jira'),
 	user = require('./controllers/user'),
 	Joi = require('joi'),
 	userUtils = require('./utils/user'),
-	slackState = require('./models/SlackSate');
+	slackState = require('./models/SlackState');
 
 
 module.exports = [
