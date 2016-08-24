@@ -3,7 +3,8 @@
 const jira = require('./controllers/jira'),
 	user = require('./controllers/user'),
 	Joi = require('joi'),
-	userUtils = require('./utils/user');
+	userUtils = require('./utils/user'),
+	slackState = require('./models/SlackSate');
 
 
 module.exports = [
@@ -51,6 +52,19 @@ module.exports = [
 		config: {
 			auth: 'slack'
 		}
+	},
+	{
+		path: '/api/slack/state',
+		method: 'GET',
+		handler: (request, reply) => {
+			return slackState.save()
+				.then((result) => {
+					return reply({success: true , msg: result.code});
+				})
+				.catch((error) => {
+					return reply({success: false , msg: 'There was an issue creating the proper link.'});
+				});
+		}),
 	},
 	{
 		path:'/api/user/registrationRequest',

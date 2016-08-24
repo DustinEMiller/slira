@@ -5,7 +5,7 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
-	ConnectRequest = require('../models/ConnectRequest'),
+	SlackState = require('../models/SlackState'),
 	bcrypt = require('bcryptjs');
 
 function existingJiraUser(options) {
@@ -31,7 +31,7 @@ module.exports.addNew = (request, reply) => {
 				}	
 			}
 			
-			ConnectRequest.findOne({connect_token: request.payload.token}).exec()
+			SlackState.findOne({connect_token: request.payload.token}).exec()
 				.then((response) => {
 					let msg = userUtils.tokenMessage(response);
 

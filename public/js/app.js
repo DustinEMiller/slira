@@ -241,8 +241,8 @@ angular
             }
         };
 
-       var registrationToken = function (registrationToken) {
-            return $http.post('/api/user/registrationRequest', {token: registrationToken})
+       var slackState = function () {
+            return $http.post('/api/slack/state')
                 .then(function (request) {
                     return request;
                 })
@@ -456,36 +456,8 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "\n" +
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
-    "      <h1>Sign in</h1>\n" +
-    "        <form name=\"login\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <div class=\"row\" ng-show=\"invalidLogin\">\n" +
-    "                <div class=\"small-12 columns\">{{message}}</div>\n" +
-    "            </div>\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"email\">Email address</label>\n" +
-    "                    <input type=\"email\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
-    "                </div>\n" +
-    "                <div class=\"small-12 columns\" ng-messages=\"login.email.$error\">\n" +
-    "                    <div ng-message=\"required\">Email is required.</div>\n" +
-    "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"password\">Password</label>\n" +
-    "                    <input type=\"password\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
-    "                </div>\n" +
-    "                <div class=\"small-12 columns\" ng-messages=\"login.password.$error\">\n" +
-    "                    <div ng-message=\"required\">Password is required.</div>\n" +
-    "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\" ng-disabled=\"!login.$valid\">Sign in</button>\n" +
-    "        </form>\n" +
-    "    </div>\n" +
-    "    <div class=\"small-12 columns\">\n" +
-    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
+    "        <h1>Log In</h1>\n" +
+    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581&state={{state}}\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
     "    </div>\n" +
     "</div>");
 }]);

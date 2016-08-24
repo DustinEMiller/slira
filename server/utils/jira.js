@@ -2,10 +2,7 @@
 
 const req = require('request'),
 	config = require('../config'),
-	ConnectRequest = require('../models/ConnectRequest'),
-	SlackWebClient = require('@slack/client').WebClient,
-	SlackClient = new SlackWebClient(config.slack.token),
-	crypto = require('crypto');
+	SlackState = require('../models/SlackState');
 
 let options = {
 	headers: {
@@ -327,44 +324,26 @@ module.exports.addComment = (args) => {
 		});
 }
 
-module.exports.createConnectionLink = (request) => {
-	let connectRequest = new ConnectRequest(),
+module.exports.signinLink = (request) => {
+	let slackState = new SlackState(),
 		message = {
 	      	"response_type": "ephemeral",
 	      	"text": "Follow this link to connect your JIRA and Slack Accounts",
 	      	'attachments': []
     	};
-
-	connectRequest.slackUserName = request.user_name;
-
-	crypto.randomBytes(48, function(err, buffer) {
-		if(err) {
-            return JSON.stringify(err);
-		}
-			connectRequest.connect_token = buffer.toString('hex');
-	});
-
-	return SlackClient.users.info(request.user_id)
+		
+	return slackState.save()
 		.then((result) => {
-
-			connectRequest.email = result.user.profile.email; 
-			
-			return connectRequest.save()
-				.then((result) => {
-					let titleLink = config.url + '/register/' + result.connect_token;
-					message.attachments = [{
-	            		"title": "Connect your accounts",
-	            		"title_link": titleLink
-					}];
-					return message;
-				})
-				.catch((error) => {
-					message.text = 'Your connection link could not be created. Please try again or contact the administrator';
-					return message;
-				});
+			let titleLink = config.url + '/register/' + result.code;
+			message.attachments = [{
+        		"title": "Connect your accounts",
+        		"title_link": titleLink
+			}];
+			return message;
 		})
 		.catch((error) => {
-			console.log(error);
+			message.text = 'Your connection link could not be created. Please try again or contact the administrator';
+			return message;
 		});
 }
 

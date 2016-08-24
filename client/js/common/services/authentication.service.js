@@ -44,8 +44,8 @@
             }
         };
 
-       var registrationToken = function (registrationToken) {
-            return $http.post('/api/user/registrationRequest', {token: registrationToken})
+       var slackState = function () {
+            return $http.post('/api/slack/state')
                 .then(function (request) {
                     return request;
                 })
