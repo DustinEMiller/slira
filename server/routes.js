@@ -95,6 +95,13 @@ module.exports = [
   	},
   	{
     	method: 'GET', 
+    	path: '/slack',
+		handler: function(request, reply){
+      		reply.file('index.html')
+    	}
+  	},
+  	{
+    	method: 'GET', 
     	path: '/register/{connectToken}',
 		handler: function(request, reply){
       		reply.file('index.html')
