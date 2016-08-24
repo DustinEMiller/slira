@@ -2,6 +2,7 @@
 
 let mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
+    crypto = require('crypto'),
     SlackStateSchema = new Schema({
     	created_at: {
     		type: Date
