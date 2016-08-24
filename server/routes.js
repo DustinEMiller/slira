@@ -37,8 +37,9 @@ module.exports = [
 		method: 'GET',
 		config: {
 			auth: 'slack',
-			handler: user.authenticate,
-		}
+			handler: (request, reply) => {
+				console.log(request);
+			}
 	},
 	{
 		path: '/api/slack/state',
