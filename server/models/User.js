@@ -25,7 +25,7 @@ let mongoose = require('mongoose'),
         },
         userId: {
             type: String,    
-        }
+        },
         teamId: {
             type: String,    
         }
