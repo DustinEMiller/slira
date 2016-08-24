@@ -334,7 +334,8 @@ module.exports.signinLink = (request) => {
 		
 	return slackState.save()
 		.then((result) => {
-			let titleLink = config.url + '/register/' + result.code;
+			console.log(result);
+			let titleLink = 'https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id='.config.jira.url.'&state='.result.code;
 			message.attachments = [{
         		"title": "Connect your accounts",
         		"title_link": titleLink
