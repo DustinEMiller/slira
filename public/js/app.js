@@ -76,6 +76,23 @@ angular
             $location.path('account');    
         }
 
+        authentication.registrationToken($routeParams.registrationToken)
+            .then(function(response) {
+                console.log(response);
+                if(response.data.success) {
+                    $scope.state = response.data.email;   
+                } else {
+                    //$scope.registration.$error.formLevel = true;
+                    //$scope.invalidToken = true;
+                    //$scope.message = response.data.msg;    
+                }
+            })
+            .catch(function(err) {
+                //$scope.registration.$error.formLevel = true;
+                //$scope.invalidToken = true;
+                //$scope.message = "Internal error. Please try again";
+            })
+
         $scope.credentials = {
             email : "",
             password : ""

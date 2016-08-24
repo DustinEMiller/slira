@@ -64,7 +64,7 @@ module.exports = [
 				.catch((error) => {
 					return reply({success: false , msg: 'There was an issue creating the proper link.'});
 				});
-		}),
+		}
 	},
 	{
 		path:'/api/user/registrationRequest',
