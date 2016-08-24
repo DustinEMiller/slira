@@ -34,7 +34,7 @@ module.exports = [
 	},
 	{
 		path: '/api/user/authenticate',
-		method: ['GET', 'POST'],
+		method: 'GET',
 		config: {
 			auth: 'slack',
 			handler: user.authenticate,
