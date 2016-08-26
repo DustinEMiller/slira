@@ -236,7 +236,7 @@ angular
         };
 
        var slackState = function () {
-            return $http.post('/api/slack/state')
+            return $http.get('/api/slack/state')
                 .then(function (request) {
                     return request;
                 })
