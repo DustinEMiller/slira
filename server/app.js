@@ -31,7 +31,7 @@ server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), r
 
   	server.auth.strategy('slack', 'bell', {
         provider: 'slack',
-        password: config.slack.password,
+        password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
         clientId: config.slack.clientId,
         clientSecret: config.slack.oauthSecret,
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
