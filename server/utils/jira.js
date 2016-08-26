@@ -1,8 +1,7 @@
 'use strict';
 
 const req = require('request'),
-	config = require('../config'),
-	SlackState = require('../models/SlackState');
+	config = require('../config');
 
 let options = {
 	headers: {
@@ -325,26 +324,14 @@ module.exports.addComment = (args) => {
 }
 
 module.exports.signinLink = (request) => {
-	let slackState = new SlackState(),
-		message = {
-	      	"response_type": "ephemeral",
-	      	"text": "Follow this link to begin the process of connecting your JIRA and Slack Accounts",
-	      	'attachments': []
-    	};
-		
-	return slackState.save()
-		.then((result) => {
-			let titleLink = 'https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id='+config.slack.clientId+'&state='+result.state;
-			message.attachments = [{
-        		"title": "Connect your JIRA and Slack Accounts",
-        		"title_link": titleLink
-			}];
-			return message;
-		})
-		.catch((error) => {
-			message.text = 'Your connection link could not be created. Please try again or contact the administrator';
-			return message;
-		});
+	return message = {
+      	"response_type": "ephemeral",
+      	"text": "Follow this link to begin the process of connecting your JIRA and Slack Accounts",
+      	'attachments': [{
+    		"title": "Connect your JIRA and Slack Accounts",
+    		"title_link": config.url + "/login/slack"
+		}];
+	};
 }
 
 module.exports.help = (isIntentional) => {

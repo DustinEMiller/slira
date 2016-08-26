@@ -5,7 +5,6 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
-	SlackState = require('../models/SlackState'),
 	bcrypt = require('bcryptjs');
 
 function existingJiraUser(options) {
@@ -31,7 +30,7 @@ module.exports.addNew = (request, reply) => {
 				}	
 			}
 			
-			SlackState.findOne({connect_token: request.payload.token}).exec()
+			/*SlackState.findOne({connect_token: request.payload.token}).exec()
 				.then((response) => {
 					let msg = userUtils.tokenMessage(response);
 
@@ -49,7 +48,7 @@ module.exports.addNew = (request, reply) => {
 						return reply({success: true, token: tkn});
 					});
 
-				})		
+				})*/		
 		})
 		.catch((error) => {
 			return reply({success: false, msg: "There was an error creating your account. Please try again"});
