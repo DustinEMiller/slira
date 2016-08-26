@@ -34,7 +34,7 @@ server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), r
         password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
         clientId: config.slack.clientId,
         clientSecret: config.slack.oauthSecret,
-        identity: 
+        identity: 'identity.basic,identity.email,identity.team',
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });
 
