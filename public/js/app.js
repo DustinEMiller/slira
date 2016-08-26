@@ -271,6 +271,7 @@ angular
             currentUser: currentUser,
             saveToken: saveToken,
             getToken: getToken,
+            slackState: slackState,
             isLoggedIn: isLoggedIn,
             register: register,
             login: login,
