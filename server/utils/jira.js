@@ -330,7 +330,7 @@ module.exports.signinLink = (request) => {
       	'attachments': [{
     		"title": "Connect your JIRA and Slack Accounts",
     		"title_link": config.url + "/login/slack"
-		}];
+		}]
 	};
 }
 
