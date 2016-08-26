@@ -85,8 +85,11 @@ module.exports = [
   	{
     	method: 'GET', 
     	path: '/login',
-		handler: function(request, reply){
-      		reply.file('index.html')
+		config: {
+    		auth: 'slack',
+    		handler: function(request, reply){
+      			reply.file('index.html')
+    		}
     	},
   	},
   	{
