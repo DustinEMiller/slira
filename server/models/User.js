@@ -9,10 +9,6 @@ let mongoose = require('mongoose'),
             required: true, 
             index: { unique: true } 
         },
-        password: { 
-            type: String, 
-            required: true 
-        },
     	jiraUserName: {
     		type: String,
     		unique: true,
@@ -23,7 +19,16 @@ let mongoose = require('mongoose'),
     	slackUserName: {
     		type: String,
     		required: true
-    	}
+    	},
+        accessToken: {
+            type: String,    
+        },
+        userId: {
+            type: String,    
+        },
+        teamId: {
+            type: String,    
+        }
     });
 
 UserSchema.pre('save', function(next) {

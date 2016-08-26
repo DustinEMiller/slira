@@ -5,7 +5,11 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
+<<<<<<< HEAD
 	ConnectRequest = require('../models/ConnectRequest'),
+=======
+	SlackState = require('../models/SlackState'),
+>>>>>>> dev
 	bcrypt = require('bcryptjs');
 
 function existingJiraUser(options) {
@@ -31,7 +35,11 @@ module.exports.addNew = (request, reply) => {
 				}	
 			}
 			
+<<<<<<< HEAD
 			ConnectRequest.findOne({connect_token: request.payload.token}).exec()
+=======
+			SlackState.findOne({connect_token: request.payload.token}).exec()
+>>>>>>> dev
 				.then((response) => {
 					let msg = userUtils.tokenMessage(response);
 
@@ -141,4 +149,13 @@ module.exports.login = (request, reply) => {
 			console.log(error);
 			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
 		});
+<<<<<<< HEAD
+=======
+}
+
+module.exports.authenticate = (request, reply) => {
+	console.log('authentications')
+	console.log(request);
+	//return reply.redirect('/login');
+>>>>>>> dev
 }

@@ -1,5 +1,6 @@
 'use strict'
 
+<<<<<<< HEAD
 const Boom = require('boom'),
 	User = require('../models/User'),
 	ConnectRequest = require('../models/ConnectRequest'),
@@ -10,11 +11,16 @@ const Boom = require('boom'),
 function findRegistrationToken(token) {
 	return ConnectRequest.findOne({connect_token: token}).exec();	
 }
+=======
+const config = require('../config'),
+	jwt = require('jsonwebtoken');
+>>>>>>> dev
 
 module.exports.createToken = (user) => {
 	let expiration = new Date();
 	expiration.setDate(expiration.getDate() + 7);
 	return jwt.sign({ id: user._id, email: user.email, expiration: parseInt(expiration.getTime() / 1000)}, config.jwtSecret, { algorithm: 'HS256', expiresIn: "1h" } );
+<<<<<<< HEAD
 }
 
 module.exports.tokenMessage = (token) => {
@@ -38,4 +44,6 @@ module.exports.registrationRequest = (request, reply) => {
 		}).catch((error) => {
 			return reply({success: false, msg: "There was an error verifying your token. Please try again"});
 		});
+=======
+>>>>>>> dev
 }
