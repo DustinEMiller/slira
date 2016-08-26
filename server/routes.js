@@ -56,7 +56,7 @@ module.exports = [
 		handler: (request, reply) => {
 			return slackState.save()
 				.then((result) => {
-					return reply({success: true , msg: result.code});
+					return reply({success: true , state: result.code});
 				})
 				.catch((error) => {
 					return reply({success: false , msg: 'There was an issue creating the proper link.'});
@@ -71,18 +71,6 @@ module.exports = [
 			auth: {
 	      		strategy: 'jwt'
 	    	}	
-		}	
-	},
-	{
-		path: '/api/user/information',
-		method: 'POST',
-		config: {
-			handler: (request, reply) => {
-	  			//reply({ token: userUtils.createToken(request.pre.user) }).code(201);
-			},
-			auth: {
-      			strategy: 'jwt'
-    		}
 		}	
 	},
   	{

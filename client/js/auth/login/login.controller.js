@@ -11,42 +11,19 @@
             $location.path('account');    
         }
 
-        authentication.registrationToken($routeParams.registrationToken)
+        $scope.invalidState = true;
+
+        authentication.slackState()
             .then(function(response) {
-                console.log(response);
                 if(response.data.success) {
-                    $scope.state = response.data.email;   
+                    $scope.invalidState = false;
+                    $scope.state = response.data.state;    
                 } else {
-                    //$scope.registration.$error.formLevel = true;
-                    //$scope.invalidToken = true;
-                    //$scope.message = response.data.msg;    
+                    $scope.message = response.data.msg;    
                 }
             })
             .catch(function(err) {
-                //$scope.registration.$error.formLevel = true;
-                //$scope.invalidToken = true;
-                //$scope.message = "Internal error. Please try again";
+                $scope.message = 'There was an internal error. Please try again by refreshing the page.';  
             })
-
-        $scope.credentials = {
-            email : "",
-            password : ""
-        };
-
-        $scope.onSubmit = function () {
-            authentication
-            .login($scope.credentials)
-            .then(function(response){
-                if(response.data.success) {
-                    $location.path('account');
-                } else {
-                    $scope.invalidLogin = true;
-                    $scope.message = response.data.msg;
-                }
-            })
-            .catch(function(err){
-                $scope.message = "There was an error logging in. Please try again.";
-            });
-        };
     }
 })();

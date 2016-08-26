@@ -76,43 +76,20 @@ angular
             $location.path('account');    
         }
 
-        authentication.registrationToken($routeParams.registrationToken)
+        $scope.invalidState = true;
+
+        authentication.slackState()
             .then(function(response) {
-                console.log(response);
                 if(response.data.success) {
-                    $scope.state = response.data.email;   
+                    $scope.invalidState = false;
+                    $scope.state = response.data.state;    
                 } else {
-                    //$scope.registration.$error.formLevel = true;
-                    //$scope.invalidToken = true;
-                    //$scope.message = response.data.msg;    
+                    $scope.message = response.data.msg;    
                 }
             })
             .catch(function(err) {
-                //$scope.registration.$error.formLevel = true;
-                //$scope.invalidToken = true;
-                //$scope.message = "Internal error. Please try again";
+                $scope.message = 'There was an internal error. Please try again by refreshing the page.';  
             })
-
-        $scope.credentials = {
-            email : "",
-            password : ""
-        };
-
-        $scope.onSubmit = function () {
-            authentication
-            .login($scope.credentials)
-            .then(function(response){
-                if(response.data.success) {
-                    $location.path('account');
-                } else {
-                    $scope.invalidLogin = true;
-                    $scope.message = response.data.msg;
-                }
-            })
-            .catch(function(err){
-                $scope.message = "There was an error logging in. Please try again.";
-            });
-        };
     }
 })();;(function () {
 
@@ -473,7 +450,8 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
     "        <h1>Log In</h1>\n" +
-    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
+    "        <a ng-hide=\"invalidToken\" href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581&state={{state}}\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>  \n" +
+    "        <div ng-show=\"invalidToken\">{{message}}</div>   \n" +
     "    </div>\n" +
     "</div>");
 }]);
@@ -487,7 +465,7 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "        <h2>Register</h2>\n" +
     "        <p>If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
     "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <div class=\"row\"ng-show=\"invalidToken\">\n" +
+    "            <div class=\"row\" ng-show=\"invalidToken\">\n" +
     "                <div class=\"small-12 columns\">{{message}}</div>\n" +
     "            </div>\n" +
     "\n" +
