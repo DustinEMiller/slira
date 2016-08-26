@@ -49,13 +49,10 @@ module.exports = [
     	}
   	},
   	{
-    	method: ['GET', 'POST'], 
+    	method: 'GET', 
     	path: '/login/slack',
 		config: {
     		auth: 'slack',
-    		pre: [{method: function(thing, afterThing) {
-    			console.log(thing);
-    		}}],
     		handler: function(request, reply){
     			console.log(request.auth.credentials.profile);
       			reply.file('index.html');
