@@ -57,8 +57,7 @@ module.exports = [
 			let slackRequest = new SlackState();
 			return slackRequest.save()
 				.then((result) => {
-					console.log(result);
-					return reply({success: true , state: result.code});
+					return reply({success: true , state: result.state});
 				})
 				.catch((error) => {
 					return reply({success: false , msg: 'There was an issue creating the proper link.'});
