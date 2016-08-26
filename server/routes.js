@@ -57,6 +57,7 @@ module.exports = [
 			let slackRequest = new SlackState();
 			return slackRequest.save()
 				.then((result) => {
+					console.log(result);
 					return reply({success: true , state: result.code});
 				})
 				.catch((error) => {
