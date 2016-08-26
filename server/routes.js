@@ -4,7 +4,7 @@ const jira = require('./controllers/jira'),
 	user = require('./controllers/user'),
 	Joi = require('joi'),
 	userUtils = require('./utils/user'),
-	slackState = require('./models/SlackState');
+	SlackState = require('./models/SlackState');
 
 
 module.exports = [
@@ -54,7 +54,8 @@ module.exports = [
 		path: '/api/slack/state',
 		method: 'GET',
 		handler: (request, reply) => {
-			return slackState.save()
+			let slackRequest = new SlackState();
+			return slackRequest.save()
 				.then((result) => {
 					return reply({success: true , state: result.code});
 				})

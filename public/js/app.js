@@ -84,7 +84,11 @@ angular
                     $scope.invalidState = false;
                     $scope.state = response.data.state;    
                 } else {
-                    $scope.message = response.data.msg;    
+                    if(response.data.msg) {
+                        $scope.message = response.data.msg;   
+                    } else {
+                        $scope.message = 'There was an internal error. Please try again by refreshing the page.';      
+                    }       
                 }
             })
             .catch(function(err) {
