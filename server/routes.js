@@ -4,7 +4,7 @@ const jira = require('./controllers/jira'),
 	user = require('./controllers/user'),
 	Joi = require('joi'),
 	userUtils = require('./utils/user'),
-	config = require('./config'),
+	config = require('./config');
 
 module.exports = [
 	{
