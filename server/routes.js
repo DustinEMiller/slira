@@ -34,12 +34,21 @@ module.exports = [
 	},
 	{
 		path: '/api/user/authenticate',
-		method: 'GET',
+		method: ['GET', 'POST'],
 		config: {
-			auth: 'slack',
 			handler: (request, reply) => {
 				console.log(request);
+				if (!request.auth.isAuthenticated) {
+                    return reply('Authentication failed due to: ' + request.auth.error.message);
+                }
+
+                // Perform any account lookup or registration, setup local session,
+                // and redirect to the application. The third-party credentials are
+                // stored in request.auth.credentials. Any query parameters from
+                // the initial request are passed back via request.auth.credentials.query.
+                return reply.redirect('/home');
 			}
+		}
 	},
 	{
 		path: '/api/slack/state',
@@ -87,12 +96,8 @@ module.exports = [
     	method: 'GET', 
     	path: '/login',
 		handler: function(request, reply){
-			console.log(request);
       		reply.file('index.html')
     	},
-    	config: {
-    		auth: 'slack'
-    	}
   	},
   	{
     	method: 'GET', 

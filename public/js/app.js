@@ -296,7 +296,6 @@ angular
             getToken: getToken,
             isLoggedIn: isLoggedIn,
             register: register,
-            registrationToken: registrationToken,
             login: login,
             logout: logout
         };
@@ -474,7 +473,7 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
     "        <h1>Log In</h1>\n" +
-    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581&state={{state}}\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
+    "        <a href=\"https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>    \n" +
     "    </div>\n" +
     "</div>");
 }]);

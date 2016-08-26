@@ -17,7 +17,7 @@ module.exports = {
   	jira:{
 		username: getEnv('JIRA_USERNAME', ''),
 	    password: getEnv('JIRA_PASSWORD', ''),
-	    url: getEnv('SIRA_URL', 'http://54.244.59.52/'),
+	    url: getEnv('SIRA_URL', 'http://localhost'),
   	},
   	mongo: {
   		url: getEnv('SLIRA_MONGO_URL', 'mongodb://localhost:27017/slira-dev')

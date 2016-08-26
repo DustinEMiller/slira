@@ -82,7 +82,6 @@
             getToken: getToken,
             isLoggedIn: isLoggedIn,
             register: register,
-            registrationToken: registrationToken,
             login: login,
             logout: logout
         };
