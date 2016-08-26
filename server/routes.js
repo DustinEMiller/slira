@@ -88,7 +88,9 @@ module.exports = [
 		config: {
     		auth: 'slack',
     		handler: function(request, reply){
-      			reply.file('index.html')
+    			console.log(request.auth);
+    			console.log(request.auth.credentials.profile);
+      			reply.file('index.html');
     		}
     	},
   	},
