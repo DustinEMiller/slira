@@ -13,7 +13,6 @@ const Hapi = require('hapi'),
 	        }
     	}	
 	}),
-	Bell = require('bell'),
 	mongoose = require('mongoose');
 
 server.connection({
@@ -23,7 +22,7 @@ server.connection({
 	}
 });
 
-server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), Bell],(err) => {
+server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), require('bell')],(err) => {
 
 	server.auth.strategy('jwt', 'jwt', {
     	key: config.jwtSecret,
@@ -32,8 +31,8 @@ server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), B
 
   	server.auth.strategy('slack', 'bell', {
         provider: 'slack',
-        password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
-        clientId: '13949143637.72058318581', //config.slack.clientId,
+        password: config.slack.password,
+        clientId: config.slack.clientId,
         clientSecret: config.slack.oauthSecret,
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });

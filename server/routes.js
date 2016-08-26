@@ -33,39 +33,6 @@ module.exports = [
 		}
 	},
 	{
-		path: '/api/user/authenticate',
-		method: ['GET', 'POST'],
-		config: {
-			auth: 'slack',
-			handler: (request, reply) => {
-				console.log(request);
-				if (!request.auth.isAuthenticated) {
-                    return reply('Authentication failed due to: ' + request.auth.error.message);
-                }
-
-                // Perform any account lookup or registration, setup local session,
-                // and redirect to the application. The third-party credentials are
-                // stored in request.auth.credentials. Any query parameters from
-                // the initial request are passed back via request.auth.credentials.query.
-                return reply.redirect('/home');
-			}
-		}
-	},
-	{
-		path: '/api/slack/state',
-		method: 'GET',
-		handler: (request, reply) => {
-			let slackRequest = new SlackState();
-			return slackRequest.save()
-				.then((result) => {
-					return reply({success: true , state: result.state});
-				})
-				.catch((error) => {
-					return reply({success: false , msg: 'There was an issue creating the proper link.'});
-				});
-		}
-	},
-	{
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
@@ -84,29 +51,17 @@ module.exports = [
   	},
   	{
     	method: 'GET', 
-    	path: '/login',
+    	path: '/login/slack',
 		config: {
     		auth: 'slack',
+    		pre: function(thing, afterThing) {
+    			console.log(thing);
+    		},
     		handler: function(request, reply){
-    			console.log(request);
-    			//console.log(request.auth.credentials.profile);
+    			console.log(request.auth.credentials.profile);
       			reply.file('index.html');
     		}
     	},
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/slack',
-		handler: function(request, reply){
-      		reply.file('index.html')
-    	}
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/register/{connectToken}',
-		handler: function(request, reply){
-      		reply.file('index.html')
-    	}
   	},
   	{
     	method: 'GET', 

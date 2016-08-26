@@ -7,7 +7,7 @@ module.exports = {
   url: getEnv('SLIRA_URL', 'http://localhost:3000'),
 	slack:{
 	    token: getEnv('SLACK_TOKEN', ''),
-      password: getEnv('SLIRA_OAUTH_PASSWORD','default'),
+      password: getEnv('SLIRA_OAUTH_PASSWORD','dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr'),
       clientId: getEnv('SLIRA_CLIENT_ID','13949143637.72058318581'),
       oauthSecret: getEnv('SLIRA_OAUTH_SECRET', ''),
 	    webhooks:{
@@ -22,5 +22,5 @@ module.exports = {
   	mongo: {
   		url: getEnv('SLIRA_MONGO_URL', 'mongodb://localhost:27017/slira-dev')
   	},
-  	jwtSecret: getEnv('SLIRA_JWT_SECRET', 'default')
+    jwtSecret: getEnv('SLIRA_JWT_SECRET', 'default')
 };
