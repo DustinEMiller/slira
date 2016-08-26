@@ -36,6 +36,7 @@ module.exports = [
 		path: '/api/user/authenticate',
 		method: ['GET', 'POST'],
 		config: {
+			auth: 'slack',
 			handler: (request, reply) => {
 				console.log(request);
 				if (!request.auth.isAuthenticated) {
