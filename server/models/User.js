@@ -6,7 +6,6 @@ let mongoose = require('mongoose'),
     UserSchema = new Schema({
         email: { 
             type: String, 
-            required: true, 
             index: { unique: true } 
         },
     	jiraUserName: {
@@ -18,16 +17,19 @@ let mongoose = require('mongoose'),
     	},
     	slackUserName: {
     		type: String,
-    		required: true
+    		unique: true
     	},
         accessToken: {
-            type: String,    
+            type: String,  
+            unique: true  
         },
         userId: {
-            type: String,    
+            type: String, 
+            unique: true   
         },
         teamId: {
-            type: String,    
+            type: String,
+            unique: true    
         }
     });
 

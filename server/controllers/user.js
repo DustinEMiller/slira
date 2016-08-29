@@ -17,43 +17,42 @@ function existingJiraUser(options) {
 
 module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
-		userCheck;
+		userCheck,
+		credentials = request.auth.credentials,
+		token;
 
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
-		User.findOne({ accessToken: request.auth.credentials.token}).exec()
+		User.findOne({ accessToken: credentials.token}).exec()
 		.then((response) => {
-			console.log(response);
+
 			if(response) {
-				if(response.email === user.email) {
-					return reply({success: false , msg: 'There is already an account associated with that email address.'});
-				}	
-			}
-			
-			/*SlackState.findOne({connect_token: request.payload.token}).exec()
-				.then((response) => {
-					let msg = userUtils.tokenMessage(response);
+				// account exists, check for match
+				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
+					token = userUtils.createToken(response);
+					return reply.redirect(config.url+'/account', {success: true, newAccount: false, token: token});	
+				}
+				else {
+					return reply.redirect(config.url+'/login', {success: false , msg: 'Your credentials did not match the account on hand.'});	
+				}
+			// create a new account
+			} else {
+				user.accessToken = credentials.token;
+				user.userId = credentials.profile.user_id;
+				user.teamId = credentials.profile.raw.team_id;
 
-					if(!msg.success) {
-						return reply(msg);	
+				user.save((err) => {
+					if (err) {
+						return reply.redirect(config.url+'/login', {success: false , msg: 'There was an issue creating your account. Please try again.'});
 					}
-
-					user.slackUserName = response.slackUserName;
-
-					user.save((err) => {
-						if (err) {
-							return reply({success: false , msg: 'There was an issue creating your account. Please try again.'});
-						}
-						let tkn = userUtils.createToken(user);
-						return reply({success: true, token: tkn});
-					});
-
-				})*/		
+					token = userUtils.createToken(user);
+					return reply.redirect(config.url+'/account', {success: true, newAccount: true, token: token});
+				});
+			}		
 		})
 		.catch((error) => {
-			return reply({success: false, msg: "There was an error creating your account. Please try again"});
+			return reply.redirect(config.url+'/login', {success: false, msg: "There was an error creating or accessing your account. Please try again"});
 		});
 	}
-	//reply.redirect(config.url+'/account');
 }
 
 module.exports.getAccount = (request, reply) => {
