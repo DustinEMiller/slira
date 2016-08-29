@@ -38,22 +38,23 @@ module.exports = [
   	{
     	method: 'GET', 
     	path: '/',
-		handler: function(request, reply){
-      		reply.file('index.html')
+		handler: function(request, reply) {
+      		reply.file('index.html');
     	}
   	},
   	{
     	method: 'GET', 
     	path: '/login',
-		handler: function(request, reply){
-      		reply.file('index.html')
+		handler: function(request, reply) {
+      		reply.file('index.html');
     	}
   	},
   	{
     	method: 'GET', 
     	path: '/account',
-		handler: function(request, reply){
-      		reply.file('index.html')
+		handler: function(request, reply) {
+			console.log(request);
+      		//reply.file('index.html');
     	}
   	},
   	{
