@@ -54,7 +54,7 @@ module.exports = [
     	method: 'GET', 
     	path: '/account',
 		handler: function(request, reply) {
-			console.log(request);
+			//console.log(request);
       		//reply.file('index.html');
     	}
   	},
