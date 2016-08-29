@@ -15,14 +15,12 @@ function existingJiraUser(options) {
   	});	
 }
 
-console.log(request.auth.credentials.profile);
-reply.redirect(config.url+'/account');
-
 module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck;
 
 	//if(request.auth.credentials.profile)
+	//reply.redirect(config.url+'/account');
 
 	user.email = request.payload.email;
 	user.password = request.payload.password;
