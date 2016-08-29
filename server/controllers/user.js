@@ -29,9 +29,11 @@ module.exports.handleLogin = (request, reply) => {
 				// account exists, check for match
 				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
 					token = userUtils.createToken(response);
+					console.log('1');
 					return reply.redirect(config.url+'/account', {success: true, newAccount: false, token: token});	
 				}
 				else {
+					console.log('2');
 					return reply.redirect(config.url+'/login', {success: false , msg: 'Your credentials did not match the account on hand.'});	
 				}
 			// create a new account
@@ -40,16 +42,19 @@ module.exports.handleLogin = (request, reply) => {
 				user.userId = credentials.profile.user_id;
 				user.teamId = credentials.profile.raw.team_id;
 
-				user.save((err) => {
-					if (err) {
+				user.save((error) => {
+					if (error) {
+						console.log(err);
 						return reply.redirect(config.url+'/login', {success: false , msg: 'There was an issue creating your account. Please try again.'});
 					}
 					token = userUtils.createToken(user);
+					console.log('3');
 					return reply.redirect(config.url+'/account', {success: true, newAccount: true, token: token});
 				});
 			}		
 		})
 		.catch((error) => {
+			console.log(error);
 			return reply.redirect(config.url+'/login', {success: false, msg: "There was an error creating or accessing your account. Please try again"});
 		});
 	}

@@ -27,6 +27,14 @@ module.exports = [
 	    	}	
 		}	
 	},
+	{
+    	method: 'GET', 
+    	path: '/login/slack',
+		config: {
+    		auth: 'slack',
+    		handler: user.handleLogin
+    	},
+  	},
   	{
     	method: 'GET', 
     	path: '/',
@@ -36,11 +44,10 @@ module.exports = [
   	},
   	{
     	method: 'GET', 
-    	path: '/login/slack',
-		config: {
-    		auth: 'slack',
-    		handler: user.handleLogin
-    	},
+    	path: '/login',
+		handler: function(request, reply){
+      		reply.file('index.html')
+    	}
   	},
   	{
     	method: 'GET', 
