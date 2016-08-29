@@ -19,7 +19,8 @@ module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck,
 		credentials = request.auth.credentials,
-		token;
+		token,
+		rq = request;
 
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
@@ -54,7 +55,7 @@ module.exports.handleLogin = (request, reply) => {
 					}
 					token = userUtils.createToken(user);
 					console.log('3');
-					request.payload.data.set({
+					request.cookieAuth.set({
           				success: true,
           				newAccount: false,
           				token: token
