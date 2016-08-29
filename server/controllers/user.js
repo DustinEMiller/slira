@@ -31,13 +31,13 @@ module.exports.handleLogin = (request, reply) => {
 				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
 					token = userUtils.createToken(response);
 					console.log('1');
-					console.log(request);
+
 					request.payload = {
           				success: true,
           				newAccount: false,
           				token: token
         			};
-					return reply.redirect(config.url+'/account');	
+					return reply.redirect(config.url+'/');	
 				}
 				else {
 					console.log('2');

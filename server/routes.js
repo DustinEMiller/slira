@@ -39,7 +39,7 @@ module.exports = [
     	method: 'GET', 
     	path: '/',
 		handler: function(request, reply) {
-			console.log(request);
+			console.log(request.payload);
       		reply.file('index.html');
     	}
   	},
