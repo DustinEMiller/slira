@@ -4,7 +4,10 @@
     .module('slira')
     .controller('indexCtrl', indexCtrl);
 
-    function indexCtrl () {
+    indexCtrl.$inject = ['$routeParams'];
+
+    function indexCtrl ($routeParams) {
+    	console.log($routeParams);
     }
 
 })();

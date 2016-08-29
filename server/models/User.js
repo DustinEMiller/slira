@@ -10,14 +10,12 @@ let mongoose = require('mongoose'),
         },
     	jiraUserName: {
     		type: String,
-    		unique: true,
     	},
     	jiraPassword: {
     		type: String
     	},
     	slackUserName: {
     		type: String,
-    		unique: true
     	},
         accessToken: {
             type: String,  

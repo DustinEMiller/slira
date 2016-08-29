@@ -317,7 +317,10 @@ angular
     .module('slira')
     .controller('indexCtrl', indexCtrl);
 
-    function indexCtrl () {
+    indexCtrl.$inject = ['$routeParams'];
+
+    function indexCtrl ($routeParams) {
+    	console.log($routeParams);
     }
 
 })();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/auth/slack/slack.view.html', '../client/js/index/index.view.html']);

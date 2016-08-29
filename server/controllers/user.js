@@ -49,7 +49,7 @@ module.exports.handleLogin = (request, reply) => {
 					}
 					token = userUtils.createToken(user);
 					console.log('3');
-					return reply.redirect(config.url+'/account', {success: true, newAccount: true, token: token});
+					return reply.redirect(config.url+'/', {success: true, newAccount: true, token: token});
 				});
 			}		
 		})
