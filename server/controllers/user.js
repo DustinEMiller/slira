@@ -32,11 +32,11 @@ module.exports.handleLogin = (request, reply) => {
 					token = userUtils.createToken(response);
 					console.log('1');
 					console.log(request);
-					request.payload({
+					request.payload = {
           				success: true,
           				newAccount: false,
           				token: token
-        			});
+        			};
 					return reply.redirect(config.url+'/account');	
 				}
 				else {
