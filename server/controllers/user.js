@@ -43,8 +43,8 @@ module.exports.handleLogin = (request, reply) => {
 				user.teamId = credentials.profile.raw.team_id;
 
 				user.save((error) => {
-					if (error) {
-						console.log(err);
+					if(error) {
+						console.log(error);
 						return reply.redirect(config.url+'/login', {success: false , msg: 'There was an issue creating your account. Please try again.'});
 					}
 					token = userUtils.createToken(user);
