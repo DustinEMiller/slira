@@ -19,14 +19,10 @@ module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck;
 
-	//if(request.auth.credentials.profile)
-	//reply.redirect(config.url+'/account');
-
-	user.email = request.payload.email;
-	user.password = request.payload.password;
-
-	User.findOne({ email: user.email}).exec()
+	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
+		User.findOne({ accessToken: request.auth.credentials.token}).exec()
 		.then((response) => {
+			console.log(response);
 			if(response) {
 				if(response.email === user.email) {
 					return reply({success: false , msg: 'There is already an account associated with that email address.'});
@@ -56,6 +52,8 @@ module.exports.handleLogin = (request, reply) => {
 		.catch((error) => {
 			return reply({success: false, msg: "There was an error creating your account. Please try again"});
 		});
+	}
+	//reply.redirect(config.url+'/account');
 }
 
 module.exports.getAccount = (request, reply) => {
