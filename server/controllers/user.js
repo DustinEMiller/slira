@@ -22,7 +22,7 @@ module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck;
 
-	if(request.auth.credentials.profile)
+	//if(request.auth.credentials.profile)
 
 	user.email = request.payload.email;
 	user.password = request.payload.password;
