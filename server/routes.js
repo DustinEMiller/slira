@@ -18,20 +18,6 @@ module.exports = [
 		handler: jira.issueUpdatedHook,
 	},
 	{
-		path: '/api/user/create',
-		method: 'POST',
-		handler: user.addNew,
-		config: {
-			validate: {
-				payload: {
-					email: Joi.string().email(),
-					password: Joi.string().required().min(6),
-					token: Joi.string().required()
-				} 	
-			}
-		}
-	},
-	{
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
