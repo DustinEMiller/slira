@@ -31,7 +31,7 @@ module.exports.handleLogin = (request, reply) => {
 				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
 					token = userUtils.createToken(response);
 					console.log('1');
-					request.payload.data.set({
+					request.cookieAuth.set({
           				success: true,
           				newAccount: false,
           				token: token
