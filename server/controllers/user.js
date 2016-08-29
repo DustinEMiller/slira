@@ -32,7 +32,7 @@ module.exports.handleLogin = (request, reply) => {
 					token = userUtils.createToken(response);
 					console.log('1');
 					console.log(request);
-					request.cookieAuth.set({
+					request.payload({
           				success: true,
           				newAccount: false,
           				token: token
