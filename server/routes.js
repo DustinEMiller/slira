@@ -41,7 +41,7 @@ module.exports = [
     		auth: 'slack',
     		handler: function(request, reply){
     			//user.handleLogin
-    			console.log(request.auth.credentials);
+    			console.log(request.auth);
       			reply.redirect(config.url+'/account');
     		}
     	},
