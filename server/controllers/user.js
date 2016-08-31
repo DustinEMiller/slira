@@ -37,7 +37,7 @@ module.exports.handleLogin = (request, reply) => {
 						token: token
         			};
 
-        			return reply.(data);	
+        			return reply(data);	
 				}
 				else {
 					console.log('2');
