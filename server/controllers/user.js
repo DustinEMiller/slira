@@ -60,7 +60,7 @@ module.exports.handleLogin = (request, reply) => {
           				newAccount: true
         			});
 
-        			return reply('/account');
+        			return reply.redirect('/account');
 				});
 			}		
 		})
