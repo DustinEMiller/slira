@@ -14,7 +14,7 @@
 
         $scope.slackLogin = function() {
           console.log('login');
-          authentication.slackLogin($routeParams.registrationToken)
+          authentication.slackLogin()
             .then(function(response) {
               console.log(response);    
             })
