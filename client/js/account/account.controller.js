@@ -10,13 +10,13 @@
         $scope.user = {};
         console.log($routeParams);
 
-        sliraData.getProfile()
+        /*sliraData.getProfile()
             .then(function(data) {
                 console.log(data)
                 $scope.user = data;
             })
             .catch(function (e) {
                 console.log(e);
-            });
+            });*/
     }
 })();

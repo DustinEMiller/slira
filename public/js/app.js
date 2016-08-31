@@ -55,14 +55,14 @@ angular
         $scope.user = {};
         console.log($routeParams);
 
-        sliraData.getProfile()
+        /*sliraData.getProfile()
             .then(function(data) {
                 console.log(data)
                 $scope.user = data;
             })
             .catch(function (e) {
                 console.log(e);
-            });
+            });*/
     }
 })();;(function () {
 
@@ -329,10 +329,7 @@ angular
     .module('slira')
     .controller('indexCtrl', indexCtrl);
 
-    indexCtrl.$inject = ['$routeParams'];
-
-    function indexCtrl ($routeParams) {
-    	console.log($routeParams);
+    function indexCtrl () {
     }
 
 })();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/auth/slack/slack.view.html', '../client/js/index/index.view.html']);
