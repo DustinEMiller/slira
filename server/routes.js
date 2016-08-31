@@ -32,7 +32,6 @@ module.exports = [
     	path: '/api/login/slack',
 		config: {
     		auth: 'slack',
-    		cors: true,
     		handler: user.handleLogin
     	},
   	},
