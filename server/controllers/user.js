@@ -56,7 +56,7 @@ module.exports.handleLogin = (request, reply) => {
 					console.log('3');
 
 					request.cookieAuth.set({
-          				id: response.userId,
+          				id: user.userId,
           				newAccount: true
         			});
 
