@@ -22,7 +22,12 @@ server.connection({
 	}
 });
 
-server.register([require('hapi-auth-jwt'), require('vision'),require('inert'), require('bell')],(err) => {
+server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'),require('inert'), require('bell')],(err) => {
+    server.auth.strategy('session', 'cookie', {
+        password: 'secret_cookie_encryption_password',
+        redirectTo: '/api/login/slack', 
+        isSecure: false 
+    });
 
 	server.auth.strategy('jwt', 'jwt', {
     	key: config.jwtSecret,

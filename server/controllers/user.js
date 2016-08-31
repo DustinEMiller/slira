@@ -29,19 +29,17 @@ module.exports.handleLogin = (request, reply) => {
 			if(response) {
 				// account exists, check for match
 				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
-					token = userUtils.createToken(response);
 					console.log('1');
+        			request.cookieAuth.set({
+          				id: response.userId,
+          				newAccount: false
+        			});
 
-					let data = {
-						newAccount: false,
-						token: token
-        			};
-
-        			return reply(data);	
+        			return reply.redirect('/account');	
 				}
 				else {
-					console.log('2');
-					return reply.redirect(config.url+'/login', {success: false , msg: 'Your credentials did not match the account on hand.'});	
+					console.log('error2');
+					return reply.redirect('/account');	
 				}
 			// create a new account
 			} else {
@@ -51,17 +49,18 @@ module.exports.handleLogin = (request, reply) => {
 
 				user.save((error) => {
 					if(error) {
-						return reply.redirect(config.url+'/login', {success: false , msg: 'There was an issue creating your account. Please try again.'});
+						console.log('error3');
+						return reply.redirect('/account');
 					}
 					token = userUtils.createToken(user);
 					console.log('3');
 
-					let data = {
-						newAccount: false,
-						token: token
-        			};
+					request.cookieAuth.set({
+          				id: response.userId,
+          				newAccount: true
+        			});
 
-        			return reply(data);
+        			return reply('/account');
 				});
 			}		
 		})

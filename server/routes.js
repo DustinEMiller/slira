@@ -23,7 +23,7 @@ module.exports = [
 		config: {
 			handler: user.getAccount,
 			auth: {
-	      		strategy: 'jwt'
+	      		strategy: ['jwt', 'session']
 	    	}	
 		}	
 	},
@@ -40,8 +40,6 @@ module.exports = [
     	method: 'GET', 
     	path: '/',
 		handler: function(request, reply) {
-			console.log(request.cookieAuth);
-			console.log(request.state.sid.token);
       		reply.file('index.html');
     	}
   	},
@@ -56,9 +54,12 @@ module.exports = [
   	},
   	{
     	method: 'GET', 
-    	path: '/account',
-		handler: function(request, reply) {
-      		//reply.file('index.html');
+    	path: '/account',	
+    	config: {
+    		auth: 'session',
+    		handler: function(request, reply) {
+  				//reply.file('index.html');
+			}
     	}
   	},
   	{

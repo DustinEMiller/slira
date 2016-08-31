@@ -16,6 +16,7 @@
     "boom": "^3.2.2",
     "getenv": "^0.6.0",
     "hapi": "^13.2.2",
+    "hapi-auth-cookie": "^6.1.1",
     "hapi-auth-jwt": "^4.0.0",
     "inert": "^4.0.1",
     "joi": "^8.4.2",
