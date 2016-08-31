@@ -57,6 +57,7 @@ module.exports = [
     	config: {
     		auth: 'session',
     		handler: function(request, reply) {
+    			console.log(request.auth.credentials);
   				reply.file('index.html');
 			}
     	}
