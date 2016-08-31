@@ -25,7 +25,7 @@ server.connection({
 server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'),require('inert'), require('bell')],(err) => {
     server.auth.strategy('session', 'cookie', {
         password: 'secret_cookie_encryption_password',
-        redirectTo: '/api/login/slack', 
+        redirectTo: '/login/slack', 
         isSecure: false 
     });
 
