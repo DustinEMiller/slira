@@ -32,12 +32,16 @@ module.exports.handleLogin = (request, reply) => {
 					token = userUtils.createToken(response);
 					console.log('1');
 
+					request.cookieAuth.set({
+						token: token
+        			});
+
 					let data = {
           				success: true,
           				newAccount: false,
           				token: token
         			};
-					return reply(data).redirect(config.url+'/').header('token', data);	
+					return reply(data).redirect(config.url+'/');	
 				}
 				else {
 					console.log('2');
