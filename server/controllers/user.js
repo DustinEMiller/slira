@@ -32,16 +32,12 @@ module.exports.handleLogin = (request, reply) => {
 					token = userUtils.createToken(response);
 					console.log('1');
 
-					request.cookieAuth.set({
-						token: token
-        			});
-
 					let data = {
-          				success: true,
-          				newAccount: false,
-          				token: token
+						newAccount: false,
+						token: token
         			};
-					return reply(data).redirect(config.url+'/');	
+
+        			return reply.(data);	
 				}
 				else {
 					console.log('2');
@@ -55,13 +51,17 @@ module.exports.handleLogin = (request, reply) => {
 
 				user.save((error) => {
 					if(error) {
-						console.log(error);
 						return reply.redirect(config.url+'/login', {success: false , msg: 'There was an issue creating your account. Please try again.'});
 					}
 					token = userUtils.createToken(user);
 					console.log('3');
 
-					return reply.redirect(config.url+'/').header('token', {success: true, newAccount: true, token: token});
+					let data = {
+						newAccount: false,
+						token: token
+        			};
+
+        			return reply(data);
 				});
 			}		
 		})

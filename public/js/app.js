@@ -70,12 +70,23 @@ angular
   .module('slira')
   .controller('loginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
+    loginCtrl.$inject = ['$location', 'authentication', '$scope'];
 
-    function loginCtrl($location, authentication, $routeParams, $scope) {
-        console.log($routeParams);
+    function loginCtrl($location, authentication, $scope) {
+        
         if(authentication.isLoggedIn()) {
             $location.path('account');    
+        }
+
+        $scope.slackLogin = function() {
+          console.log('login');
+          authentication.slackLogin($routeParams.registrationToken)
+            .then(function(response) {
+              console.log(response);    
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
         }
     }
 })();;(function () {
@@ -222,8 +233,8 @@ angular
             }
         };
 
-       var slackState = function () {
-            return $http.get('/api/slack/state')
+       var slackLogin = function () {
+            return $http.get('/api/login/slack')
                 .then(function (request) {
                     return request;
                 })
@@ -258,7 +269,7 @@ angular
             currentUser: currentUser,
             saveToken: saveToken,
             getToken: getToken,
-            slackState: slackState,
+            slackLogin: slackLogin,
             isLoggedIn: isLoggedIn,
             register: register,
             login: login,
@@ -417,7 +428,7 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
     "        <h1>Log In</h1>\n" +
-    "        <a href=\"login/slack\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>  \n" +
+    "        <a ngClick=\"slackLogin()\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\" /></a>  \n" +
     "    </div>\n" +
     "</div>");
 }]);

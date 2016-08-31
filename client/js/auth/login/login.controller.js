@@ -4,12 +4,23 @@
   .module('slira')
   .controller('loginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
+    loginCtrl.$inject = ['$location', 'authentication', '$scope'];
 
-    function loginCtrl($location, authentication, $routeParams, $scope) {
-        console.log($routeParams);
+    function loginCtrl($location, authentication, $scope) {
+        
         if(authentication.isLoggedIn()) {
             $location.path('account');    
+        }
+
+        $scope.slackLogin = function() {
+          console.log('login');
+          authentication.slackLogin($routeParams.registrationToken)
+            .then(function(response) {
+              console.log(response);    
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
         }
     }
 })();

@@ -44,8 +44,8 @@
             }
         };
 
-       var slackState = function () {
-            return $http.get('/api/slack/state')
+       var slackLogin = function () {
+            return $http.get('/api/login/slack')
                 .then(function (request) {
                     return request;
                 })
@@ -80,7 +80,7 @@
             currentUser: currentUser,
             saveToken: saveToken,
             getToken: getToken,
-            slackState: slackState,
+            slackLogin: slackLogin,
             isLoggedIn: isLoggedIn,
             register: register,
             login: login,
