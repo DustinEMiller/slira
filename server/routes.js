@@ -39,8 +39,8 @@ module.exports = [
     	method: 'GET', 
     	path: '/',
 		handler: function(request, reply) {
-			console.log(request);
-			console.log(request.auth.credentials.token);
+			console.log(request.cookieAuth);
+			console.log(request.state.sid.token);
       		reply.file('index.html');
     	}
   	},
