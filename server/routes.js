@@ -23,7 +23,7 @@ module.exports = [
 		config: {
 			handler: user.getAccount,
 			auth: {
-	      		strategy: ['jwt', 'session']
+	      		strategy: 'jwt'
 	    	}	
 		}	
 	},
