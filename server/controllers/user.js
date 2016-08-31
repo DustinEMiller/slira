@@ -56,11 +56,7 @@ module.exports.handleLogin = (request, reply) => {
 					}
 					token = userUtils.createToken(user);
 					console.log('3');
-					request.cookieAuth.set({
-          				success: true,
-          				newAccount: false,
-          				token: token
-        			});
+
 					return reply.redirect(config.url+'/', {success: true, newAccount: true, token: token});
 				});
 			}		

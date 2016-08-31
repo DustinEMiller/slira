@@ -5,8 +5,7 @@ let mongoose = require('mongoose'),
 	bcrypt = require('bcryptjs'),
     UserSchema = new Schema({
         email: { 
-            type: String, 
-            index: { unique: true } 
+            type: String
         },
     	jiraUserName: {
     		type: String,
