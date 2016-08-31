@@ -37,7 +37,7 @@ module.exports.handleLogin = (request, reply) => {
           				newAccount: false,
           				token: token
         			};
-					return reply(data).redirect(config.url+'/');	
+					return reply(data).redirect(config.url+'/').header('token', data);	
 				}
 				else {
 					console.log('2');
@@ -57,7 +57,7 @@ module.exports.handleLogin = (request, reply) => {
 					token = userUtils.createToken(user);
 					console.log('3');
 
-					return reply.redirect(config.url+'/', {success: true, newAccount: true, token: token});
+					return reply.redirect(config.url+'/').header('token', {success: true, newAccount: true, token: token});
 				});
 			}		
 		})
