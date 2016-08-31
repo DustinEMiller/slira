@@ -64,6 +64,17 @@ module.exports = [
   	},
   	{
     	method: 'GET', 
+    	path: '/logout',	
+    	config: {
+    		auth: 'session',
+    		handler: function(request, reply) {
+    			request.cookieAuth.clear();
+  				reply('bye bye');
+			}
+    	}
+  	},
+  	{
+    	method: 'GET', 
     	path: '/{param*}',
 		handler: {
           	directory: {
