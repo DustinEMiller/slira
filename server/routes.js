@@ -57,7 +57,7 @@ module.exports = [
     	config: {
     		auth: 'session',
     		handler: function(request, reply) {
-  				//reply.file('index.html');
+  				reply.file('index.html');
 			}
     	}
   	},
