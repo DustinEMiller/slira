@@ -29,7 +29,7 @@ module.exports = [
 	},
 	{
     	method: 'GET', 
-    	path: '/api/login/slack',
+    	path: '/login/slack',
 		config: {
     		auth: 'slack',
     		handler: user.handleLogin
