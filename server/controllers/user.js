@@ -25,8 +25,10 @@ module.exports.handleLogin = (request, reply) => {
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
 		.then((response) => {
-
+			console.log(response);
+			console.log(credentials.profile);
 			if(response) {
+
 				// account exists, check for match
 				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
 					console.log('1');
