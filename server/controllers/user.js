@@ -26,7 +26,7 @@ module.exports.handleLogin = (request, reply) => {
 		User.findOne({ accessToken: credentials.token}).exec()
 		.then((response) => {
 			console.log(response);
-			console.log(credentials.profile);
+			console.log(credentials);
 			if(response) {
 
 				// account exists, check for match
