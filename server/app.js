@@ -39,7 +39,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
         password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
         clientId: config.slack.clientId,
         clientSecret: config.slack.oauthSecret,
-        scope: ['identify', 'identity.basic', 'identity.email', 'identity.team'],
+        scope: ['identify', 'identity.email', 'identity.team'],
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });
 
