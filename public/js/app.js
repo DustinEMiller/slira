@@ -414,7 +414,7 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
     "        <h1>Log In</h1>\n" +
-    "        <a ng-click=\"slackLogin()\" href=\"/login/slack\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
+    "        <a ng-click=\"slackLogin()\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
     "    </div>\n" +
     "</div>");
 }]);
