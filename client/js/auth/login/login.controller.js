@@ -4,23 +4,12 @@
   .module('slira')
   .controller('loginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$location', 'authentication', '$scope'];
+    loginCtrl.$inject = ['$scope'];
 
-    function loginCtrl($location, authentication, $scope) {
-        
-        if(authentication.isLoggedIn()) {
-            $location.path('account');    
-        }
+    function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-          console.log('login');
-          authentication.slackLogin()
-            .then(function(response) {
-              console.log(response);    
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
+          window.location = "http://54.244.181.96:3000/login/slack"    
         }
     }
 })();

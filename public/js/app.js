@@ -70,23 +70,12 @@ angular
   .module('slira')
   .controller('loginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$location', 'authentication', '$scope'];
+    loginCtrl.$inject = ['$scope'];
 
-    function loginCtrl($location, authentication, $scope) {
-        
-        if(authentication.isLoggedIn()) {
-            $location.path('account');    
-        }
+    function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-          console.log('login');
-          authentication.slackLogin()
-            .then(function(response) {
-              console.log(response);    
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
+          window.location = "http://54.244.181.96:3000/login/slack"    
         }
     }
 })();;(function () {
@@ -425,7 +414,7 @@ angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCac
     "<div class=\"row\">\n" +
     "    <div class=\"small-12 columns\">\n" +
     "        <h1>Log In</h1>\n" +
-    "        <a href=\"/login/slack\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
+    "        <a ng-click=\"slackLogin()\" href=\"/login/slack\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
     "    </div>\n" +
     "</div>");
 }]);
