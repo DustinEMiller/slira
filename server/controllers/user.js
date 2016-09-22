@@ -25,7 +25,8 @@ module.exports.handleLogin = (request, reply) => {
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
 		.then((response) => {
-			console.log(request.auth);
+			console.log(request);
+			console.log(credentials.profile.raw);
 			if(response && typeof credentials.token !== 'undefined') {
     			request.cookieAuth.set({
       				id: response.userId,
