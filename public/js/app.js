@@ -59,7 +59,7 @@ angular
 
     function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
-
+        console.log(sliraData.getProfile());
         sliraData.getProfile()
             .then(function(data) {
                 console.log('promise returned');
