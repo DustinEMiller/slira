@@ -60,14 +60,14 @@ angular
     function accountCtrl($location, sliraData, $routeParams, $scope) {
         $scope.user = {};
 
-        /*sliraData.getProfile()
+        sliraData.getProfile()
             .then(function(data) {
                 console.log(data)
                 $scope.user = data;
             })
             .catch(function (e) {
                 console.log(e);
-            });*/
+            });
     }
 })();;(function () {
 
@@ -80,7 +80,7 @@ angular
     function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-          window.location = "http://127.0.0.1:3000/login/slack"    
+          window.location = "/login/slack"    
         }
     }
 })();;(function () {
@@ -283,11 +283,7 @@ angular
   function sliraData ($http, authentication) {
 
 	var getProfile = function () {
-	  	return $http.get('/api/user/information', {
-			headers: {
-		  		Authorization: 'Bearer '+ authentication.getToken()
-			}
-	  	});
+	  	return $http.get('/api/user/information');
 	};
 
 	return {
