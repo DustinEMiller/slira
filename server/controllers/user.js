@@ -52,8 +52,8 @@ module.exports.handleLogin = (request, reply) => {
 						token = userUtils.createToken(user);
 
 						request.cookieAuth.set({
-	          				id: response.userId,
-      						team: response.teamId,
+	          				id: credentials.profile.user_id,
+      						team: credentials.profile.raw.team_id,
 	          				newAccount: true
 	        			});
 
