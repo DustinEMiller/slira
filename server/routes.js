@@ -21,7 +21,7 @@ module.exports = [
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
-      auth: 'session'
+      auth: 'session',
 			handler: user.getAccount
 		}	
 	},
