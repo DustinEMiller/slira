@@ -74,7 +74,7 @@ module.exports.getAccount = (request, reply) => {
 	console.log(request.auth.credentials);
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
-		User.findOne({ accessToken: credentials.token}).exec()
+		User.findOne({userId: request.auth.credentials.id, teamId: request.auth.credentials.team}).exec()
 	  		.then((response) => {
 	  			if(response) {
 	  				let user = {
