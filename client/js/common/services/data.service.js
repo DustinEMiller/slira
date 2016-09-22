@@ -9,7 +9,13 @@
   function sliraData ($http, authentication) {
 
 	var getProfile = function () {
-	  	return $http.get('/api/user/information');
+        $http.get('/api/user/information')
+            .then(function (request) {
+                return request;
+            })
+            .catch(function (error) {
+                return error;
+            });
 	};
 
 	return {

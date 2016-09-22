@@ -61,11 +61,11 @@ angular
         $scope.user = {};
         console.log(sliraData.getProfile());
         sliraData.getProfile()
-            .success(function(data) {
+            .then(function(data) {
                 console.log('promise returned');
                 $scope.user = data;
             })
-            .error(function (e) {
+            .catch(function (e) {
                 console.log('promise rejected');
             });
     }
@@ -283,7 +283,13 @@ angular
   function sliraData ($http, authentication) {
 
 	var getProfile = function () {
-	  	return $http.get('/api/user/information');
+        $http.get('/api/user/information')
+            .then(function (request) {
+                return request;
+            })
+            .catch(function (error) {
+                return error;
+            });
 	};
 
 	return {
