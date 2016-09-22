@@ -9,13 +9,13 @@
     function accountCtrl($location, sliraData, $routeParams, $scope) {
         $scope.user = {};
 
-        /*sliraData.getProfile()
+        sliraData.getProfile()
             .then(function(data) {
                 console.log(data)
                 $scope.user = data;
             })
             .catch(function (e) {
                 console.log(e);
-            });*/
+        });
     }
 })();

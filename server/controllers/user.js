@@ -28,9 +28,9 @@ module.exports.handleLogin = (request, reply) => {
 			console.log(response);
 			console.log(credentials);
 			if(response && typeof credentials.token !== 'undefined') {
-				console.log('1');
     			request.cookieAuth.set({
       				id: response.userId,
+      				team: response.teamId,
       				newAccount: false
     			});
 
@@ -39,7 +39,6 @@ module.exports.handleLogin = (request, reply) => {
 			} else {
 				console.log(credentials.token);
 				if(credentials.token) {
-					console.log('2');
 					// create a new account
 					user.accessToken = credentials.token;
 					user.userId = credentials.profile.user_id;
@@ -53,14 +52,14 @@ module.exports.handleLogin = (request, reply) => {
 						token = userUtils.createToken(user);
 
 						request.cookieAuth.set({
-	          				id: user.userId,
+	          				id: response.userId,
+      						team: response.teamId,
 	          				newAccount: true
 	        			});
 
 	        			return reply.redirect('/account');
 					});	
 				} else {
-					console.log('3');
 					return reply.redirect('/unauthorized');
 				}
 			}		
@@ -72,16 +71,15 @@ module.exports.handleLogin = (request, reply) => {
 }
 
 module.exports.getAccount = (request, reply) => {
+	console.log(request.auth.credentials);
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
-		User.findById(request.auth.credentials._id).exec()
+		User.findOne({ accessToken: credentials.token}).exec()
 	  		.then((response) => {
 	  			if(response) {
 	  				let user = {
-	  					_id: response._id,
-	  					email: response.email,
-	  					slackUserName: response.slackUserName,
-	  					jiraUserName: response.jiraUserName
+	  					id: response.userId,
+  						team: response.teamId,
 	  				};
 	  				return reply({success: true, user: user});
 	  			} else {

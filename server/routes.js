@@ -21,10 +21,8 @@ module.exports = [
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
-			handler: user.getAccount,
-			auth: {
-	      		strategy: 'jwt'
-	    	}	
+      auth: 'session'
+			handler: user.getAccount
 		}	
 	},
 	{
