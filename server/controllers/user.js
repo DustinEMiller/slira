@@ -25,8 +25,7 @@ module.exports.handleLogin = (request, reply) => {
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
 		.then((response) => {
-			console.log(request);
-			console.log(credentials.profile.raw);
+
 			if(response && typeof credentials.token !== 'undefined') {
     			request.cookieAuth.set({
       				id: response.userId,
@@ -36,7 +35,7 @@ module.exports.handleLogin = (request, reply) => {
         		return reply.redirect('/account');	
 			// create a new account
 			} else {
-				console.log(credentials.token);
+
 				if(credentials.token) {
 					// create a new account
 					user.accessToken = credentials.token;
