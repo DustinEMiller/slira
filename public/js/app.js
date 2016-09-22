@@ -335,18 +335,18 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "        <div> \n" +
     "        <form id=\"general\">\n" +
     "            <fieldset class=\"fieldset\">\n" +
-    "            <legend>Account Information</legend>\n" +
+    "            <legend>Slack Information</legend>\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"email\">Email</label>\n" +
-    "                    <input id=\"email\" name=\"email\" size=\"30\" type=\"text\" value=\"{{email}}\">\n" +
+    "                    <label for=\"slack-user-name\">Slack User Name</label>\n" +
+    "                    <input id=\"slack-user-name\" name=\"slack-user-name\" size=\"30\" type=\"text\" value=\"{{slackUserName}}\">\n" +
     "                </div>\n" +
     "            </div>\n" +
     "\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"slack-user-name\">Slack User Name</label>\n" +
-    "                    <input id=\"slack-user-name\" name=\"slack-user-name\" size=\"30\" type=\"text\" value=\"{{slackUserName}}\">\n" +
+    "                    <label for=\"slack-team\">Slack Team</label>\n" +
+    "                    <input id=\"slack-team\" name=\"slack-team\" size=\"30\" type=\"text\" value=\"{{slackTeam}}\">\n" +
     "                </div>\n" +
     "            </div>\n" +
     "            </fieldset>\n" +
