@@ -29,7 +29,9 @@ module.exports.handleLogin = (request, reply) => {
 			if(response && typeof credentials.token !== 'undefined') {
     			request.cookieAuth.set({
       				id: response.userId,
-      				team: response.teamId
+      				team: response.teamId,
+      				name: credentials.profile.user
+	          		newAccount: true
     			});
 
         		return reply.redirect('/account');	
@@ -52,7 +54,8 @@ module.exports.handleLogin = (request, reply) => {
 
 						request.cookieAuth.set({
 	          				id: credentials.profile.user_id,
-      						team: credentials.profile.raw.team_id,
+      						team: credentials.profile.raw.team,
+      						name: credentials.profile.user
 	          				newAccount: true
 	        			});
 
@@ -70,15 +73,14 @@ module.exports.handleLogin = (request, reply) => {
 }
 
 module.exports.getAccount = (request, reply) => {
-	console.log(request.auth.credentials);
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
 		User.findOne({userId: request.auth.credentials.id, teamId: request.auth.credentials.team}).exec()
 	  		.then((response) => {
 	  			if(response) {
 	  				let user = {
-	  					id: response.userId,
   						team: response.teamId,
+  						username: response.username
 	  				};
 	  				return reply({success: true, user: user});
 	  			} else {
