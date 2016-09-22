@@ -283,7 +283,7 @@ angular
   function sliraData ($http, authentication) {
 
 	var getProfile = function () {
-        console.log('profile call');
+        console.log($http.get('/api/user/information'));
 	  	return $http.get('/api/user/information');
 	};
 
