@@ -11,11 +11,11 @@
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log(data)
+                console.log('promise returned')
                 $scope.user = data;
             })
             .catch(function (e) {
-                console.log(e);
+                console.log('promise rejected');
             });
     }
 })();
