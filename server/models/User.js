@@ -16,6 +16,9 @@ let mongoose = require('mongoose'),
     	slackUserName: {
     		type: String,
     	},
+        slackTeamName: {
+            type: String,
+        },
         accessToken: {
             type: String,  
             unique: true  

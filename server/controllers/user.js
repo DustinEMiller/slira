@@ -35,12 +35,14 @@ module.exports.handleLogin = (request, reply) => {
         		return reply.redirect('/account');	
 			// create a new account
 			} else {
-
+				console.log(credentials);
 				if(credentials.token) {
 					// create a new account
 					user.accessToken = credentials.token;
 					user.userId = credentials.profile.user_id;
 					user.teamId = credentials.profile.raw.team_id;
+					user.slackUserName = credentials.profile.user;
+					user.slackTeamName = credentials.profile.user;
 
 					user.save((error) => {
 						if(error) {
