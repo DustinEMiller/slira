@@ -10,11 +10,11 @@
         $scope.user = {};
         console.log(sliraData.getProfile());
         sliraData.getProfile()
-            .then(function(data) {
+            .success(function(data) {
                 console.log('promise returned');
                 $scope.user = data;
             })
-            .catch(function (e) {
+            .error(function (e) {
                 console.log('promise rejected');
             });
     }
