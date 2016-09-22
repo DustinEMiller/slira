@@ -55,18 +55,18 @@ angular
     .module('slira')
     .controller('accountCtrl', accountCtrl);
 
-    accountCtrl.$inject = ['$location', 'sliraData', '$routeParams', '$scope'];
+    accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
 
-    function accountCtrl($location, sliraData, $routeParams, $scope) {
+    function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log(data)
+                console.log('promise returned');
                 $scope.user = data;
             })
             .catch(function (e) {
-                console.log(e);
+                console.log('promise rejected');
             });
     }
 })();;(function () {
