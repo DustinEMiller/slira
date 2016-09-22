@@ -59,7 +59,7 @@ angular
 
     function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
-        console.log(sliraData.getProfile());
+
         sliraData.getProfile()
             .then(function(data) {
                 console.log('promise returned');
@@ -283,7 +283,7 @@ angular
   function sliraData ($http, authentication) {
 
 	var getProfile = function () {
-        $http.get('/api/user/information')
+        return $http.get('/api/user/information')
             .then(function (request) {
                 return request;
             })
