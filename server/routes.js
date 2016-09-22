@@ -30,7 +30,7 @@ module.exports = [
 	{
     	method: 'GET', 
     	path: '/login/slack',
-		config: {
+		  config: {
     		auth: 'slack',
     		handler: user.handleLogin
     	},
@@ -38,19 +38,35 @@ module.exports = [
   	{
     	method: 'GET', 
     	path: '/',
-		handler: function(request, reply) {
+		  handler: function(request, reply) {
       		reply.file('index.html');
     	}
   	},
   	{
     	method: 'GET', 
     	path: '/login',
-		handler: function(request, reply) {
+		  handler: function(request, reply) {
 			//console.log(request);
       		reply.file('index.html');	
     	}
     	
   	},
+    {
+      method: 'GET', 
+      path: '/loginError',
+      handler: function(request, reply) {
+          reply.file('index.html'); 
+      }
+      
+    },
+    {
+      method: 'GET', 
+      path: '/unauthorized',
+      handler: function(request, reply) {
+          reply.file('index.html'); 
+      }
+      
+    },
   	{
     	method: 'GET', 
     	path: '/account',	

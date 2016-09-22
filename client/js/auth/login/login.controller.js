@@ -9,7 +9,7 @@
     function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-          window.location = "http://54.244.181.96:3000/login/slack"    
+          window.location = "http://127.0.0.1:3000/login/slack"    
         }
     }
 })();

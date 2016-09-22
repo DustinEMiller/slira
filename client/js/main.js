@@ -24,6 +24,12 @@
             templateUrl: '../client/js/account/account.view.html',
             controller: 'accountCtrl',
         })
+        .when('/loginError', {
+            templateUrl: '../client/js/errors/loginError.view.html'
+        })
+        .when('/unauthorized', {
+            templateUrl: '../client/js/errors/unauthorized.view.html'
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API

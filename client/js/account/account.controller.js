@@ -8,7 +8,6 @@
 
     function accountCtrl($location, sliraData, $routeParams, $scope) {
         $scope.user = {};
-        console.log($routeParams);
 
         /*sliraData.getProfile()
             .then(function(data) {

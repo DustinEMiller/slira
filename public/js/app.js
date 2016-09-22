@@ -24,6 +24,12 @@
             templateUrl: '../client/js/account/account.view.html',
             controller: 'accountCtrl',
         })
+        .when('/loginError', {
+            templateUrl: '../client/js/errors/loginError.view.html'
+        })
+        .when('/unauthorized', {
+            templateUrl: '../client/js/errors/unauthorized.view.html'
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API
@@ -53,7 +59,6 @@ angular
 
     function accountCtrl($location, sliraData, $routeParams, $scope) {
         $scope.user = {};
-        console.log($routeParams);
 
         /*sliraData.getProfile()
             .then(function(data) {
@@ -75,7 +80,7 @@ angular
     function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-          window.location = "http://54.244.181.96:3000/login/slack"    
+          window.location = "http://127.0.0.1:3000/login/slack"    
         }
     }
 })();;(function () {
@@ -321,7 +326,7 @@ angular
     function indexCtrl () {
     }
 
-})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/auth/slack/slack.view.html', '../client/js/index/index.view.html']);
+})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/auth/slack/slack.view.html', '../client/js/errors/loginError.view.html', '../client/js/errors/unauthorized.view.html', '../client/js/index/index.view.html']);
 
 angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/account/account.view.html",
@@ -334,7 +339,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "        <div> \n" +
     "        <form id=\"general\">\n" +
     "            <fieldset class=\"fieldset\">\n" +
-    "            <legend>Change Account Information</legend>\n" +
+    "            <legend>Account Information</legend>\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +
     "                    <label for=\"email\">Email</label>\n" +
@@ -348,36 +353,21 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                    <input id=\"slack-user-name\" name=\"slack-user-name\" size=\"30\" type=\"text\" value=\"{{slackUserName}}\">\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "\n" +
-    "            <div class=\"row\">\n" +
-    "                 <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"jira-user-name\">Jira Username</label>\n" +
-    "                    <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\">Change Information</button>\n" +
     "            </fieldset>\n" +
     "        </form>\n" +
     "        </div>\n" +
     "\n" +
-    "        <div>\n" +
-    "        <form id=\"account-pw\">\n" +
+    "        <div> \n" +
+    "        <form id=\"general\">\n" +
     "            <fieldset class=\"fieldset\">\n" +
-    "            <legend>Change Account Password</legend>\n" +
+    "            <legend>Update JIRA Username</legend>\n" +
     "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"old-account-password\">Old Account Password</label>\n" +
-    "                    <input id=\"old-account-password\" name=\"old-account-password\" size=\"30\" type=\"password\">\n" +
+    "                 <div class=\"small-12 columns\">\n" +
+    "                    <label for=\"jira-user-name\">JIRA Username</label>\n" +
+    "                    <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"new-account-password\">New Account Password</label>\n" +
-    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\">Change Account Password</button>\n" +
+    "            <button class=\"button\" type=\"submit\">Update Username</button>\n" +
     "            </fieldset>\n" +
     "        </form>\n" +
     "        </div>\n" +
@@ -385,21 +375,21 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "        <div>\n" +
     "        <form id=\"jira-pw\">\n" +
     "            <fieldset class=\"fieldset\">\n" +
-    "            <legend>Update Jira Password</legend>\n" +
+    "            <legend>Update JIRA Password</legend>\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"new-account-password\">Old Jira Password</label>\n" +
-    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
+    "                    <label for=\"old-jira-password\">Old JIRA Password</label>\n" +
+    "                    <input id=\"old-jira-password\" name=\"old-jira-password\" size=\"30\" type=\"password\">\n" +
     "                </div>\n" +
     "            </div>\n" +
     "\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"new-account-password\">New Jira Password</label>\n" +
-    "                    <input id=\"new-account-password\" name=\"account-password\" size=\"30\" type=\"password\">\n" +
+    "                    <label for=\"current-account-password\">Current JIRA Password</label>\n" +
+    "                    <input id=\"current-account-password\" name=\"current-account-password\" size=\"30\" type=\"password\">\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\">Update Jira Password</button>\n" +
+    "            <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
     "            </fieldset>\n" +
     "        </form>\n" +
     "        </div>\n" +
@@ -463,6 +453,16 @@ angular.module("../client/js/auth/slack/slack.view.html", []).run(["$templateCac
     "    Things are hapenning\n" +
     "    </div>\n" +
     "</div>");
+}]);
+
+angular.module("../client/js/errors/loginError.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/errors/loginError.view.html",
+    "loginError");
+}]);
+
+angular.module("../client/js/errors/unauthorized.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/errors/unauthorized.view.html",
+    "You're not allowed");
 }]);
 
 angular.module("../client/js/index/index.view.html", []).run(["$templateCache", function($templateCache) {

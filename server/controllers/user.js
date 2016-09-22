@@ -27,48 +27,46 @@ module.exports.handleLogin = (request, reply) => {
 		.then((response) => {
 			console.log(response);
 			console.log(credentials);
-			if(response) {
+			if(response && typeof credentials.token !== 'undefined') {
+				console.log('1');
+    			request.cookieAuth.set({
+      				id: response.userId,
+      				newAccount: false
+    			});
 
-				// account exists, check for match
-				if(response.userId === credentials.profile.user_id && response.teamId === credentials.profile.raw.team_id) {
-					console.log('1');
-        			request.cookieAuth.set({
-          				id: response.userId,
-          				newAccount: false
-        			});
-
-        			return reply.redirect('/account');	
-				}
-				else {
-					console.log('error2');
-					return reply.redirect('/account');	
-				}
+        		return reply.redirect('/account');	
 			// create a new account
 			} else {
-				user.accessToken = credentials.token;
-				user.userId = credentials.profile.user_id;
-				user.teamId = credentials.profile.raw.team_id;
+				console.log(credentials.token);
+				if(credentials.token) {
+					console.log('2');
+					// create a new account
+					user.accessToken = credentials.token;
+					user.userId = credentials.profile.user_id;
+					user.teamId = credentials.profile.raw.team_id;
 
-				user.save((error) => {
-					if(error) {
-						console.log('error3');
-						return reply.redirect('/account');
-					}
-					token = userUtils.createToken(user);
+					user.save((error) => {
+						if(error) {
+							return reply.redirect('/loginError');
+						}
+
+						token = userUtils.createToken(user);
+
+						request.cookieAuth.set({
+	          				id: user.userId,
+	          				newAccount: true
+	        			});
+
+	        			return reply.redirect('/account');
+					});	
+				} else {
 					console.log('3');
-
-					request.cookieAuth.set({
-          				id: user.userId,
-          				newAccount: true
-        			});
-
-        			return reply.redirect('/account');
-				});
+					return reply.redirect('/unauthorized');
+				}
 			}		
 		})
 		.catch((error) => {
-			console.log(error);
-			return reply.redirect(config.url+'/login', {success: false, msg: "There was an error creating or accessing your account. Please try again"});
+			return reply.redirect('/loginError');
 		});
 	}
 }
