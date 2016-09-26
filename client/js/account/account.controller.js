@@ -11,8 +11,7 @@
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log('promise returned');
-                $scope.user = data;
+                console.log(data);
             })
             .catch(function (e) {
                 console.log('promise rejected');
