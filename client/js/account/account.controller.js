@@ -11,7 +11,11 @@
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log(data);
+                if(data.data.success){
+                    $scope.slackUserName = data.data.user.username,;
+                    $scope.slackTeamd = data.data.user.team;
+                    $scope.jiraUserName = data.data.user.jiraname 
+                }
             })
             .catch(function (e) {
                 console.log('promise rejected');

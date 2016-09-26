@@ -29,9 +29,6 @@ module.exports.handleLogin = (request, reply) => {
 			if(response && typeof credentials.token !== 'undefined') {
     			request.cookieAuth.set({
       				id: response.userId,
-      				team: response.teamId,
-      				name: credentials.profile.user,
-	          		newAccount: true
     			});
 
         		return reply.redirect('/account');	
@@ -54,9 +51,6 @@ module.exports.handleLogin = (request, reply) => {
 
 						request.cookieAuth.set({
 	          				id: credentials.profile.user_id,
-      						team: credentials.profile.raw.team,
-      						name: credentials.profile.user,
-	          				newAccount: true
 	        			});
 
 	        			return reply.redirect('/account');
@@ -78,9 +72,11 @@ module.exports.getAccount = (request, reply) => {
 		User.findOne({userId: request.auth.credentials.id, teamId: request.auth.credentials.team}).exec()
 	  		.then((response) => {
 	  			if(response) {
+
 	  				let user = {
-  						team: response.teamId,
-  						username: response.username
+  						team: response.slackTeamName,
+  						username: response.slackUserName,
+  						jiraname: response.jiraUserName
 	  				};
 	  				return reply({success: true, user: user});
 	  			} else {
@@ -152,7 +148,6 @@ module.exports.login = (request, reply) => {
 			}
 		})
 		.catch((error) => {
-			console.log(error);
 			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
 		});
 }
