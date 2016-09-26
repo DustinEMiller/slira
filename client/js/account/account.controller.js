@@ -13,7 +13,7 @@
             .then(function(data) {
                 if(data.data.success){
                     $scope.slackUserName = data.data.user.username;
-                    $scope.slackTeamd = data.data.user.team;
+                    $scope.slackTeam = data.data.user.team;
                     $scope.jiraUserName = data.data.user.jiraname;
                 }
             })
