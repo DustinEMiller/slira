@@ -62,6 +62,7 @@ angular
 
         sliraData.getProfile()
             .then(function(data) {
+                console.log(data);
                 if(data.data.success){
                     $scope.slackUserName = data.data.user.username;
                     $scope.slackTeam = data.data.user.team;

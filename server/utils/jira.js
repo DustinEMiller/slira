@@ -94,7 +94,7 @@ module.exports.checkUser = () => {
 
 	return new Promise((resolve, reject) => {
 	    req(opts, function(err, httpResponse, body) {
-
+	    	console.log(httpResponse.statusCode);
 			if (err) {
 				return reject('400');
 			}
