@@ -85,7 +85,7 @@ angular
 
         };
 
-        $scope.updateJiraPassword = function( {
+        $scope.updateJiraPassword = function() {
 
         };
     }
