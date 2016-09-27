@@ -55,8 +55,6 @@ function postRequest(options) {
 			if (httpResponse.statusCode === 404) {
 				return reject('404');
 			}
-			console.log(httpResponse.statusCode);
-			console.log(err);
 			return reject('not');
 	    });
   	});		
@@ -78,6 +76,7 @@ function mappedColors(color) {
 
 	return "#000000";
 }
+	
 
 function queryTransitions (issue) {
 	let opts = Object.create(options);
@@ -87,6 +86,29 @@ function queryTransitions (issue) {
 
 module.exports.setCommand = (cmd) => {
 	command = cmd;
+}
+
+module.exports.checkUser = () => {
+	let opts = Object.create(options);
+	opts.url = config.jira.url + '/rest/api/2/myself';
+
+	return new Promise((resolve, reject) => {
+	    req(opts, function(err, httpResponse, body) {
+
+			if (err) {
+				return reject('400');
+			}
+
+			if (httpResponse.statusCode === 200) {
+				return resolve(httpResponse.statusCode);
+			}
+
+			if (httpResponse.statusCode === 401) {
+				return reject(httpResponse.statusCode);
+			}
+
+	    });
+  	});	
 }
 
 module.exports.retrieveTransitions = (issue) => {
@@ -240,7 +262,6 @@ module.exports.transitionIssue = (args) => {
 				message.text = 'That is not a valid transition state or name. Type `'+command+' s '+issue+'` to see the valid states for this issue.';	
 			}
 
-			console.log(err);
 			return JSON.stringify(message);
 		});
 }
@@ -284,7 +305,6 @@ module.exports.queryIssues = (query) => {
 		})
 		.catch((err) => {
 			let message = {text: 'User ' + query + ' was not found'};
-			console.log(err);
 			return JSON.stringify(message);
 		});
 }
@@ -318,7 +338,6 @@ module.exports.addComment = (args) => {
 				message.text = 'There was no comment attached to the command. Please try again.';
 			}
 
-			console.log(err);
 			return JSON.stringify(message);
 		});
 }

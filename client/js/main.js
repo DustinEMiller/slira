@@ -35,7 +35,7 @@
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
 }
-//https://slack.com/oauth/authorize?scope=identity.basic,identity.team,identity.email&client_id=13949143637.72058318581
+
 function run($rootScope, $location, $templateCache, authentication) {
     /*$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
         if ($location.path() === '/account' && !authentication.isLoggedIn()) {

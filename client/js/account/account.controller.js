@@ -20,5 +20,22 @@
             .catch(function (e) {
                 console.log('promise rejected');
             });
+
+        sliraData.checkJira()
+            .then(function(data) {
+                console.log(data);
+            })
+            .catch(function(e) {
+
+            })
+
+
+        $scope.updateJiraName = function() {
+
+        };
+
+        $scope.updateJiraPassword = function( {
+
+        };
     }
 })();

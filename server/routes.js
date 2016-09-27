@@ -21,79 +21,87 @@ module.exports = [
 		path: '/api/user/information',
 		method: 'GET',
 		config: {
-      auth: 'session',
+			auth: 'session',
 			handler: user.getAccount
 		}	
 	},
 	{
-    	method: 'GET', 
-    	path: '/login/slack',
-		  config: {
-    		auth: 'slack',
-    		handler: user.handleLogin
-    	},
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/',
-		  handler: function(request, reply) {
-      		reply.file('index.html');
-    	}
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/login',
-		  handler: function(request, reply) {
-      		reply.file('index.html');	
-    	}
-    	
-  	},
-    {
-      method: 'GET', 
-      path: '/loginError',
-      handler: function(request, reply) {
-          reply.file('index.html'); 
-      }
-      
-    },
-    {
-      method: 'GET', 
-      path: '/unauthorized',
-      handler: function(request, reply) {
-          reply.file('index.html'); 
-      }
-      
-    },
-  	{
-    	method: 'GET', 
-    	path: '/account',	
-    	config: {
-    		auth: 'session',
-    		handler: function(request, reply) {
-  				reply.file('index.html');
+		path: '/api/jira/check',
+		method: 'GET',
+		config: {
+			auth: 'session',
+			handler: jira.checkUser
+		}	
+	},
+	{
+		method: 'GET', 
+		path: '/login/slack',
+		config: {
+			auth: 'slack',
+			handler: user.handleLogin
+		},
+	},
+	{
+		method: 'GET', 
+		path: '/',
+		handler: function(request, reply) {
+				reply.file('index.html');
+		}
+	},
+	{
+		method: 'GET', 
+		path: '/login',
+		handler: function(request, reply) {
+				reply.file('index.html');	
+		}
+		
+	},
+	{
+		method: 'GET', 
+		path: '/loginError',
+		handler: function(request, reply) {
+			reply.file('index.html'); 
+		}
+		
+	},
+	{
+		method: 'GET', 
+		path: '/unauthorized',
+		handler: function(request, reply) {
+			reply.file('index.html'); 
+		}
+		
+	},
+	{
+		method: 'GET', 
+		path: '/account',	
+		config: {
+			auth: 'session',
+			handler: function(request, reply) {
+				reply.file('index.html');
 			}
-    	}
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/logout',	
-    	config: {
-    		auth: 'session',
-    		handler: function(request, reply) {
-    			request.cookieAuth.clear();
-  				reply('bye bye');
+		}
+	},
+	{
+		method: 'GET', 
+		path: '/logout',	
+		config: {
+			auth: 'session',
+			handler: function(request, reply) {
+				request.cookieAuth.clear();
+				reply('bye bye');
 			}
-    	}
-  	},
-  	{
-    	method: 'GET', 
-    	path: '/{param*}',
+		}
+	},
+	{
+		method: 'GET', 
+		path: '/{param*}',
 		handler: {
-          	directory: {
+			directory: {
 				path: './../public',
 				redirectToSlash: true,
 				index: false
-      		}
-      	}
-  	},
+			}
+		}
+	},
 ];
