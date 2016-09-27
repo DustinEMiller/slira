@@ -1,13 +1,13 @@
 <navigation></navigation>
-
+<div class="row">
+    <div class="small-12 columns"><h2>Your Account</h2></div>
+</div>
 <div class="row">
     <div class="small-4 columns">
         <h4>{{slackTeam}}</h4>
         <h5>{{slackUserName}}</h5>
     </div>
     <div class="small-8 columns">
-        <h2>Your Account</h2>
-
         <div> 
         <form id="jira-name" ng-submit="updateJiraName()>
             <fieldset class="fieldset">
@@ -25,7 +25,7 @@
 
         <div>
         <form id="jira-pw">
-            <fieldset class="fieldset" ng-submit="updateJiraPassword()>
+            <fieldset class="fieldset" ng-submit="updateJiraPassword()">
             <legend>Update JIRA Password</legend>
             <div class="row">
                 <div class="small-12 columns">

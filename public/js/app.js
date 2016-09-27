@@ -305,15 +305,15 @@ angular
 angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/account/account.view.html",
     "<navigation></navigation>\n" +
-    "\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"small-12 columns\"><h2>Your Account</h2></div>\n" +
+    "</div>\n" +
     "<div class=\"row\">\n" +
     "    <div class=\"small-4 columns\">\n" +
     "        <h4>{{slackTeam}}</h4>\n" +
     "        <h5>{{slackUserName}}</h5>\n" +
     "    </div>\n" +
     "    <div class=\"small-8 columns\">\n" +
-    "        <h2>Your Account</h2>\n" +
-    "\n" +
     "        <div> \n" +
     "        <form id=\"jira-name\" ng-submit=\"updateJiraName()>\n" +
     "            <fieldset class=\"fieldset\">\n" +
@@ -331,7 +331,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "\n" +
     "        <div>\n" +
     "        <form id=\"jira-pw\">\n" +
-    "            <fieldset class=\"fieldset\" ng-submit=\"updateJiraPassword()>\n" +
+    "            <fieldset class=\"fieldset\" ng-submit=\"updateJiraPassword()\">\n" +
     "            <legend>Update JIRA Password</legend>\n" +
     "            <div class=\"row\">\n" +
     "                <div class=\"small-12 columns\">\n" +

@@ -59,7 +59,7 @@ module.exports.slackHook = function(request, reply) {
 };
 
 module.exports.checkUser = function(request, reply) {
-    return reply(JIRA.checkUser().header('content-type', 'application/json'));
+    return reply(JIRA.checkUser()).header('content-type', 'application/json');
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {
