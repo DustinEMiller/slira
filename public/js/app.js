@@ -315,7 +315,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "    </div>\n" +
     "    <div class=\"small-8 columns\">\n" +
     "        <div> \n" +
-    "        <form id=\"jira-name\" ng-submit=\"updateJiraName()>\n" +
+    "        <form id=\"jira-name\" ng-submit=\"updateJiraName()\">\n" +
     "            <fieldset class=\"fieldset\">\n" +
     "            <legend>Update JIRA Username</legend>\n" +
     "            <div class=\"row\">\n" +
