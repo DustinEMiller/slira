@@ -91,10 +91,11 @@ module.exports.setCommand = (cmd) => {
 module.exports.checkUser = () => {
 	let opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/myself';
-
+	console.log(opts);
 	return new Promise((resolve, reject) => {
 	    req(opts, function(err, httpResponse, body) {
 	    	console.log(httpResponse.statusCode);
+	    	
 			if (err) {
 				return reject('400');
 			}
@@ -103,7 +104,7 @@ module.exports.checkUser = () => {
 				return resolve(httpResponse.statusCode);
 			}
 
-			if (httpResponse.statusCode === 401) {
+			if (httpResponse.statusCode >= 400) {
 				return reject(httpResponse.statusCode);
 			}
 
