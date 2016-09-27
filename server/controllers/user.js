@@ -69,7 +69,7 @@ module.exports.handleLogin = (request, reply) => {
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
-		User.findOne({userId: request.auth.credentials.id, teamId: request.auth.credentials.team}).exec()
+		User.findOne({userId: request.auth.credentials.id}).exec()
 	  		.then((response) => {
 	  			if(response) {
 
