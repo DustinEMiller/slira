@@ -78,7 +78,7 @@ angular
                 console.log(data);
             })
             .catch(function(e) {
-                console.log(e);
+
             })
 
 
@@ -101,7 +101,7 @@ angular
     function loginCtrl($scope) {
 
         $scope.slackLogin = function() {
-            window.location = "/login/slack"    
+          window.location = "/login/slack"    
         }
     }
 })();;(function () {

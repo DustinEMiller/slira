@@ -27,7 +27,7 @@
                 console.log(data);
             })
             .catch(function(e) {
-                console.log(e);
+
             })
 
 
