@@ -21,6 +21,7 @@
     var checkJira = function () {
         return $http.get('/api/jira/check')
             .then(function (request) {
+                console.log(request);
                 return request;
             })
             .catch(function (error) {
