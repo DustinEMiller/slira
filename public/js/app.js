@@ -75,6 +75,7 @@ angular
 
         sliraData.checkJira()
             .then(function(data) {
+                console.log('test');
                 console.log(data);
             })
             .catch(function(e) {
@@ -279,6 +280,7 @@ angular
     var checkJira = function () {
         return $http.get('/api/jira/check')
             .then(function (request) {
+                console.log(request);
                 return request;
             })
             .catch(function (error) {

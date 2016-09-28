@@ -24,6 +24,7 @@
 
         sliraData.checkJira()
             .then(function(data) {
+                console.log('test');
                 console.log(data);
             })
             .catch(function(e) {
