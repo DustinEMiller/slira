@@ -33,7 +33,7 @@ let mongoose = require('mongoose'),
         }
     });
 
-UserSchema.pre('update', function(next) {
+UserSchema.pre('save', function(next) {
 	let user = this;
     console.log(this);
 	if (user.jiraPassword) {
