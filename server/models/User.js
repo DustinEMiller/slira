@@ -35,7 +35,7 @@ let mongoose = require('mongoose'),
 
 UserSchema.pre('update', function(next) {
 	let user = this;
-	if (user.jiraPassword && user.isModified('jiraPassword')) {
+	if (user.jiraPassword) {
         bcrypt.genSalt(10, function (err, salt) {
             if (err) {
                 return next(err);
