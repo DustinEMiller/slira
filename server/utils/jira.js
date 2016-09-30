@@ -1,7 +1,8 @@
 'use strict';
 
 const req = require('request'),
-	config = require('../config');
+	config = require('../config'),
+	User = require('../models/User');
 
 let options = {
 		headers: {
