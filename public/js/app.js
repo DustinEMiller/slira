@@ -59,15 +59,17 @@ angular
 
     function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
+        $scope.jiraValid = false;
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log(data);
+
                 if(data.data.success){
                     $scope.slackUserName = data.data.user.username;
                     $scope.slackTeam = data.data.user.team;
                     $scope.jiraUserName = data.data.user.jiraname;
                 }
+
             })
             .catch(function (e) {
                 console.log('promise rejected');
@@ -75,8 +77,9 @@ angular
 
         sliraData.checkJira()
             .then(function(data) {
-                console.log('test');
-                console.log(data);
+                if (data === 200) {
+                    $scope.jiraValid = true;    
+                }
             })
             .catch(function(e) {
 
@@ -318,40 +321,48 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "    </div>\n" +
     "    <div class=\"small-8 columns\">\n" +
     "        <div> \n" +
-    "        <form id=\"jira-name\" ng-submit=\"updateJiraName()\">\n" +
-    "            <fieldset class=\"fieldset\">\n" +
-    "            <legend>Update JIRA Username</legend>\n" +
-    "            <div class=\"row\">\n" +
-    "                 <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"jira-user-name\">JIRA Username</label>\n" +
-    "                    <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
+    "            <form id=\"jira-name\" ng-submit=\"updateJiraName()\">\n" +
+    "                <fieldset class=\"fieldset\">\n" +
+    "                <legend>Update JIRA Username</legend>\n" +
+    "                <div class=\"row\">\n" +
+    "                     <div class=\"small-12 columns\">\n" +
+    "                        <label for=\"jira-user-name\">JIRA Username</label>\n" +
+    "                        <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
+    "                    </div>\n" +
     "                </div>\n" +
-    "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\">Update Username</button>\n" +
-    "            </fieldset>\n" +
-    "        </form>\n" +
+    "                <button class=\"button\" type=\"submit\">Update Username</button>\n" +
+    "                </fieldset>\n" +
+    "            </form>\n" +
     "        </div>\n" +
     "\n" +
     "        <div>\n" +
-    "        <form id=\"jira-pw\">\n" +
-    "            <fieldset class=\"fieldset\" ng-submit=\"updateJiraPassword()\">\n" +
-    "            <legend>Update JIRA Password</legend>\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"old-jira-password\">Old JIRA Password</label>\n" +
-    "                    <input id=\"old-jira-password\" name=\"old-jira-password\" size=\"30\" type=\"password\">\n" +
+    "            <form id=\"jira-pw\">\n" +
+    "                <fieldset class=\"fieldset\" ng-submit=\"updateJiraPassword()\">\n" +
+    "                <legend>Update JIRA Password</legend>\n" +
+    "                <div class=\"row\">\n" +
+    "                    <div class=\"small-12 columns\">\n" +
+    "                        <label for=\"old-jira-password\">Old JIRA Password</label>\n" +
+    "                        <input id=\"old-jira-password\" name=\"old-jira-password\" size=\"30\" type=\"password\">\n" +
+    "                    </div>\n" +
     "                </div>\n" +
-    "            </div>\n" +
     "\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"small-12 columns\">\n" +
-    "                    <label for=\"current-account-password\">Current JIRA Password</label>\n" +
-    "                    <input id=\"current-account-password\" name=\"current-account-password\" size=\"30\" type=\"password\">\n" +
+    "                <div class=\"row\">\n" +
+    "                    <div class=\"small-12 columns\">\n" +
+    "                        <label for=\"current-account-password\">Current JIRA Password</label>\n" +
+    "                        <input id=\"current-account-password\" name=\"current-account-password\" size=\"30\" type=\"password\">\n" +
+    "                    </div>\n" +
     "                </div>\n" +
-    "            </div>\n" +
-    "            <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
-    "            </fieldset>\n" +
-    "        </form>\n" +
+    "                <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
+    "                </fieldset>\n" +
+    "            </form>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"success callout\" ng-show=\"jiraValid\">\n" +
+    "            <p>Your JIRA credentials are valid</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"warning callout\" ng-show=\"!jiraValid\">\n" +
+    "            <p>Your JIRA credentials are invalid</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>");
