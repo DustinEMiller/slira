@@ -94,7 +94,7 @@ module.exports.checkUser = (id) => {
 
 	opts.url = config.jira.url + 'rest/api/2/myself';
 
-	User.findOne({userId: id}).exec()
+	return User.findOne({userId: id}).exec()
 		.then((response) => {
 
 			if(response.jiraUserName && response.jiraPassword) {
