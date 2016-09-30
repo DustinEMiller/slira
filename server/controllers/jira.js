@@ -59,7 +59,15 @@ module.exports.slackHook = function(request, reply) {
 };
 
 module.exports.checkUser = function(request, reply) {
-    reply(JIRA.checkUser(request.auth.credentials.id))
+    console.log(JIRA.checkUser(request.auth.credentials.id))
+
+    JIRA.checkUser(request.auth.credentials.id)
+        .then((result) => {
+            reply(result); 
+        })
+        .catch((error) => {
+            reply(error);
+        });
 };
 
 module.exports.updateUser = function(request, reply) {
