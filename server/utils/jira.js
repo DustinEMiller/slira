@@ -106,17 +106,17 @@ module.exports.checkUser = (id) => {
 
 			if(opts.headers.Authorization === 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')) {
 				console.log('default');
-				return JSON.stringify('400');	
+				return '400';	
 			}
 
 			req(opts, function(err, httpResponse, body) {
 	    	
 				if (err) {
 					console.log('400');
-					return JSON.stringify('400');
+					return '400';
 				}
 				console.log('issueIdOrKey');
-				return JSON.stringify(httpResponse.statusCode);
+				return httpResponse.statusCode;
 	    	});
 		})
 		.catch((error) => {
