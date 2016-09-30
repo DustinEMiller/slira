@@ -98,13 +98,16 @@ module.exports.checkUser = (id) => {
 
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
-			} else {
-				opts.headers.Authorization = 'Basic ';	
 			}
 
 			return;
 		})
 		.then(() => {
+
+			if(opts.headers.Authorization === 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')) {
+				return JSON.stringify('400');	
+			}
+
 			req(opts, function(err, httpResponse, body) {
 	    	
 				if (err) {
