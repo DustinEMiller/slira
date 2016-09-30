@@ -93,11 +93,13 @@ module.exports.getAccount = (request, reply) => {
 }
 
 module.exports.updateAccount = (request, reply) => {
-	console.log(request);
-	/*let user = new User();
+	let user = new User();
 
-	user.jiraUserName = request.payload.jiraUserName;
-	user.jiraPassword = request.payload.jiraPassword;
+	if(request.payload.username) {
+		user.jiraUserName = request.payload.jiraUserName;
+	} else if (request.payload.password) {
+		user.jiraPassword = request.payload.jiraPassword;
+	}
 
 	let options = {
 		headers: {
@@ -126,7 +128,7 @@ module.exports.updateAccount = (request, reply) => {
 		})
 		.catch((err) => {
 			return reply(err).header('content-type', 'application/json');
-		});*/
+		});
 }
 
 module.exports.login = (request, reply) => {
