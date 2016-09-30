@@ -7,7 +7,8 @@
     accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
 
     function accountCtrl($location, sliraData, $scope) {
-        $scope.user = {};
+        $scope.jiraPassword = "";
+
         $scope.jiraValid = false;
 
         sliraData.getProfile()
@@ -26,21 +27,33 @@
 
         sliraData.checkJira()
             .then(function(data) {
-                if (data === 200) {
+                if (data.data === 200) {
                     $scope.jiraValid = true;    
                 }
             })
             .catch(function(e) {
 
-            })
+            });
 
 
         $scope.updateJiraName = function() {
+            sliraData.updateJiraUser({username:$scope.jiraUserName})
+                .then(function(data) {
 
+                })
+                .catch(function(e) {
+
+                });
         };
 
         $scope.updateJiraPassword = function() {
+            sliraData.updateJiraUser({password:$scope.jiraPassword})
+                .then(function(data) {
 
+                })
+                .catch(function(e) {
+
+                });
         };
     }
 })();

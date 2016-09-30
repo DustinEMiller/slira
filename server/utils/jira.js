@@ -4,13 +4,13 @@ const req = require('request'),
 	config = require('../config');
 
 let options = {
-	headers: {
-		'X-Atlassian-Token': 'no-check',
-		'Content-Type': 'application/json',
-		'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
-	},	
-},
-	command = '/jira';
+		headers: {
+			'X-Atlassian-Token': 'no-check',
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
+		},	
+	},
+	command = '/jira';	
 
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
@@ -88,27 +88,35 @@ module.exports.setCommand = (cmd) => {
 	command = cmd;
 }
 
-module.exports.checkUser = () => {
+module.exports.checkUser = (id) => {
 	let opts = Object.create(options);
+
 	opts.url = config.jira.url + 'rest/api/2/myself';
 
-	return new Promise((resolve, reject) => {
-	    req(opts, function(err, httpResponse, body) {
+	User.findOne({userId: id}).exec()
+		.then((response) => {
+
+			if(response.jiraUserName && response.jiraPassword) {
+				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
+			} else {
+				opts.headers.Authorization = 'Basic ';	
+			}
+
+			return;
+		})
+		.then(() => {
+			req(opts, function(err, httpResponse, body) {
 	    	
-			if (err) {
-				return reject('400');
-			}
+				if (err) {
+					return JSON.stringify('400');
+				}
 
-			if (httpResponse.statusCode === 200) {
-				return resolve(httpResponse.statusCode);
-			}
-
-			if (httpResponse.statusCode >= 400) {
-				return reject(httpResponse.statusCode);
-			}
-
-	    });
-  	});	
+				return JSON.stringify(httpResponse.statusCode);
+	    	});
+		})
+		.catch((error) => {
+			return JSON.stringify('400');		
+		});
 }
 
 module.exports.retrieveTransitions = (issue) => {

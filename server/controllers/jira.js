@@ -4,7 +4,7 @@ const Boom = require('boom'),
     Slack = require('../utils/slack'),
     JIRA = require('../utils/jira'),
     slack = new Slack({
-    token: config.slack.token
+        token: config.slack.token
     });
 
 function slackTokenMatch(token) {
@@ -59,13 +59,24 @@ module.exports.slackHook = function(request, reply) {
 };
 
 module.exports.checkUser = function(request, reply) {
-    JIRA.checkUser()
+    JIRA.checkUser(request.auth.credentials.id)
         .then((result) => {
             reply(result); 
         })
         .catch((error) => {
             reply(error);
         });
+};
+
+module.exports.updateUser = function(request, reply) {
+    console.log(request);
+    /*JIRA.updateUser(request.auth.credentials.id)
+        .then((result) => {
+            reply(result); 
+        })
+        .catch((error) => {
+            reply(error);
+        });*/
 };
 
 module.exports.issueUpdatedHook = function(request, reply) {

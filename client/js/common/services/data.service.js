@@ -6,33 +6,46 @@
 
   sliraData.$inject = ['$http', 'authentication'];
 
-  function sliraData ($http, authentication) {
+    function sliraData ($http, authentication) {
 
-	var getProfile = function () {
-        return $http.get('/api/user/information')
-            .then(function (request) {
-                return request;
-            })
-            .catch(function (error) {
-                return error;
-            });
-	};
+    	var getProfile = function () {
+            return $http.get('/api/user/information')
+                .then(function (request) {
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+    	};
 
-    var checkJira = function () {
-        return $http.get('/api/jira/check')
-            .then(function (request) {
-                console.log(request);
-                return request;
-            })
-            .catch(function (error) {
-                return error;
-            });
-    };
+        var checkJira = function () {
+            return $http.get('/api/jira/check')
+                .then(function (request) {
+                    console.log(request);
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        };
 
-	return {
-	  	getProfile : getProfile,
-        checkJira : checkJira,
-	};
-  }
+        var updateJiraUser = function (user) {
+            return $http.post('/api/jira/update/user', user)
+                .then(function (request) {
+                    console.log(request);
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        };
+
+
+    	return {
+    	  	getProfile: getProfile,
+            checkJira: checkJira,
+            updateJiraUser: updateJiraUser
+    	};
+    }
 
 })();

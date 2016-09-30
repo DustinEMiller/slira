@@ -34,6 +34,14 @@ module.exports = [
 		}	
 	},
 	{
+		path: '/api/jira/update/user',
+		method: 'POST',
+		config: {
+			auth: 'session',
+			handler: jira.updateUser
+		}	
+	},
+	{
 		method: 'GET', 
 		path: '/login/slack',
 		config: {

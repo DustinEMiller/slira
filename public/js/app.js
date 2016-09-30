@@ -58,7 +58,8 @@ angular
     accountCtrl.$inject = ['$location', 'sliraData', '$scope'];
 
     function accountCtrl($location, sliraData, $scope) {
-        $scope.user = {};
+        $scope.jiraPassword = "";
+
         $scope.jiraValid = false;
 
         sliraData.getProfile()
@@ -77,21 +78,33 @@ angular
 
         sliraData.checkJira()
             .then(function(data) {
-                if (data === 200) {
+                if (data.data === 200) {
                     $scope.jiraValid = true;    
                 }
             })
             .catch(function(e) {
 
-            })
+            });
 
 
         $scope.updateJiraName = function() {
+            sliraData.updateJiraUser({username:$scope.jiraUserName})
+                .then(function(data) {
 
+                })
+                .catch(function(e) {
+
+                });
         };
 
         $scope.updateJiraPassword = function() {
+            sliraData.updateJiraUser({password:$scope.jiraPassword})
+                .then(function(data) {
 
+                })
+                .catch(function(e) {
+
+                });
         };
     }
 })();;(function () {
@@ -268,34 +281,47 @@ angular
 
   sliraData.$inject = ['$http', 'authentication'];
 
-  function sliraData ($http, authentication) {
+    function sliraData ($http, authentication) {
 
-	var getProfile = function () {
-        return $http.get('/api/user/information')
-            .then(function (request) {
-                return request;
-            })
-            .catch(function (error) {
-                return error;
-            });
-	};
+    	var getProfile = function () {
+            return $http.get('/api/user/information')
+                .then(function (request) {
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+    	};
 
-    var checkJira = function () {
-        return $http.get('/api/jira/check')
-            .then(function (request) {
-                console.log(request);
-                return request;
-            })
-            .catch(function (error) {
-                return error;
-            });
-    };
+        var checkJira = function () {
+            return $http.get('/api/jira/check')
+                .then(function (request) {
+                    console.log(request);
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        };
 
-	return {
-	  	getProfile : getProfile,
-        checkJira : checkJira,
-	};
-  }
+        var updateJiraUser = function (user) {
+            return $http.post('/api/jira/update/user', user)
+                .then(function (request) {
+                    console.log(request);
+                    return request;
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        };
+
+
+    	return {
+    	  	getProfile: getProfile,
+            checkJira: checkJira,
+            updateJiraUser: updateJiraUser
+    	};
+    }
 
 })();;(function($templateCache) {
   
@@ -327,7 +353,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                <div class=\"row\">\n" +
     "                     <div class=\"small-12 columns\">\n" +
     "                        <label for=\"jira-user-name\">JIRA Username</label>\n" +
-    "                        <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
+    "                        <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" ng-model=\"jiraUserName\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <button class=\"button\" type=\"submit\">Update Username</button>\n" +
@@ -341,15 +367,8 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                <legend>Update JIRA Password</legend>\n" +
     "                <div class=\"row\">\n" +
     "                    <div class=\"small-12 columns\">\n" +
-    "                        <label for=\"old-jira-password\">Old JIRA Password</label>\n" +
-    "                        <input id=\"old-jira-password\" name=\"old-jira-password\" size=\"30\" type=\"password\">\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div class=\"small-12 columns\">\n" +
-    "                        <label for=\"current-account-password\">Current JIRA Password</label>\n" +
-    "                        <input id=\"current-account-password\" name=\"current-account-password\" size=\"30\" type=\"password\">\n" +
+    "                        <label for=\"jira-password\">JIRA Password</label>\n" +
+    "                        <input id=\"jira-password\" name=\"jira-password\" size=\"30\" type=\"password\" ng-model=\"jiraUserName\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
@@ -361,7 +380,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "            <p>Your JIRA credentials are valid</p>\n" +
     "        </div>\n" +
     "\n" +
-    "        <div class=\"warning callout\" ng-show=\"!jiraValid\">\n" +
+    "        <div class=\"alert callout\" ng-show=\"!jiraValid\">\n" +
     "            <p>Your JIRA credentials are invalid</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
