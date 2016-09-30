@@ -96,11 +96,17 @@ module.exports.updateAccount = (request, reply) => {
 	let user = new User();
 
 	if(request.payload.username) {
+		User.update({_id: request.auth.credentials.id}, {
+			jiraUserName: request.payload.jiraUserName	
+		}).exec();
 		user.jiraUserName = request.payload.jiraUserName;
 	} else if (request.payload.password) {
-		user.jiraPassword = request.payload.jiraPassword;
+		User.update({_id: request.auth.credentials.id}, {
+			jiraPassword: request.payload.jiraPassword	
+		}).exec();
 	}
 
+	/*
 	let options = {
 		headers: {
 			'X-Atlassian-Token': 'no-check',
@@ -111,6 +117,7 @@ module.exports.updateAccount = (request, reply) => {
 
 	let opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/myself';
+
 
 	//See if valid credentials for JIRA
 	existingJiraUser(opts)
@@ -128,7 +135,7 @@ module.exports.updateAccount = (request, reply) => {
 		})
 		.catch((err) => {
 			return reply(err).header('content-type', 'application/json');
-		});
+		});*/
 }
 
 module.exports.login = (request, reply) => {
