@@ -362,8 +362,8 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "        </div>\n" +
     "\n" +
     "        <div>\n" +
-    "            <form id=\"jira-pw\">\n" +
-    "                <fieldset class=\"fieldset\" ng-submit=\"updateJiraPassword()\">\n" +
+    "            <form id=\"jira-pw\" ng-submit=\"updateJiraPassword()\">\n" +
+    "                <fieldset class=\"fieldset\">\n" +
     "                <legend>Update JIRA Password</legend>\n" +
     "                <div class=\"row\">\n" +
     "                    <div class=\"small-12 columns\">\n" +
