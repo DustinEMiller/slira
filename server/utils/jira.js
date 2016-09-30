@@ -96,25 +96,26 @@ module.exports.checkUser = (id) => {
 
 	User.findOne({userId: id}).exec()
 		.then((response) => {
-			console.log(response);
+
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
 			}
 
-			return;
 		})
 		.then(() => {
 
 			if(opts.headers.Authorization === 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')) {
+				console.log('default');
 				return JSON.stringify('400');	
 			}
 
 			req(opts, function(err, httpResponse, body) {
 	    	
 				if (err) {
+					console.log('400');
 					return JSON.stringify('400');
 				}
-
+				console.log('issueIdOrKey');
 				return JSON.stringify(httpResponse.statusCode);
 	    	});
 		})
