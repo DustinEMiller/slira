@@ -96,12 +96,12 @@ module.exports.updateAccount = (request, reply) => {
 	let user = new User();
 
 	if(request.payload.username) {
-		User.update({_id: request.auth.credentials.id}, {
+		User.update({userId: request.auth.credentials.id}, {
 			jiraUserName: request.payload.jiraUserName	
 		}).exec();
 		user.jiraUserName = request.payload.jiraUserName;
 	} else if (request.payload.password) {
-		User.update({_id: request.auth.credentials.id}, {
+		User.update({userId: request.auth.credentials.id}, {
 			jiraPassword: request.payload.jiraPassword	
 		}).exec();
 	}
