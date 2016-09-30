@@ -33,7 +33,7 @@ let mongoose = require('mongoose'),
         }
     });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('update', function(next) {
 	let user = this;
 	if (user.jiraPassword && user.isModified('jiraPassword')) {
         bcrypt.genSalt(10, function (err, salt) {
