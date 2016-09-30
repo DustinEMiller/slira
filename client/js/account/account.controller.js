@@ -8,15 +8,17 @@
 
     function accountCtrl($location, sliraData, $scope) {
         $scope.user = {};
+        $scope.jiraValid = false;
 
         sliraData.getProfile()
             .then(function(data) {
-                console.log(data);
+
                 if(data.data.success){
                     $scope.slackUserName = data.data.user.username;
                     $scope.slackTeam = data.data.user.team;
                     $scope.jiraUserName = data.data.user.jiraname;
                 }
+
             })
             .catch(function (e) {
                 console.log('promise rejected');
@@ -24,8 +26,9 @@
 
         sliraData.checkJira()
             .then(function(data) {
-                console.log('test');
-                console.log(data);
+                if (data === 200) {
+                    $scope.jiraValid = true;    
+                }
             })
             .catch(function(e) {
 

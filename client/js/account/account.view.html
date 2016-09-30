@@ -9,40 +9,48 @@
     </div>
     <div class="small-8 columns">
         <div> 
-        <form id="jira-name" ng-submit="updateJiraName()">
-            <fieldset class="fieldset">
-            <legend>Update JIRA Username</legend>
-            <div class="row">
-                 <div class="small-12 columns">
-                    <label for="jira-user-name">JIRA Username</label>
-                    <input id="jira-user-name" name="jira-user-name" size="30" type="text" value="{{jiraUserName}}">
+            <form id="jira-name" ng-submit="updateJiraName()">
+                <fieldset class="fieldset">
+                <legend>Update JIRA Username</legend>
+                <div class="row">
+                     <div class="small-12 columns">
+                        <label for="jira-user-name">JIRA Username</label>
+                        <input id="jira-user-name" name="jira-user-name" size="30" type="text" value="{{jiraUserName}}">
+                    </div>
                 </div>
-            </div>
-            <button class="button" type="submit">Update Username</button>
-            </fieldset>
-        </form>
+                <button class="button" type="submit">Update Username</button>
+                </fieldset>
+            </form>
         </div>
 
         <div>
-        <form id="jira-pw">
-            <fieldset class="fieldset" ng-submit="updateJiraPassword()">
-            <legend>Update JIRA Password</legend>
-            <div class="row">
-                <div class="small-12 columns">
-                    <label for="old-jira-password">Old JIRA Password</label>
-                    <input id="old-jira-password" name="old-jira-password" size="30" type="password">
+            <form id="jira-pw">
+                <fieldset class="fieldset" ng-submit="updateJiraPassword()">
+                <legend>Update JIRA Password</legend>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <label for="old-jira-password">Old JIRA Password</label>
+                        <input id="old-jira-password" name="old-jira-password" size="30" type="password">
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="small-12 columns">
-                    <label for="current-account-password">Current JIRA Password</label>
-                    <input id="current-account-password" name="current-account-password" size="30" type="password">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <label for="current-account-password">Current JIRA Password</label>
+                        <input id="current-account-password" name="current-account-password" size="30" type="password">
+                    </div>
                 </div>
-            </div>
-            <button class="button" type="submit">Update JIRA Password</button>
-            </fieldset>
-        </form>
+                <button class="button" type="submit">Update JIRA Password</button>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="success callout" ng-show="jiraValid">
+            <p>Your JIRA credentials are valid</p>
+        </div>
+
+        <div class="warning callout" ng-show="!jiraValid">
+            <p>Your JIRA credentials are invalid</p>
         </div>
     </div>
 </div>
