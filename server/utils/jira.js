@@ -95,7 +95,7 @@ module.exports.checkUser = (id) => {
 
 	User.findOne({userId: id}).exec()
 		.then((response) => {
-
+			console.log(response);
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
 			}
