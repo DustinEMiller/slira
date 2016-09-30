@@ -38,7 +38,7 @@ module.exports = [
 		method: 'POST',
 		config: {
 			auth: 'session',
-			handler: jira.updateUser
+			handler: user.updateAccount
 		}	
 	},
 	{

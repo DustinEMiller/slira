@@ -93,12 +93,11 @@ module.exports.getAccount = (request, reply) => {
 }
 
 module.exports.updateAccount = (request, reply) => {
-	let user = new User(),
-		userCheck;
+	console.log(request);
+	/*let user = new User();
 
 	user.jiraUserName = request.payload.jiraUserName;
 	user.jiraPassword = request.payload.jiraPassword;
-	user.slackUserName = request.payload.slackUserName;
 
 	let options = {
 		headers: {
@@ -127,7 +126,7 @@ module.exports.updateAccount = (request, reply) => {
 		})
 		.catch((err) => {
 			return reply(err).header('content-type', 'application/json');
-		});
+		});*/
 }
 
 module.exports.login = (request, reply) => {
