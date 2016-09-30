@@ -368,7 +368,7 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                <div class=\"row\">\n" +
     "                    <div class=\"small-12 columns\">\n" +
     "                        <label for=\"jira-password\">JIRA Password</label>\n" +
-    "                        <input id=\"jira-password\" name=\"jira-password\" size=\"30\" type=\"password\" ng-model=\"jiraUserName\">\n" +
+    "                        <input id=\"jira-password\" name=\"jira-password\" size=\"30\" type=\"password\" ng-model=\"jiraPassword\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
