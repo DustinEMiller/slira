@@ -96,16 +96,23 @@ module.exports.updateAccount = (request, reply) => {
 	let user = new User();
 
 	if(request.payload.username) {
-		console.log(request.payload.username);
-		User.update({userId: request.auth.credentials.id}, {
-			jiraUserName: request.payload.username	
-		}).exec();
-		user.jiraUserName = request.payload.jiraUserName;
+
+		User.update({userId: request.auth.credentials.id}, {jiraUserName: request.payload.username}).exec()
+			.then((response) => {
+				return 200;
+			})
+			.catch((error) => {
+				return 400;
+			});
 	} else if (request.payload.password) {
-		console.log(request.payload.password);
-		User.update({userId: request.auth.credentials.id}, {
-			jiraPassword: request.payload.password	
-		}).exec();
+
+		User.update({userId: request.auth.credentials.id}, {jiraPassword: request.payload.password}).exec()
+			.then((response) => {
+				return 200;
+			})
+			.catch((error) => {
+				return 400;
+			});
 	}
 
 	/*
