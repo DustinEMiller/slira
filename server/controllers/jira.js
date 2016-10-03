@@ -60,6 +60,7 @@ module.exports.slackHook = function(request, reply) {
 
 module.exports.checkUser = function(request, reply) {
 
+    console.log(JIRA.checkUser(request.auth.credentials.id));
     JIRA.checkUser(request.auth.credentials.id)
         .then((result) => {
             console.log(result)
