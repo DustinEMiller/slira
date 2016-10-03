@@ -117,7 +117,10 @@ module.exports.checkUser = (id) => {
 					console.log('400');
 					return '400';
 				}
-				console.log(httpResponse);
+                //401
+                //statusMessage: "Unauthorized"
+                //403
+                //statusMessage: "Forbidden"
 				return httpResponse.statusCode;
 	    	});
 		})
