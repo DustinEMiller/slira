@@ -97,7 +97,7 @@ module.exports.updateAccount = (request, reply) => {
 
 	if(request.payload.username) {
 
-		User.update({userId: request.auth.credentials.id}, {jiraUserName: request.payload.username}).exec()
+		User.findOne({userId: request.auth.credentials.id}, {jiraUserName: request.payload.username}).exec()
 			.then((response) => {
 				return 200;
 			})
@@ -106,7 +106,7 @@ module.exports.updateAccount = (request, reply) => {
 			});
 	} else if (request.payload.password) {
 
-		User.update({userId: request.auth.credentials.id}, {jiraPassword: request.payload.password}).exec()
+		User.findOneAndUpdate({userId: request.auth.credentials.id}, {jiraPassword: request.payload.password}).exec()
 			.then((response) => {
 				return 200;
 			})
