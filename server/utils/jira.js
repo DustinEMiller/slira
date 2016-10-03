@@ -99,7 +99,8 @@ module.exports.checkUser = (id) => {
 
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
-                console.log('found');
+                console.log(response.jiraUserName);
+                console.log(response.jiraPassword);
 			}
 
 		})
@@ -116,7 +117,7 @@ module.exports.checkUser = (id) => {
 					console.log('400');
 					return '400';
 				}
-				console.log(httpResponse.statusCode);
+				console.log(httpResponse);
 				return httpResponse.statusCode;
 	    	});
 		})
