@@ -99,10 +99,6 @@ angular
                     checkCredentials();
                 });
         };
-        
-         <div class="{{jiraUserStatusClass}} callout" ng-show="jiraUserMessage">
-                            <p>{{jiraUserStatusMessage}}</p>
-                        </div>
 
         $scope.updateJiraPassword = function() {
             $scope.jiraPasswordMessage = false;
