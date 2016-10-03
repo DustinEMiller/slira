@@ -99,33 +99,34 @@ module.exports.checkUser = (id) => {
 
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
-                console.log(response.jiraUserName);
-                console.log(response.jiraPassword);
-			}
+                return true;
+			} else {
+                return false;
+            }
 
 		})
-		.then(() => {
-
-			if(opts.headers.Authorization === 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')) {
-				console.log('default');
-				return '400';	
+		.then((response) => {
+            if(!response) {
+				return '403';	
 			}
-
-			req(opts, function(err, httpResponse, body) {
+        
+            return new Promise((resolve, reject) => {
+                req(opts, function(err, httpResponse, body) {
 	    	
-				if (err) {
-					console.log('400');
-					return '400';
-				}
-                //401
-                //statusMessage: "Unauthorized"
-                //403
-                //statusMessage: "Forbidden"
-				return httpResponse.statusCode;
-	    	});
+                    if (err) {
+                        return resolve('400');
+                    }
+                    //401
+                    //statusMessage: "Unauthorized"
+                    //403
+                    //statusMessage: "Forbidden"
+                    return resolve(httpResponse.statusCode);
+                });
+            });	
+            
 		})
 		.catch((error) => {
-			return JSON.stringify('400');		
+			return '400';		
 		});
 }
 
