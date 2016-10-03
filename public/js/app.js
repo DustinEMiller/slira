@@ -59,8 +59,10 @@ angular
 
     function accountCtrl($location, sliraData, $scope) {
         $scope.jiraPassword = "";
-
-        $scope.jiraValid = false;
+        $scope.jiraMessage = false;
+        $scope.jiraUserMessage = false;
+        $scope.jiraPasswordMessage = false;
+      
 
         sliraData.getProfile()
             .then(function(data) {
@@ -75,37 +77,74 @@ angular
             .catch(function (e) {
                 console.log('promise rejected');
             });
+    
+        checkCredentials();
 
-        sliraData.checkJira()
+        $scope.updateJiraName = function() {
+            $scope.jiraUserMessage = false;
+            sliraData.updateJiraUser({username:$scope.jiraUserName})
+                .then(function(data) {
+                    if (data.data === 200) {
+                        $scope.jiraUserStatusMessage = "User name updated successfully";
+                        $scope.jiraUserStatusClass = "success";  
+                    } else {
+                        $scope.jiraUserStatusMessage = "Unable to update user name";
+                        $scope.jiraUserStatusClass = "warning";    
+                    }
+                    checkCredentials();
+                })
+                .catch(function(e) {
+                    $scope.jiraUserStatusMessage = "Unable to update user name";
+                    $scope.jiraUserStatusClass = "warning"; 
+                    checkCredentials();
+                });
+        };
+        
+         <div class="{{jiraUserStatusClass}} callout" ng-show="jiraUserMessage">
+                            <p>{{jiraUserStatusMessage}}</p>
+                        </div>
+
+        $scope.updateJiraPassword = function() {
+            $scope.jiraPasswordMessage = false;
+            sliraData.updateJiraUser({password:$scope.jiraPassword})
+                .then(function(data) {
+                     if (data.data === 200) {
+                        $scope.jiraPasswordStatusMessage = "Password updated successfully";
+                        $scope.jiraPasswordStatusClass = "success";  
+                    } else {
+                        $scope.jiraPasswordStatusMessage = "Unable to update password";
+                        $scope.jiraPasswordStatusClass = "warning";    
+                    }
+                    checkCredentials();
+                })
+                .catch(function(e) {
+                    $scope.jiraPasswordStatusMessage = "Unable to update password";
+                    $scope.jiraPasswordStatusClass = "warning"; 
+                    checkCredentials();
+                });
+        };
+        
+        function checkCredentials() {
+            sliraData.checkJira()
             .then(function(data) {
+                $scope.jiraMessage = true; 
                 if (data.data === 200) {
-                    $scope.jiraValid = true;    
+                    $scope.jiraStatusClass = "success";  
+                    $scope.jiraStatusMessage = "Your JIRA credentials are valid.";
+                } else if (data.data === 403) {
+                    $scope.jiraStatusClass = "alert";  
+                    $scope.jiraStatusMessage = "Your JIRA credentials are invalid. Your account needs login validation. Please go to (your JIRA url) and verify your account.";   
+                } else {
+                    $scope.jiraStatusClass = "alert";  
+                    $scope.jiraStatusMessage = "Your JIRA credentials are invalid.";      
                 }
             })
             .catch(function(e) {
-
-            });
-
-
-        $scope.updateJiraName = function() {
-            sliraData.updateJiraUser({username:$scope.jiraUserName})
-                .then(function(data) {
-
-                })
-                .catch(function(e) {
-
-                });
-        };
-
-        $scope.updateJiraPassword = function() {
-            sliraData.updateJiraUser({password:$scope.jiraPassword})
-                .then(function(data) {
-
-                })
-                .catch(function(e) {
-
-                });
-        };
+                $scope.jiraMessage = true; 
+                $scope.jiraStatusClass = "warning";  
+                $scope.jiraStatusMessage = "Could not verify your account. Please try again.";  
+            });        
+        }
     }
 })();;(function () {
 
@@ -354,6 +393,9 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                     <div class=\"small-12 columns\">\n" +
     "                        <label for=\"jira-user-name\">JIRA Username</label>\n" +
     "                        <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" ng-model=\"jiraUserName\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
+    "                        <div class=\"{{jiraUserStatusClass}} callout\" ng-show=\"jiraUserMessage\">\n" +
+    "                            <p>{{jiraUserStatusMessage}}</p>\n" +
+    "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <button class=\"button\" type=\"submit\">Update Username</button>\n" +
@@ -369,6 +411,9 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "                    <div class=\"small-12 columns\">\n" +
     "                        <label for=\"jira-password\">JIRA Password</label>\n" +
     "                        <input id=\"jira-password\" name=\"jira-password\" size=\"30\" type=\"password\" ng-model=\"jiraPassword\">\n" +
+    "                        <div class=\"{{jiraPasswordStatusClass}} callout\" ng-show=\"jiraPasswordMessage\">\n" +
+    "                            <p>{{jiraPasswordStatusMessage}}</p>\n" +
+    "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
@@ -376,12 +421,8 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "            </form>\n" +
     "        </div>\n" +
     "\n" +
-    "        <div class=\"success callout\" ng-show=\"jiraValid\">\n" +
-    "            <p>Your JIRA credentials are valid</p>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <div class=\"alert callout\" ng-show=\"!jiraValid\">\n" +
-    "            <p>Your JIRA credentials are invalid</p>\n" +
+    "        <div class=\"{{jiraStatusClass}} callout\" ng-show=\"jiraMessage\">\n" +
+    "            <p>{{jiraStatusMessage}}</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>");

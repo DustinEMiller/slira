@@ -7,14 +7,6 @@ const User = require('../models/User'),
 	userUtils = require('../utils/user'),
 	bcrypt = require('bcryptjs');
 
-function existingJiraUser(options) {
-	return new Promise((resolve, reject) => {
-	    req(options, (err, httpResponse, body) => {
-			return resolve(httpResponse);
-	    });
-  	});	
-}
-
 module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck,
@@ -93,58 +85,29 @@ module.exports.getAccount = (request, reply) => {
 }
 
 module.exports.updateAccount = (request, reply) => {
-	let user = new User();
-
-	if(request.payload.username) {
-
-		User.findOne({userId: request.auth.credentials.id}, {jiraUserName: request.payload.username}).exec()
-			.then((response) => {
-				return 200;
-			})
-			.catch((error) => {
-				return 400;
-			});
-	} else if (request.payload.password) {
-
-		User.findOneAndUpdate({userId: request.auth.credentials.id}, {jiraPassword: request.payload.password}).exec()
-			.then((response) => {
-				return 200;
-			})
-			.catch((error) => {
-				return 400;
-			});
-	}
-
-	/*
-	let options = {
-		headers: {
-			'X-Atlassian-Token': 'no-check',
-			'Content-Type': 'application/json',
-			'Authorization': 'Basic ' + new Buffer(user.jiraUserName + ":" + user.jiraPassword).toString('base64')
-		},	
-	};
-
-	let opts = Object.create(options);
-	opts.url = config.jira.url + '/rest/api/2/myself';
 
 
-	//See if valid credentials for JIRA
-	existingJiraUser(opts)
-		.then((result) => {
+    User.findOne({userId: request.auth.credentials.id}).exec()
+        .then((user) => {
+            if (request.payload.password) {
+                user.jiraUserName = request.payload.username;    
+            } else if (request.payload.username) {
+                user.jirPassword = request.payload.password;    
+            }
 
-			if(result.statusCode !== 200) {
-				return reply(Boom.unauthorized('Invalid JIRA credentials'));
-			}
-			user.save((err) => {
-				if (err) {
-					return reply(Boom.badRequest('User already exists'));
-				}
-				return reply({success: true, msg: 'Successful created new user.', token: userUtils.createToken(user)}).header('content-type', 'application/json');
-			});
-		})
-		.catch((err) => {
-			return reply(err).header('content-type', 'application/json');
-		});*/
+            return user.save().exec();
+        })
+        .then((response) => {
+            if(response) {
+                return reply(200);    
+            } else {
+                return reply(400);    
+            }
+
+        })
+        .catch((error) => {
+            return reply(400);
+        });
 }
 
 module.exports.login = (request, reply) => {

@@ -114,12 +114,9 @@ module.exports.checkUser = (id) => {
                 req(opts, function(err, httpResponse, body) {
 	    	
                     if (err) {
-                        return resolve('400');
+                        return resolve(httpResponse.statusCode);
                     }
-                    //401
-                    //statusMessage: "Unauthorized"
-                    //403
-                    //statusMessage: "Forbidden"
+                    
                     return resolve(httpResponse.statusCode);
                 });
             });	
