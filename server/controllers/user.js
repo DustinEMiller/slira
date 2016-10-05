@@ -11,8 +11,7 @@ module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
 		userCheck,
 		credentials = request.auth.credentials,
-		token,
-		rq = request;
+		token;
 
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
