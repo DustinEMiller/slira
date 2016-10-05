@@ -78,7 +78,7 @@ angular
                 console.log('promise rejected');
             });
     
-        checkCredentials();
+       //checkCredentials();
 
         $scope.updateJiraName = function() {
             $scope.jiraUserMessage = false;
