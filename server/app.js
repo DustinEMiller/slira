@@ -32,10 +32,6 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
         redirectTo: '/login/slack', 
         isSecure: false 
     });
-    
-    fs.readFile('DATA', 'utf8', function(err, contents) {
-        console.log(contents);
-    });
 
   	server.auth.strategy('slack', 'bell', {
         provider: 'slack',
@@ -65,7 +61,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
                 });
             }
         },
-        password: 'something',
+        password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
         clientId: 'slira',
         clientSecret: privateKey,
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
