@@ -50,7 +50,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
             auth: 'https://jira.healthalliance.org/plugins/servlet/oauth/authorize',
             token: 'https://jira.healthalliance.org/plugins/servlet/oauth/access-token',
             profile: function (credentials, params, get, callback) {
-
+                console.log(credentials);
                 get('https://jira.healthalliance.org', {}, (profile) => {
 
                     credentials.profile = {
