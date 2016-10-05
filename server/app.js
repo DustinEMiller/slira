@@ -44,7 +44,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
 
     server.auth.strategy('custom', 'bell', {
         provider: {
-            protocol: 'oauth2',
+            protocol: 'oauth',
             signatureMethod: 'RSA-SHA1',
             temporary: 'https://jira.healthalliance.org/plugins/servlet/oauth/request-token',
             auth: 'https://jira.healthalliance.org/plugins/servlet/oauth/access-token',
