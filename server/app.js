@@ -25,7 +25,7 @@ server.connection({
 
 server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'),require('inert'), require('bell')],(err) => {
     
-    let privateKey = fs.readFileSync(('/etc/ssl/certs/slira-key.pem', 'ut8');
+    let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'ut8');
 
     server.auth.strategy('session', 'cookie', {
         password: 'secret_cookie_encryption_password',
