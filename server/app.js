@@ -13,7 +13,8 @@ const Hapi = require('hapi'),
 	        }
     	}	
 	}),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+    fs = require('fs');
 
 server.connection({
 	port: config.port,
@@ -23,16 +24,18 @@ server.connection({
 });
 
 server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'),require('inert'), require('bell')],(err) => {
+    
+    let privateKey = fs.readFileSync(('/etc/ssl/certs/slira-key.pem', 'ut8');
+
     server.auth.strategy('session', 'cookie', {
         password: 'secret_cookie_encryption_password',
         redirectTo: '/login/slack', 
         isSecure: false 
     });
-
-	server.auth.strategy('jwt', 'jwt', {
-    	key: config.jwtSecret,
-    	verifyOptions: { algorithms: ['HS256'] }
-  	});
+    
+    fs.readFile('DATA', 'utf8', function(err, contents) {
+        console.log(contents);
+    });
 
   	server.auth.strategy('slack', 'bell', {
         provider: 'slack',
@@ -43,6 +46,31 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });
 
+    server.auth.strategy('custom', 'bell', {
+        provider: {
+            protocol: 'oauth',
+            signatureMethod: 'RSA-SHA1',
+            temporary: 'https://jira.healthalliance.org/plugins/servlet/oauth/request-token',
+            auth: 'https://jira.healthalliance.org/plugins/servlet/oauth/access-token',
+            token: 'https://jira.healthalliance.org/plugins/servlet/oauth/authorize',
+            profile: function (credentials, params, get, callback) {
+
+                get('htps://jira.healthalliance.org', {}, (profile) => {
+
+                    credentials.profile = {
+                        username: profile.response.user.name,
+                        raw: profile.response.user
+                    };
+                    return callback();
+                });
+            }
+        },
+        password: 'something',
+        clientId: 'slira',
+        clientSecret: privateKey,
+        isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
+    });
+    
 	server.route(require('./routes'));
 
 	server.start((err) => {

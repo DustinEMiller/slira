@@ -31,6 +31,7 @@
 
         $scope.updateJiraName = function() {
             $scope.jiraUserMessage = false;
+            
             sliraData.updateJiraUser({username:$scope.jiraUserName})
                 .then(function(data) {
                     if (data.data === 200) {
@@ -40,17 +41,20 @@
                         $scope.jiraUserStatusMessage = "Unable to update user name";
                         $scope.jiraUserStatusClass = "warning";    
                     }
+                    $scope.jiraUserMessage = true;
                     checkCredentials();
                 })
                 .catch(function(e) {
                     $scope.jiraUserStatusMessage = "Unable to update user name";
                     $scope.jiraUserStatusClass = "warning"; 
-                    checkCredentials();
+                    $scope.jiraUserMessage = true;
+                    checkCredentials(); 
                 });
         };
 
         $scope.updateJiraPassword = function() {
             $scope.jiraPasswordMessage = false;
+            
             sliraData.updateJiraUser({password:$scope.jiraPassword})
                 .then(function(data) {
                      if (data.data === 200) {
@@ -60,11 +64,13 @@
                         $scope.jiraPasswordStatusMessage = "Unable to update password";
                         $scope.jiraPasswordStatusClass = "warning";    
                     }
+                    $scope.jiraPasswordMessage = true;
                     checkCredentials();
                 })
                 .catch(function(e) {
                     $scope.jiraPasswordStatusMessage = "Unable to update password";
-                    $scope.jiraPasswordStatusClass = "warning"; 
+                    $scope.jiraPasswordStatusClass = "warning";
+                    $scope.jiraPasswordMessage = true;
                     checkCredentials();
                 });
         };

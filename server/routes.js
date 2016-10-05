@@ -49,6 +49,14 @@ module.exports = [
 			handler: user.handleLogin
 		},
 	},
+    {
+		method: 'GET', 
+		path: '/login/jira',
+		config: {
+			auth: 'custom',
+			handler: user.handleJiraLogin
+		},
+	},
 	{
 		method: 'GET', 
 		path: '/',

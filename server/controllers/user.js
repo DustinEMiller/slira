@@ -58,6 +58,10 @@ module.exports.handleLogin = (request, reply) => {
 	}
 }
 
+module.exports.handleJiraLogin = (request, reply) => {
+	console.log(request);
+}
+
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
