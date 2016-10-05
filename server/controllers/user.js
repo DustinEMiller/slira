@@ -59,6 +59,7 @@ module.exports.handleLogin = (request, reply) => {
 
 module.exports.handleJiraLogin = (request, reply) => {
 	console.log(request);
+    return reply.redirect('/account');
 }
 
 module.exports.getAccount = (request, reply) => {
