@@ -5,7 +5,8 @@ const User = require('../models/User'),
 	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
-	bcrypt = require('bcryptjs');
+	bcrypt = require('bcryptjs'),
+    fs = require('fs');
 
 module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
@@ -59,6 +60,21 @@ module.exports.handleLogin = (request, reply) => {
 
 module.exports.handleJiraLogin = (request, reply) => {
 	console.log(request);
+    let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
+    let options = {
+        rejectUnauthorized: true,
+        uri: this.makeUri('/issue/' + issueNumber),
+        method: 'GET',
+        oauth: {
+            consumer_key: 'slira',
+            consumer_secret: privateKey,
+            token: oauth.access_token,
+            token_secret: oauth.access_token_secret    
+        }
+    };
+    
+    this.request(options, callback);
+    
     return reply.redirect('/account');
 }
 

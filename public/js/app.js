@@ -62,7 +62,7 @@ angular
         $scope.jiraMessage = false;
         $scope.jiraUserMessage = false;
         $scope.jiraPasswordMessage = false;
-      
+        
 
         sliraData.getProfile()
             .then(function(data) {
