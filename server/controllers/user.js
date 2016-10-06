@@ -66,6 +66,7 @@ module.exports.handleJiraLogin = (request, reply) => {
         uri: 'https://jira.healthalliance.org/rest/api/2/issue/EXPLORE-16',
         method: 'GET',
         oauth: {
+            signature_method: "RSA-SHA1",
             consumer_key: 'slira',
             consumer_secret: privateKey,
             token: request.auth.credentials.token,
