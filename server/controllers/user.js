@@ -55,7 +55,9 @@ module.exports.handleLogin = (request, reply) => {
 		.catch((error) => {
 			return reply.redirect('/loginError');
 		});
-	}
+	} else {
+        return reply.redirect('/unauthorized');
+    }
 }
 
 module.exports.handleJiraCredentials = (request, reply) => {
@@ -64,7 +66,6 @@ module.exports.handleJiraCredentials = (request, reply) => {
     } else {
         console.log(request.auth.error);            
     }
-    console.log(request);
     /*
     Info to make requests with oauth
     let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
@@ -87,7 +88,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
     });*/
     
     
-    /*Iif(request.auth.isAuthenticated && request.auth.credentials){
+    if(request.auth.isAuthenticated && request.auth.credentials){
 
 		User.findOne({userId: request.auth.credentials.id}).exec()
         .then((user) => {
@@ -112,7 +113,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
         });
 	} else {
 		return reply({success: false, msg: "UnauthorizedError: private profile"});	
-	}*/
+	}
     
 }
 

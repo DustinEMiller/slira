@@ -29,14 +29,7 @@ const preResponse = function (request, reply) {
     if(error.output.statusCode === 404) {
         return reply.redirect('/notFound');    
     } else if (error.output.statusCode === 500) {
-        console.log(request.auth);
-        if(!request.auth.error) {
-            console.log('1');
-            return reply.redirect('/');      
-        } else {
-            console.log('2');
-            return reply.redirect('/error');      
-        }
+        return reply.redirect('/account');      
     }
 
 };
