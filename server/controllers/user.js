@@ -74,7 +74,7 @@ module.exports.handleJiraLogin = (request, reply) => {
     };
     
     req(options, function(err, httpResponse, body) {
-        console.log(httpResponse);
+        console.log(JSON.parse(body));
         return reply.redirect('/account');
     });
     
