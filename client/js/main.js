@@ -12,10 +12,6 @@
            templateUrl: '../client/js/auth/register/register.view.html',
             controller: 'registerCtrl',
         })
-        .when('/login', {
-            templateUrl: '../client/js/auth/login/login.view.html',
-            controller: 'loginCtrl',
-        })
         .when('/slack', {
             templateUrl: '../client/js/auth/slack/slack.view.html',
             controller: 'slackCtrl',
