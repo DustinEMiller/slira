@@ -63,19 +63,22 @@ module.exports.handleJiraLogin = (request, reply) => {
     let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
     let options = {
         rejectUnauthorized: true,
-        uri: this.makeUri('/issue/' + issueNumber),
+        uri: 'https://jira.healthalliance.org/rest/api/2/issue/EXPLORE-16',
         method: 'GET',
         oauth: {
             consumer_key: 'slira',
             consumer_secret: privateKey,
-            token: credentials.profile.token,
-            token_secret: credentials.profile.secret    
+            token: request.auth.credentials.id.token,
+            token_secret: request.auth.credentials.id.secret    
         }
     };
     
-    this.request(options, callback);
+    req(options, function(err, httpResponse, body) {
+        console.log(httpResponse);
+        return reply.redirect('/account');
+    });
     
-    return reply.redirect('/account');
+    
 }
 
 module.exports.getAccount = (request, reply) => {
