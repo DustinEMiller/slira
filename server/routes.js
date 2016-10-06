@@ -66,14 +66,6 @@ module.exports = [
 	},
 	{
 		method: 'GET', 
-		path: '/login',
-		handler: function(request, reply) {
-				reply.file('index.html');	
-		}
-		
-	},
-	{
-		method: 'GET', 
 		path: '/loginError',
 		handler: function(request, reply) {
 			reply.file('index.html'); 

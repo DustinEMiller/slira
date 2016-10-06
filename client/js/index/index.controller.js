@@ -1,10 +1,15 @@
-(function($templateCache) {
-  
+(function () {
+
   angular
-    .module('slira')
-    .controller('indexCtrl', indexCtrl);
+  .module('slira')
+  .controller('indexCtrl', loginCtrl);
 
-    function indexCtrl () {
+    loginCtrl.$inject = ['$scope'];
+
+    function indexCtrl($scope) {
+
+        $scope.slackLogin = function() {
+          window.location = "/login/slack"    
+        }
     }
-
 })();
