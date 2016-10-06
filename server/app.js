@@ -25,13 +25,16 @@ const preResponse = function (request, reply) {
     }
 
     const error = response;
-    
+    console.log(error.output.statuscode);
     if(error.output.statuscode === 404) {
         return reply.redirect('/notFound');    
     } else if (error.output.statuscode === 500) {
+        console.log(request.auth.isAuthenticated.error);
         if(request.auth.isAuthenticated.error) {
+            console.log('1');
             return reply.redirect('/');      
         } else {
+            console.log('2');
             return reply.redirect('/error');      
         }
     }
