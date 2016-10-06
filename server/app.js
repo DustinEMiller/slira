@@ -25,6 +25,7 @@ const preResponse = function (request, reply) {
     }
 
     const error = response;
+    console.log(response);
     console.log(error.output.statuscode);
     if(error.output.statuscode === 404) {
         return reply.redirect('/notFound');    
