@@ -59,6 +59,11 @@ module.exports.handleLogin = (request, reply) => {
 }
 
 module.exports.handleJiraCredentials = (request, reply) => {
+    if(request.auth.isAuthenticated) {
+        //things
+    } else {
+        console.log(request.auth.error);            
+    }
     console.log(request);
     /*
     Info to make requests with oauth

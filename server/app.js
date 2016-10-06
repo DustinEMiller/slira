@@ -41,8 +41,10 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
         scope: ['identify'],
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });
+    
     console.log(config.jira.url + 'plugins/servlet/oauth/request-token');
-    server.auth.strategy('custom', 'bell', {
+    
+    server.auth.strategy('custom', 'bell', 'try', {
         
         provider: {
             protocol: 'oauth',
