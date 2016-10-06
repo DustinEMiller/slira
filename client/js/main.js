@@ -30,6 +30,12 @@
         .when('/unauthorized', {
             templateUrl: '../client/js/errors/unauthorized.view.html'
         })
+        .when('/denied', {
+            templateUrl: '../client/js/errors/denied.html'
+        })
+        .when('/notFound', {
+            templateUrl: '../client/js/errors/notFound.html'
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API

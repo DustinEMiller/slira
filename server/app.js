@@ -19,17 +19,23 @@ const Hapi = require('hapi'),
 const preResponse = function (request, reply) {
 
     const response = request.response;
-    console.log(response);
+    
     if (!response.isBoom) {
         return reply.continue();
     }
 
     const error = response;
-    const ctx = {
-        message: (error.output.statusCode === 404 ? 'page not found' : 'something went wrong')
-    };
+    
+    if(error.output.statuscode === 404) {
+        return reply.redirect('/notFound');    
+    } else if (error.output.statuscode === 500) {
+        if(request.auth.isAuthenticated.error) {
+            return reply.redirect('/');      
+        } else {
+            return reply.redirect('/error');      
+        }
+    }
 
-    return reply.view('error', ctx);
 };
 
 server.connection({

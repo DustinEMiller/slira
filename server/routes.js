@@ -88,6 +88,22 @@ module.exports = [
 		}
 		
 	},
+    {
+		method: 'GET', 
+		path: '/denied',
+		handler: function(request, reply) {
+			reply.file('index.html'); 
+		}
+		
+	},
+    {
+		method: 'GET', 
+		path: '/notFound',
+		handler: function(request, reply) {
+			reply.file('index.html'); 
+		}
+		
+	},
 	{
 		method: 'GET', 
 		path: '/account',	
