@@ -43,6 +43,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
     });
 
     server.auth.strategy('custom', 'bell', {
+        console.log(config.jira.url);
         provider: {
             protocol: 'oauth',
             signatureMethod: 'RSA-SHA1',
