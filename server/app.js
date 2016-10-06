@@ -19,6 +19,7 @@ const Hapi = require('hapi'),
 const preResponse = function (request, reply) {
 
     const response = request.response;
+    console.log(request);
     if (!response.isBoom) {
         return reply.continue();
     }
