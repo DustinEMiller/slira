@@ -10,7 +10,10 @@ let mongoose = require('mongoose'),
     	jiraUserName: {
     		type: String,
     	},
-    	jiraPassword: {
+    	jiraOAuthToken: {
+    		type: String
+    	},
+        jiraOAuthSecret: {
     		type: String
     	},
     	slackUserName: {
@@ -37,7 +40,6 @@ UserSchema.pre('save', function(next) {
 	let user = this;
 
 	if (user.jiraPassword) {
-        console.log('yes');
         bcrypt.genSalt(10, function (err, salt) {
             if (err) {
                 return next(err);

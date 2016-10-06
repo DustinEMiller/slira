@@ -4,7 +4,7 @@ var getEnv = require('getenv');
 module.exports = {
   	//3001
 	port: getEnv.int('SLIRA_PORT', 3000),
-  url: getEnv('SLIRA_URL', 'http://localhost:3000'),
+    url: getEnv('SLIRA_URL', 'http://localhost:3000'),
 	slack:{
 	    token: getEnv('SLACK_TOKEN', ''),
       password: getEnv('SLIRA_OAUTH_PASSWORD','dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr'),

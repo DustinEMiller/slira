@@ -54,7 +54,7 @@ module.exports = [
 		path: '/login/jira',
 		config: {
 			auth: 'custom',
-			handler: user.handleJiraLogin
+			handler: user.handleJiraCredentials
 		},
 	},
 	{
