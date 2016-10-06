@@ -61,42 +61,13 @@ module.exports.handleLogin = (request, reply) => {
 }
 
 module.exports.handleJiraCredentials = (request, reply) => {
-    if(request.auth.isAuthenticated) {
-        //things
-    } else {
-        console.log(request.auth.error);            
-    }
-    /*
-    Info to make requests with oauth
-    let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
-    let options = {
-        rejectUnauthorized: true,
-        uri: config.jira.url + 'rest/api/2/issue/EXPLORE-16',
-        method: 'GET',
-        oauth: {
-            signature_method: "RSA-SHA1",
-            consumer_key: 'slira',
-            consumer_secret: privateKey,
-            token: request.auth.credentials.token,
-            token_secret: request.auth.credentials.secret    
-        }
-    };
-    
-    req(options, function(err, httpResponse, body) {
-        console.log(JSON.parse(body));
-        return reply.redirect('/account');
-    });*/
-    
     
     if(request.auth.isAuthenticated && request.auth.credentials){
 
 		User.findOne({userId: request.auth.credentials.id}).exec()
         .then((user) => {
-            if (request.payload.password) {
-                user.jiraUserName = request.payload.username;    
-            } else if (request.payload.username) {
-                user.jirPassword = request.payload.password;    
-            }
+            user.jiraOAuthToken = request.auth.credentials.token;    
+            user.jiraOAuthSecret = request.auth.credentials.secret; 
 
             return user.save().exec();
         })
@@ -112,7 +83,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
             return reply(400);
         });
 	} else {
-		return reply({success: false, msg: "UnauthorizedError: private profile"});	
+		 return reply.redirect('/unauthorized');
 	}
     
 }
@@ -131,7 +102,7 @@ module.exports.getAccount = (request, reply) => {
 	  				};
 	  				return reply({success: true, user: user});
 	  			} else {
-	  				return reply({success: false, msg: "Unable to retrive profile information"});	
+	  				return reply({success: false, msg: "Unable to retrieve profile information"});	
 	  			}
 	    		
 	  		})
@@ -141,32 +112,6 @@ module.exports.getAccount = (request, reply) => {
 	} else {
 		return reply({success: false, msg: "UnauthorizedError: private profile"});	
 	}
-}
-
-module.exports.updateAccount = (request, reply) => {
-
-
-    User.findOne({userId: request.auth.credentials.id}).exec()
-        .then((user) => {
-            if (request.payload.password) {
-                user.jiraUserName = request.payload.username;    
-            } else if (request.payload.username) {
-                user.jirPassword = request.payload.password;    
-            }
-
-            return user.save().exec();
-        })
-        .then((response) => {
-            if(response) {
-                return reply(200);    
-            } else {
-                return reply(400);    
-            }
-
-        })
-        .catch((error) => {
-            return reply(400);
-        });
 }
 
 module.exports.login = (request, reply) => {
