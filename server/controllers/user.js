@@ -68,8 +68,8 @@ module.exports.handleJiraLogin = (request, reply) => {
         oauth: {
             consumer_key: 'slira',
             consumer_secret: privateKey,
-            token: request.auth.credentials.id.token,
-            token_secret: request.auth.credentials.id.secret    
+            token: request.auth.credentials.token,
+            token_secret: request.auth.credentials.secret    
         }
     };
     
