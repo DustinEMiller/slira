@@ -16,12 +16,29 @@ const Hapi = require('hapi'),
 	mongoose = require('mongoose'),
     fs = require('fs');
 
+const preResponse = function (request, reply) {
+
+    const response = request.response;
+    if (!response.isBoom) {
+        return reply.continue();
+    }
+
+    const error = response;
+    const ctx = {
+        message: (error.output.statusCode === 404 ? 'page not found' : 'something went wrong')
+    };
+
+    return reply.view('error', ctx);
+};
+
 server.connection({
 	port: config.port,
 		routes: {
 		cors: true
 	}
 });
+
+server.ext('onPreResponse', preResponse);
 
 server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'),require('inert'), require('bell')],(err) => {
     
