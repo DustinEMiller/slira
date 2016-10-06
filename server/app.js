@@ -42,7 +42,7 @@ server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require(
         isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
     });
     
-    server.auth.strategy('custom', 'bell', 'try', {
+    server.auth.strategy('custom', 'bell', {
         
         provider: {
             protocol: 'oauth',
