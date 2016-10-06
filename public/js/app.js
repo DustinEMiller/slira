@@ -30,6 +30,12 @@
         .when('/unauthorized', {
             templateUrl: '../client/js/errors/unauthorized.view.html'
         })
+        .when('/denied', {
+            templateUrl: '../client/js/errors/denied.html'
+        })
+        .when('/notFound', {
+            templateUrl: '../client/js/errors/notFound.html'
+        })
         .otherwise({redirectTo: '/'});
 
     // use the HTML5 History API
@@ -146,20 +152,6 @@ angular
                 $scope.jiraStatusClass = "warning";  
                 $scope.jiraStatusMessage = "Could not verify your account. Please try again.";  
             });        
-        }
-    }
-})();;(function () {
-
-  angular
-  .module('slira')
-  .controller('loginCtrl', loginCtrl);
-
-    loginCtrl.$inject = ['$scope'];
-
-    function loginCtrl($scope) {
-
-        $scope.slackLogin = function() {
-          window.location = "/login/slack"    
         }
     }
 })();;(function () {
@@ -364,16 +356,21 @@ angular
     	};
     }
 
-})();;(function($templateCache) {
-  
+})();;(function () {
+
   angular
-    .module('slira')
-    .controller('indexCtrl', indexCtrl);
+  .module('slira')
+  .controller('indexCtrl', loginCtrl);
 
-    function indexCtrl () {
+    loginCtrl.$inject = ['$scope'];
+
+    function indexCtrl($scope) {
+
+        $scope.slackLogin = function() {
+          window.location = "/login/slack"    
+        }
     }
-
-})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/login/login.view.html', '../client/js/auth/register/register.view.html', '../client/js/errors/loginError.view.html', '../client/js/errors/unauthorized.view.html', '../client/js/index/index.view.html']);
+})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/register/register.view.html', '../client/js/errors/denied.view.html', '../client/js/errors/loginError.view.html', '../client/js/errors/notFound.view.html', '../client/js/errors/unauthorized.view.html', '../client/js/index/index.view.html']);
 
 angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/account/account.view.html",
@@ -430,18 +427,6 @@ angular.module("../client/js/account/account.view.html", []).run(["$templateCach
     "</div>");
 }]);
 
-angular.module("../client/js/auth/login/login.view.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("../client/js/auth/login/login.view.html",
-    "<navigation></navigation>\n" +
-    "\n" +
-    "<div class=\"row\">\n" +
-    "    <div class=\"small-12 columns\">\n" +
-    "        <h1>Log In</h1>\n" +
-    "        <a ng-click=\"slackLogin()\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
-    "    </div>\n" +
-    "</div>");
-}]);
-
 angular.module("../client/js/auth/register/register.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/auth/register/register.view.html",
     "<navigation></navigation>\n" +
@@ -477,9 +462,19 @@ angular.module("../client/js/auth/register/register.view.html", []).run(["$templ
     "</div>");
 }]);
 
+angular.module("../client/js/errors/denied.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/errors/denied.view.html",
+    "");
+}]);
+
 angular.module("../client/js/errors/loginError.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/errors/loginError.view.html",
     "loginError");
+}]);
+
+angular.module("../client/js/errors/notFound.view.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("../client/js/errors/notFound.view.html",
+    "");
 }]);
 
 angular.module("../client/js/errors/unauthorized.view.html", []).run(["$templateCache", function($templateCache) {
@@ -491,7 +486,10 @@ angular.module("../client/js/index/index.view.html", []).run(["$templateCache", 
   $templateCache.put("../client/js/index/index.view.html",
     "<navigation></navigation>\n" +
     "<div>\n" +
-    "	<h1>Greetings</h1>\n" +
-    "	<p>Please <a href=\"login\">sign in</a></p>\n" +
+    "    <h1>Greetings</h1>\n" +
+    "	<div class=\"small-12 columns\">\n" +
+    "        <h1>Log In</h1>\n" +
+    "        <a ng-click=\"slackLogin()\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
+    "    </div>\n" +
     "</div>");
 }]);
