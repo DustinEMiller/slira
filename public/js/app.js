@@ -356,9 +356,9 @@ angular
 
   angular
   .module('slira')
-  .controller('indexCtrl', loginCtrl);
+  .controller('indexCtrl', indexCtrl);
 
-    loginCtrl.$inject = ['$scope'];
+    indexCtrl.$inject = ['$scope'];
 
     function indexCtrl($scope) {
 
