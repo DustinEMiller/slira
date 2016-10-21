@@ -359,7 +359,7 @@ module.exports.addComment = (args) => {
 }
 
 module.exports.signinLink = (request) => {
-	return message = {
+	return {
       	"response_type": "ephemeral",
       	"text": "Follow this link to begin the process of connecting your JIRA and Slack Accounts",
       	'attachments': [{

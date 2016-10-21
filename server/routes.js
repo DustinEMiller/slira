@@ -1,10 +1,7 @@
 'use strict'
 
-const jira = require('./controllers/jira'),
-	user = require('./controllers/user'),
-	Joi = require('joi'),
-	userUtils = require('./utils/user'),
-	config = require('./config');
+const jira = require('./controllers/jira');
+const user = require('./controllers/user');
 
 module.exports = [
 	{
@@ -34,14 +31,6 @@ module.exports = [
 		}	
 	},
 	{
-		path: '/api/jira/update/user',
-		method: 'POST',
-		config: {
-			auth: 'session',
-			handler: user.updateAccount
-		}	
-	},
-	{
 		method: 'GET', 
 		path: '/login/slack',
 		config: {
@@ -53,7 +42,7 @@ module.exports = [
 		method: 'GET', 
 		path: '/login/jira',
 		config: {
-			auth: 'custom',
+			auth: 'session',
 			handler: user.handleJiraCredentials
 		},
 	},

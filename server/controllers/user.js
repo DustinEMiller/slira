@@ -1,16 +1,25 @@
 'use strict'
 
 const User = require('../models/User'),
-	req = require('request'),
-	Boom = require('boom'),
 	config = require('../config'),
 	userUtils = require('../utils/user'),
 	bcrypt = require('bcryptjs'),
     fs = require('fs');
+const OAuth = require('oauth').OAuth;
+const privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
+console.log(privateKey);
+const consumer =
+	new OAuth(config.jira.url + "plugins/servlet/oauth/request-token",
+				config.jira.url + "plugins/servlet/oauth/access-token",
+		privateKey,
+		"dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr",
+		"1.0",
+		"http://54.244.181.96:3000/login/jira",
+		"RSA-SHA1");
+
 
 module.exports.handleLogin = (request, reply) => {
 	let user = new User(),
-		userCheck,
 		credentials = request.auth.credentials,
 		token;
 
@@ -60,16 +69,57 @@ module.exports.handleLogin = (request, reply) => {
     }
 }
 
+//I have to create a custom oauth dance with jira because this overwrrites out slack credentials
 module.exports.handleJiraCredentials = (request, reply) => {
-    
-    if(request.auth.isAuthenticated && request.auth.credentials){
+	console.log('log');
+	if (!request.query.oauth_token) {
+		console.log('log1');
+		consumer.getOAuthRequestToken(
+			function(error, oauthToken, oauthTokenSecret, results) {
+				if (error) {
+					console.log('log3');
+					console.log(error.data);
+					return reply.send('Error getting OAuth access token');
+				}
+				else {
+					console.log('log2');
+					request.session.oauthRequestToken = oauthToken;
+					request.session.oauthRequestTokenSecret = oauthTokenSecret;
+					return reply.redirect(config.jira.url +"plugins/servlet/oauth/authorize?oauth_token="+request.session.oauthRequestToken);
+				}
+			}
+		)
+	}
+	console.log('log4');
+	if (!request.query.oauth_verifier) {
+		return reply('oh noes');
+	} else {
+		consumer.getOAuthAccessToken (
+			request.session.oauthRequestToken,
+			request.session.oauthRequestTokenSecret,
+			request.query.oauth_verifier,
+			function(error, oauthAccessToken, oauthAccessTokenSecret, results){
+				if (error) {
+					console.log(error.data);
+					return reply.send("why me");
+				}
+				else {
+					request.session.oauthAccessToken = oauthAccessToken;
+					request.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
+					return reply('yes buddy');
+				}
+			}
+		);
+	}
 
+    if(request.auth.isAuthenticated && request.auth.credentials){
+        console.log(request.auth.credentials);
 		User.findOne({userId: request.auth.credentials.id}).exec()
         .then((user) => {
             user.jiraOAuthToken = request.auth.credentials.token;    
             user.jiraOAuthSecret = request.auth.credentials.secret; 
 
-            return user.save().exec();
+            return user.save();
         })
         .then((response) => {
             if(response) {
@@ -80,13 +130,14 @@ module.exports.handleJiraCredentials = (request, reply) => {
 
         })
         .catch((error) => {
-            return reply(400);
+            console.log(error);
+            return reply(401);
         });
 	} else {
 		 return reply.redirect('/unauthorized');
 	}
     
-}
+};
 
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
@@ -107,8 +158,8 @@ module.exports.getAccount = (request, reply) => {
 	    		
 	  		})
 	  		.catch((error) => {
-	  			return reply({success: false, msg: "Unable to retrive profile information"});		
-	  		})
+	  			return reply({success: false, msg: "Unable to retrieve profile information"});
+	  		});
 	} else {
 		return reply({success: false, msg: "UnauthorizedError: private profile"});	
 	}
