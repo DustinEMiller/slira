@@ -2,17 +2,16 @@
 
 const User = require('../models/User'),
 	config = require('../config'),
-	userUtils = require('../utils/user'),
 	bcrypt = require('bcryptjs'),
     fs = require('fs');
 const OAuth = require('oauth').OAuth;
-const privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
-console.log(privateKey);
+const privateKey = fs.readFileSync('/etc/ssl/certs/sliraprivate.pem', 'utf8');
+
 const consumer =
 	new OAuth(config.jira.url + "plugins/servlet/oauth/request-token",
 				config.jira.url + "plugins/servlet/oauth/access-token",
+		"hardcoded-consumer",
 		privateKey,
-		"dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr",
 		"1.0",
 		"http://54.244.181.96:3000/login/jira",
 		"RSA-SHA1");
@@ -71,50 +70,45 @@ module.exports.handleLogin = (request, reply) => {
 
 //I have to create a custom oauth dance with jira because this overwrrites out slack credentials
 module.exports.handleJiraCredentials = (request, reply) => {
-	console.log('log');
-	if (!request.query.oauth_token) {
-		console.log('log1');
+	console.log(request.url);
+
 		consumer.getOAuthRequestToken(
 			function(error, oauthToken, oauthTokenSecret, results) {
-				if (error) {
-					console.log('log3');
-					console.log(error.data);
-					return reply.send('Error getting OAuth access token');
-				}
-				else {
-					console.log('log2');
-					request.session.oauthRequestToken = oauthToken;
-					request.session.oauthRequestTokenSecret = oauthTokenSecret;
-					return reply.redirect(config.jira.url +"plugins/servlet/oauth/authorize?oauth_token="+request.session.oauthRequestToken);
-				}
-			}
-		)
-	}
-	console.log('log4');
-	if (!request.query.oauth_verifier) {
-		return reply('oh noes');
-	} else {
-		consumer.getOAuthAccessToken (
-			request.session.oauthRequestToken,
-			request.session.oauthRequestTokenSecret,
-			request.query.oauth_verifier,
-			function(error, oauthAccessToken, oauthAccessTokenSecret, results){
-				if (error) {
-					console.log(error.data);
-					return reply.send("why me");
-				}
-				else {
-					request.session.oauthAccessToken = oauthAccessToken;
-					request.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-					return reply('yes buddy');
-				}
+                if (!request.query.oauth_token) {
+                    if (error) {
+                        console.log(error.data);
+                        return reply.send('Error getting OAuth access token');
+                    }
+                    else {
+                        return reply.redirect(config.jira.url + "plugins/servlet/oauth/authorize?oauth_token=" + oauthToken);
+                    }
+                }
+
+                if (!request.query.oauth_verifier) {
+                    return reply('oh noes');
+                } else {
+                    consumer.getOAuthAccessToken (
+                        request.query.oauth_token,
+                        oauthTokenSecret,
+                        request.query.oauth_verifier,
+                        function(error, oauthAccessToken, oauthAccessTokenSecret, results){
+                            if (error) {
+                                console.log(error.data);
+                                return reply.send("why me");
+                            }
+                            else {
+								saveJiraCredentials();
+                                return reply('yes buddy');
+                            }
+                        }
+                    );
+                }
 			}
 		);
-	}
 
-    if(request.auth.isAuthenticated && request.auth.credentials){
+    /*if(request.auth.isAuthenticated && request.auth.credentials){
         console.log(request.auth.credentials);
-		User.findOne({userId: request.auth.credentials.id}).exec()
+		User.findOne({userId: request.auth.credentials.id}).exec()-
         .then((user) => {
             user.jiraOAuthToken = request.auth.credentials.token;    
             user.jiraOAuthSecret = request.auth.credentials.secret; 
@@ -135,7 +129,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
         });
 	} else {
 		 return reply.redirect('/unauthorized');
-	}
+	}*/
     
 };
 
