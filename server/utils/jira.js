@@ -1,8 +1,8 @@
 'use strict';
 
-const req = require('request'),
-	config = require('../config'),
-	User = require('../models/User');
+const req = require('request');
+const config = require('../config');
+const User = require('../models/User');
 
 let options = {
 		headers: {
@@ -233,13 +233,13 @@ module.exports.issueDetails = (issue) => {
 }
 
 module.exports.transitionIssue = (args) => {
-	let issue = args.split(/\s+/).slice(0,1),
-		status = args.replace(issue[0], '').trim();
+	let issue = args.split(/\s+/).slice(0,1);
+    let status = args.replace(issue[0], '').trim();
 
 	return queryTransitions(issue[0])
 		.then((result) => {
-			let statusId = status,
-				opts = Object.create(options);
+			let statusId = status;
+            let opts = Object.create(options);
 
 			if(!isNumber(status)) {
 				let transition = result.transitions.find((state) => {

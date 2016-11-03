@@ -22,5 +22,6 @@ module.exports = {
   	mongo: {
   		url: getEnv('SLIRA_MONGO_URL', 'mongodb://localhost:27017/slira-dev')
   	},
-    jwtSecret: getEnv('SLIRA_JWT_SECRET', 'default')
+    jwtSecret: getEnv('SLIRA_JWT_SECRET', 'default'),
+	cryptoSecret: getEnv('SLIRA_CRYPTO_SECRET', 'default')
 };
