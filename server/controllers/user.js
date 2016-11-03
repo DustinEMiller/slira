@@ -1,9 +1,10 @@
 'use strict'
 
-const User = require('../models/User'),
-	config = require('../config'),
-	bcrypt = require('bcryptjs'),
-    fs = require('fs');
+const User = require('../models/User');
+const Boom = require('boom');
+const config = require('../config');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
 const OAuth = require('oauth').OAuth;
 const privateKey = fs.readFileSync('/etc/ssl/certs/sliraprivate.pem', 'utf8');
 
@@ -16,11 +17,10 @@ const consumer =
 		"http://54.244.181.96:3000/login/jira",
 		"RSA-SHA1");
 
-
 module.exports.handleLogin = (request, reply) => {
-	let user = new User(),
-		credentials = request.auth.credentials,
-		token;
+	let user = new User();
+	let credentials = request.auth.credentials;
+	let token;
 
 	if(request.auth.strategy === 'slack' && request.auth.isAuthenticated) {
 		User.findOne({ accessToken: credentials.token}).exec()
@@ -44,7 +44,7 @@ module.exports.handleLogin = (request, reply) => {
 
 					user.save((error) => {
 						if(error) {
-							return reply.redirect('/loginError');
+							return reply(Boom.unauthorized('Error saving user'));
 						}
 
 						token = userUtils.createToken(user);
@@ -56,81 +56,69 @@ module.exports.handleLogin = (request, reply) => {
 	        			return reply.redirect('/account');
 					});	
 				} else {
-					return reply.redirect('/unauthorized');
+					return reply(Boom.unauthorized('No token provided'));
 				}
 			}		
 		})
 		.catch((error) => {
-			return reply.redirect('/loginError');
+            return reply(Boom.unauthorized('Error finding user'));
 		});
 	} else {
-        return reply.redirect('/unauthorized');
+        return reply(Boom.unauthorized());
     }
 }
 
-//I have to create a custom oauth dance with jira because this overwrrites out slack credentials
 module.exports.handleJiraCredentials = (request, reply) => {
-	console.log(request.url);
-
-		consumer.getOAuthRequestToken(
-			function(error, oauthToken, oauthTokenSecret, results) {
-                if (!request.query.oauth_token) {
-                    if (error) {
-                        console.log(error.data);
-                        return reply.send('Error getting OAuth access token');
-                    }
-                    else {
-                        return reply.redirect(config.jira.url + "plugins/servlet/oauth/authorize?oauth_token=" + oauthToken);
-                    }
-                }
-
-                if (!request.query.oauth_verifier) {
-                    return reply('oh noes');
-                } else {
-                    consumer.getOAuthAccessToken (
-                        request.query.oauth_token,
-                        oauthTokenSecret,
-                        request.query.oauth_verifier,
-                        function(error, oauthAccessToken, oauthAccessTokenSecret, results){
-                            if (error) {
-                                console.log(error.data);
-                                return reply.send("why me");
-                            }
-                            else {
-								saveJiraCredentials();
-                                return reply('yes buddy');
-                            }
-                        }
-                    );
-                }
+	consumer.getOAuthRequestToken(
+		function(error, oauthToken, oauthTokenSecret, results) {
+			if (!request.query.oauth_token) {
+				if (error) {
+                    return reply(Boom.badData('Error getting OAuth access token'));
+				}
+				else {
+					return reply.redirect(config.jira.url + "plugins/servlet/oauth/authorize?oauth_token=" + oauthToken);
+				}
 			}
-		);
 
-    /*if(request.auth.isAuthenticated && request.auth.credentials){
-        console.log(request.auth.credentials);
-		User.findOne({userId: request.auth.credentials.id}).exec()-
-        .then((user) => {
-            user.jiraOAuthToken = request.auth.credentials.token;    
-            user.jiraOAuthSecret = request.auth.credentials.secret; 
+			if (!request.query.oauth_verifier) {
+                return reply(Boom.badData('No OAuth verifier'));
+			} else {
+				consumer.getOAuthAccessToken (
+					request.query.oauth_token,
+					oauthTokenSecret,
+					request.query.oauth_verifier,
+					function(error, oauthAccessToken, oauthAccessTokenSecret, results){
+						if (error) {
+                            return Boom.wrap(error, 400);
+						}
+						else {
+							if(request.auth.isAuthenticated && request.auth.credentials) {
+                                 User.findOne({userId: request.auth.credentials.id}).exec()
+                                 .then((user) => {
+                                     user.jiraOAuthToken = oauthAccessToken;
+                                     user.jiraOAuthSecret = oauthAccessTokenSecret;
 
-            return user.save();
-        })
-        .then((response) => {
-            if(response) {
-                return reply(200);    
-            } else {
-                return reply(400);    
-            }
-
-        })
-        .catch((error) => {
-            console.log(error);
-            return reply(401);
-        });
-	} else {
-		 return reply.redirect('/unauthorized');
-	}*/
-    
+                                     return user.save();
+                                 })
+                                 .then((response) => {
+                                     if(response) {
+                                         return reply.redirect('/account');
+                                     } else {
+                                         return reply(Boom.badData('No User found'));
+                                     }
+                                 })
+                                 .catch((error) => {
+                                     return Boom.wrap(error, 401);
+                                 });
+							 } else {
+                                 return reply(Boom.unauthorized());
+							 }
+						}
+					}
+				);
+			}
+		}
+	);
 };
 
 module.exports.getAccount = (request, reply) => {
@@ -157,7 +145,7 @@ module.exports.getAccount = (request, reply) => {
 	} else {
 		return reply({success: false, msg: "UnauthorizedError: private profile"});	
 	}
-}
+};
 
 module.exports.login = (request, reply) => {
 	User.findOne({email: request.payload.email}).exec()
@@ -179,10 +167,10 @@ module.exports.login = (request, reply) => {
 		.catch((error) => {
 			return reply({success: false, msg: "There was an error logging you in. Please try again."});	
 		});
-}
+};
 
 module.exports.authenticate = (request, reply) => {
 	console.log('authentications')
 	console.log(request);
 	//return reply.redirect('/login');
-}
+};

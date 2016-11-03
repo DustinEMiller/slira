@@ -1,8 +1,9 @@
 'use strict'
+const config = require('../config');
 
 let mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	bcrypt = require('bcryptjs'),
+	crypto = require('crypto'),
     UserSchema = new Schema({
         email: { 
             type: String
@@ -27,8 +28,8 @@ let mongoose = require('mongoose'),
             unique: true  
         },
         userId: {
-            type: String, 
-            unique: true   
+            type: String,
+            unique: true
         },
         teamId: {
             type: String,
@@ -38,32 +39,44 @@ let mongoose = require('mongoose'),
 
 UserSchema.pre('save', function(next) {
 	let user = this;
+    let cipher;
 
-	if (user.jiraPassword) {
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                return next(err);
-            }
-            bcrypt.hash(user.jiraPassword, salt, function (err, hash) {
-                if (err) {
-                    return next(err);
-                }
-                user.jiraPassword = hash;
-                next();
-            });
-        });
-    } else {
-        return next();
+	if (user.jiraOAuthToken || user.jiraOAuthSecret) {
+
+        if(user.jiraOAuthToken) {
+            cipher = crypto.createCipher('aes-256-ctr', config.cryptoSecret)
+            user.jiraOAuthToken = cipher.update(user.jiraOAuthToken,'utf8','hex');
+        }
+
+        if(user.jiraOAuthSecret) {
+            cipher = crypto.createCipher('aes-256-ctr', config.cryptoSecret)
+            user.jiraOAuthSecret = cipher.update(user.jiraOAuthSecret,'utf8','hex');
+        }
     }
+
+    next();
 });
 
-UserSchema.methods.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.password, function (err, isMatch) {
-        if (err) {
-            return cb(err);
+UserSchema.methods.decryptTokens = function() {
+    let user = this;
+    let decipher;
+
+    if (user.jiraOAuthToken || user.jiraOAuthSecret) {
+
+        if(user.jiraOAuthSecret) {
+            decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
+            user.jiraOAuthSecret = decipher.update(user.jiraOAuthSecret, 'hex', 'utf8');
+            user.jiraOAuthSecret += decipher.final('utf8');
         }
-        cb(null, isMatch);
-    });
+
+        if(user.jiraOAuthToken) {
+            decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
+            user.jiraOAuthToken = decipher.update(user.jiraOAuthToken,'hex','utf8');
+            user.jiraOAuthToken += decipher.final('utf8');
+        }
+
+    }
+
 };
 
 module.exports = mongoose.model('User', UserSchema);
