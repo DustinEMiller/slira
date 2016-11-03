@@ -1,21 +1,16 @@
 'use strict'
 
 const User = require('../models/User');
-const Boom = require('boom');
 const config = require('../config');
 const bcrypt = require('bcryptjs');
+const Boom = require('boom');
 const fs = require('fs');
 const OAuth = require('oauth').OAuth;
-const privateKey = fs.readFileSync('/etc/ssl/certs/sliraprivate.pem', 'utf8');
+const privateKey = fs.readFileSync(config.privateKeyFile, 'utf8');
 
 const consumer =
-	new OAuth(config.jira.url + "plugins/servlet/oauth/request-token",
-				config.jira.url + "plugins/servlet/oauth/access-token",
-		"hardcoded-consumer",
-		privateKey,
-		"1.0",
-		"http://54.244.181.96:3000/login/jira",
-		"RSA-SHA1");
+	new OAuth(config.jira.url + "plugins/servlet/oauth/request-token", config.jira.url + "plugins/servlet/oauth/access-token",
+		"hardcoded-consumer", privateKey, "1.0", "http://54.244.181.96:3000/login/jira", "RSA-SHA1");
 
 module.exports.handleLogin = (request, reply) => {
 	let user = new User();
@@ -66,11 +61,16 @@ module.exports.handleLogin = (request, reply) => {
 	} else {
         return reply(Boom.unauthorized());
     }
-}
+};
+
+module.exports.checkJira = (request, reply) => {
+    console.log('called');
+    return reply(200);
+};
 
 module.exports.handleJiraCredentials = (request, reply) => {
 	consumer.getOAuthRequestToken(
-		function(error, oauthToken, oauthTokenSecret, results) {
+		(error, oauthToken, oauthTokenSecret, results) => {
 			if (!request.query.oauth_token) {
 				if (error) {
                     return reply(Boom.badData('Error getting OAuth access token'));
@@ -83,36 +83,33 @@ module.exports.handleJiraCredentials = (request, reply) => {
 			if (!request.query.oauth_verifier) {
                 return reply(Boom.badData('No OAuth verifier'));
 			} else {
-				consumer.getOAuthAccessToken (
-					request.query.oauth_token,
-					oauthTokenSecret,
-					request.query.oauth_verifier,
-					function(error, oauthAccessToken, oauthAccessTokenSecret, results){
+				consumer.getOAuthAccessToken (request.query.oauth_token, oauthTokenSecret, request.query.oauth_verifier,
+					(error, oauthAccessToken, oauthAccessTokenSecret, results) => {
 						if (error) {
                             return Boom.wrap(error, 400);
 						}
 						else {
 							if(request.auth.isAuthenticated && request.auth.credentials) {
-                                 User.findOne({userId: request.auth.credentials.id}).exec()
-                                 .then((user) => {
+                                User.findOne({userId: request.auth.credentials.id}).exec()
+                                .then((user) => {
                                      user.jiraOAuthToken = oauthAccessToken;
                                      user.jiraOAuthSecret = oauthAccessTokenSecret;
 
                                      return user.save();
-                                 })
-                                 .then((response) => {
+                                })
+                                .then((response) => {
                                      if(response) {
                                          return reply.redirect('/account');
                                      } else {
                                          return reply(Boom.badData('No User found'));
                                      }
-                                 })
-                                 .catch((error) => {
-                                     return Boom.wrap(error, 401);
-                                 });
-							 } else {
-                                 return reply(Boom.unauthorized());
-							 }
+                                })
+                                .catch((error) => {
+                                    return Boom.wrap(error, 401);
+                                });
+							} else {
+                                return reply(Boom.unauthorized());
+							}
 						}
 					}
 				);
@@ -170,7 +167,7 @@ module.exports.login = (request, reply) => {
 };
 
 module.exports.authenticate = (request, reply) => {
-	console.log('authentications')
+	console.log('authentications');
 	console.log(request);
 	//return reply.redirect('/login');
 };

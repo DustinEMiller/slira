@@ -1,4 +1,4 @@
-(function() {
+const app = (() => {
     'use strict';
 
     const Hapi = require('hapi'),
@@ -16,7 +16,7 @@
         mongoose = require('mongoose'),
         fs = require('fs');
 
-    const preResponse = function (request, reply) {
+    const preResponse = (request, reply) => {
 
         const response = request.response;
 
@@ -42,9 +42,7 @@
     });
 
 
-    server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('vision'), require('inert'), require('bell')], (err) => {
-
-        let privateKey = fs.readFileSync('/etc/ssl/certs/slira-key.pem', 'utf8');
+    server.register([require('hapi-auth-jwt'), require('hapi-auth-cookie'), require('inert'), require('bell')], (err) => {
 
         server.auth.strategy('session', 'cookie', {
             password: 'secret_cookie_encryption_password',
@@ -58,32 +56,6 @@
             clientId: config.slack.clientId,
             clientSecret: config.slack.oauthSecret,
             scope: ['identify'],
-            isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
-        });
-
-        server.auth.strategy('custom', 'bell', {
-
-            provider: {
-                protocol: 'oauth',
-                signatureMethod: 'RSA-SHA1',
-                temporary: config.jira.url + 'plugins/servlet/oauth/request-token',
-                auth: config.jira.url + 'plugins/servlet/oauth/authorize',
-                token: config.jira.url + 'plugins/servlet/oauth/access-token',
-                profile: function (credentials, params, get, callback) {
-                    get(config.jira.url + 'rest/api/2/myself', {}, (profile) => {
-
-                        credentials.profile = {
-                            username: profile.name,
-                            token: credentials.token,
-                            secret: credentials.secret
-                        };
-                        return callback();
-                    });
-                }
-            },
-            password: 'dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr',
-            clientId: 'slira',
-            clientSecret: privateKey,
             isSecure: false     // Terrible idea but required if not using HTTPS especially if developing locally
         });
 
@@ -103,4 +75,8 @@
             console.log('Server running on port:', config.port);
         });
     });
-})();
+
+    return server
+});
+
+module.exports = app();

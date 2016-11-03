@@ -23,12 +23,12 @@ module.exports = [
 		}	
 	},
 	{
-		path: '/api/jira/check',
+		path: '/api/jira/valid',
 		method: 'GET',
 		config: {
 			auth: 'session',
-			handler: jira.checkUser
-		}	
+			handler: user.checkJira
+		}
 	},
 	{
 		method: 'GET', 
@@ -49,14 +49,14 @@ module.exports = [
 	{
 		method: 'GET', 
 		path: '/',
-		handler: function(request, reply) {
-				reply.file('index.html');
+		handler: (request, reply) => {
+			reply.file('index.html');
 		}
 	},
 	{
 		method: 'GET', 
 		path: '/loginError',
-		handler: function(request, reply) {
+		handler: (request, reply) => {
 			reply.file('index.html'); 
 		}
 		
@@ -64,7 +64,7 @@ module.exports = [
 	{
 		method: 'GET', 
 		path: '/unauthorized',
-		handler: function(request, reply) {
+		handler: (request, reply) => {
 			reply.file('index.html'); 
 		}
 		
@@ -72,7 +72,7 @@ module.exports = [
     {
 		method: 'GET', 
 		path: '/denied',
-		handler: function(request, reply) {
+		handler: (request, reply) => {
 			reply.file('index.html'); 
 		}
 		
@@ -80,7 +80,7 @@ module.exports = [
     {
 		method: 'GET', 
 		path: '/notFound',
-		handler: function(request, reply) {
+		handler: (request, reply) => {
 			reply.file('index.html'); 
 		}
 		
@@ -90,7 +90,7 @@ module.exports = [
 		path: '/account',	
 		config: {
 			auth: 'session',
-			handler: function(request, reply) {
+			handler: (request, reply) => {
 				reply.file('index.html');
 			}
 		}
@@ -100,7 +100,7 @@ module.exports = [
 		path: '/logout',	
 		config: {
 			auth: 'session',
-			handler: function(request, reply) {
+			handler: (request, reply) => {
 				request.cookieAuth.clear();
 				reply('bye bye');
 			}

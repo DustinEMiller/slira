@@ -1,10 +1,9 @@
 'use strict'
 const config = require('../config');
-
-let mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	crypto = require('crypto'),
-    UserSchema = new Schema({
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const crypto = require('crypto');
+const UserSchema = new Schema({
         email: { 
             type: String
         },
@@ -37,7 +36,7 @@ let mongoose = require('mongoose'),
         }
     });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', (next) => {
 	let user = this;
     let cipher;
 
@@ -57,7 +56,7 @@ UserSchema.pre('save', function(next) {
     next();
 });
 
-UserSchema.methods.decryptTokens = function() {
+UserSchema.methods.decryptTokens = () => {
     let user = this;
     let decipher;
 

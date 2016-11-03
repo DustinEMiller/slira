@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function(options) {
+module.exports = (options) => {
   this.token = options.token;
 };

@@ -4,18 +4,19 @@ const req = require('request');
 const config = require('../config');
 const User = require('../models/User');
 
+let command = '/jira';
+//move this module into revealing pattern and inject options from the JIRA controller
 let options = {
 		headers: {
 			'X-Atlassian-Token': 'no-check',
 			'Content-Type': 'application/json',
 			'Authorization': 'Basic ' + new Buffer(config.jira.username + ":" + config.jira.password).toString('base64')
 		},	
-	},
-	command = '/jira';	
+	};
 
 function getRequest(options) {
 	return new Promise((resolve, reject) => {
-	    req(options, function(err, httpResponse, body) {
+	    req(options, (err, httpResponse, body) => {
 
 			if (err) {
 				if (err.errorMessages.toLowerCase() === 'issue does not exist') {
@@ -39,7 +40,7 @@ function getRequest(options) {
 
 function postRequest(options) {
 	return new Promise((resolve, reject) => {
-	    req.post(options, function(err, httpResponse, body) {
+	    req.post(options, (err, httpResponse, body) => {
 
 			if (err) {
 				return reject(new Error(err));
@@ -77,7 +78,6 @@ function mappedColors(color) {
 
 	return "#000000";
 }
-	
 
 function queryTransitions (issue) {
 	let opts = Object.create(options);
@@ -87,7 +87,11 @@ function queryTransitions (issue) {
 
 module.exports.setCommand = (cmd) => {
 	command = cmd;
-}
+};
+
+module.exports.doAction = (action) => {
+
+};
 
 module.exports.checkUser = (id) => {
 	let opts = Object.create(options);
@@ -111,7 +115,7 @@ module.exports.checkUser = (id) => {
 			}
         
             return new Promise((resolve, reject) => {
-                req(opts, function(err, httpResponse, body) {
+                req(opts, (err, httpResponse, body) => {
 	    	
                     if (err) {
                         return resolve(httpResponse.statusCode);
@@ -136,7 +140,7 @@ module.exports.retrieveTransitions = (issue) => {
 	          'attachments': []
 	        };
 
-	        message.attachments = result.transitions.map(function(transition){
+	        message.attachments = result.transitions.map((transition) => {
 	          return {
 	            'fallback': 'Name: ' + transition.name + ' ID: ' + transition.id + ': ' + transition.to.description,
 	            'title': 'Name: ' + transition.name + ' ID: ' + transition.id, 
@@ -302,7 +306,7 @@ module.exports.queryIssues = (query) => {
 	        if (query === '') {
 	        	message.text = 'No user string found in command. Type `'+command+' help` to get details on how to use this command.'
 	        } else {
-	        	message.attachments = result.issues.map(function(issue) {
+	        	message.attachments = result.issues.map((issue) => {
 			        return {
 			          'fallback': 'Task ' + issue.key + ' ' + issue.fields.summary + ': ' + config.jira.url + 'browse/' + issue.key,
 			          'pretext': '*Task <' + config.jira.url + 'browse/' + issue.key + '|' + issue.key + '>*',
