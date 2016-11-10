@@ -3,9 +3,6 @@ const Boom = require('boom');
 const config = require('../config');
 const Slack = require('../utils/slack');
 const JIRA = require('../utils/jira');
-const slack = new Slack({
-        token: config.slack.token
-});
 
 let options = {
     headers: {

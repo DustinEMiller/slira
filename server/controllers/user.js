@@ -65,7 +65,7 @@ module.exports.handleLogin = (request, reply) => {
 
 module.exports.checkJira = (request, reply) => {
     console.log('called');
-    return reply(200);
+    return reply(201);
 };
 
 module.exports.handleJiraCredentials = (request, reply) => {

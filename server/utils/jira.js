@@ -89,10 +89,6 @@ module.exports.setCommand = (cmd) => {
 	command = cmd;
 };
 
-module.exports.doAction = (action) => {
-
-};
-
 module.exports.checkUser = (id) => {
 	let opts = Object.create(options);
 
@@ -414,4 +410,29 @@ module.exports.help = (isIntentional) => {
     }];
 
     return message;
-}
+};
+
+module.exports.doAction = (action) => {
+
+    let actions = {
+        'issues': this.handleIssues,
+        'i': this.handleIssues,
+        'states': this.handleStates,
+        's': this.handleStates,
+        'details': this.handleDetails,
+        'd': this.handleDetails,
+        'transitions': this.handleTransitions,
+        't': this.handleTransitions,
+        'comment': this.handleComment,
+        'c': this.handleComment,
+        'connect': this.handleConnect,
+        'help': this.handleHelp,
+        'h': this.handleHelp,
+    };
+
+    if (typeof actions[action] !== 'function') {
+        throw new Error('Invalid token.');
+    }
+
+    return actions[action]();
+};

@@ -13,11 +13,12 @@
 
             chai.request(app.listener)
                 .get('/api/jira/valid')
-                .end(function(err, response) {
-                    console.log(err);
-                    expect(err).not.to.exist();
-                    expect(results.statusCode).to.equals(200);
+                .then(function(response) {
+                    expect(response).to.have.status(200);
                     done();
+                })
+                .catch(function(err) {
+                    throw err;
                 });
         });
     });
