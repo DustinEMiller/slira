@@ -59,22 +59,21 @@ UserSchema.pre('save', (next) => {
 UserSchema.methods.decryptTokens = () => {
     let user = this;
     let decipher;
+    console.log('Yolo');
+    console.log(this);
 
-    if (user.jiraOAuthToken || user.jiraOAuthSecret) {
-
-        if(user.jiraOAuthSecret) {
-            decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
-            user.jiraOAuthSecret = decipher.update(user.jiraOAuthSecret, 'hex', 'utf8');
-            user.jiraOAuthSecret += decipher.final('utf8');
-        }
-
-        if(user.jiraOAuthToken) {
-            decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
-            user.jiraOAuthToken = decipher.update(user.jiraOAuthToken,'hex','utf8');
-            user.jiraOAuthToken += decipher.final('utf8');
-        }
-
+    if(user.jiraOAuthSecret) {
+        decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
+        user.jiraOAuthSecret = decipher.update(user.jiraOAuthSecret, 'hex', 'utf8');
+        user.jiraOAuthSecret += decipher.final('utf8');
     }
+
+    if(user.jiraOAuthToken) {
+        decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);
+        user.jiraOAuthToken = decipher.update(user.jiraOAuthToken,'hex','utf8');
+        user.jiraOAuthToken += decipher.final('utf8');
+    }
+
 
 };
 

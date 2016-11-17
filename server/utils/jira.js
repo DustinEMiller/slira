@@ -3,6 +3,12 @@
 const req = require('request');
 const config = require('../config');
 const User = require('../models/User');
+const fs = require('fs');
+const OAuth = require('oauth').OAuth;
+const privateKey = fs.readFileSync(config.privateKeyFile, 'utf8');
+const consumer =
+    new OAuth(config.jira.url + "plugins/servlet/oauth/request-token", config.jira.url + "plugins/servlet/oauth/access-token",
+        "hardcoded-consumer", privateKey, "1.0", "http://54.244.181.96:3000/login/jira", "RSA-SHA1");
 
 let command = '/jira';
 //move this module into revealing pattern and inject options from the JIRA controller
@@ -90,39 +96,32 @@ module.exports.setCommand = (cmd) => {
 };
 
 module.exports.checkUser = (id) => {
-	let opts = Object.create(options);
-
-	opts.url = config.jira.url + 'rest/api/2/myself';
+	let endPoint = config.jira.url + 'rest/api/2/myself';
 
 	return User.findOne({userId: id}).exec()
-		.then((response) => {
-			console.log(response);
-			if(response.jiraUserName && response.jiraPassword) {
-				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
-                return true;
+		.then((user) => {
+
+			if(user.jiraOAuthSecret && user.jiraOAuthToken) {
+                user.decryptTokens();
+                console.log(user);
+                return new Promise((resolve, reject) => {
+                    consumer.get(endPoint, user.jiraOAuthToken, user.jiraOAuthSecret, (err, httpResponse, body) => {
+                        if (err) {
+                            return reject(httpResponse.statusCode);
+                        }
+
+                        return resolve(httpResponse.statusCode);
+                    });
+                });
+
 			} else {
+			    //Boom: no good.
                 return false;
             }
 
 		})
-		.then((response) => {
-            if(!response) {
-				return response;
-			}
-        
-            return new Promise((resolve, reject) => {
-                req(opts, (err, httpResponse, body) => {
-	    	
-                    if (err) {
-                        return resolve(httpResponse.statusCode);
-                    }
-                    
-                    return resolve(httpResponse.statusCode);
-                });
-            });	
-            
-		})
 		.catch((error) => {
+		    console.log(error);
 			return '400';		
 		});
 }
