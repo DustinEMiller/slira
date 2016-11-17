@@ -46,6 +46,14 @@ module.exports = [
 			handler: user.handleJiraCredentials
 		},
 	},
+    {
+        method: 'GET',
+        path: '/check/user',
+        config: {
+            auth: 'session',
+            handler: jira.checkUser
+        },
+    },
 	{
 		method: 'GET', 
 		path: '/',

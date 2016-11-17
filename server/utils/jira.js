@@ -96,7 +96,7 @@ module.exports.checkUser = (id) => {
 
 	return User.findOne({userId: id}).exec()
 		.then((response) => {
-
+			console.log(response);
 			if(response.jiraUserName && response.jiraPassword) {
 				opts.headers.Authorization = 'Basic ' + new Buffer(response.jiraUserName+ ":" + response.jiraPassword).toString('base64');
                 return true;
@@ -107,7 +107,7 @@ module.exports.checkUser = (id) => {
 		})
 		.then((response) => {
             if(!response) {
-				return '403';	
+				return response;
 			}
         
             return new Promise((resolve, reject) => {
