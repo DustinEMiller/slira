@@ -1,48 +1,16 @@
 <navigation></navigation>
 <div class="row">
-    <div class="small-12 columns"><h2>Your Account</h2></div>
+    <div class="small-12 columns"><h2>Your Accounts</h2></div>
 </div>
 <div class="row">
-    <div class="small-4 columns">
+    <div class="small-6 columns">
+        <h2>Slack Details</h2>
         <h4>{{slackTeam}}</h4>
         <h5>{{slackUserName}}</h5>
     </div>
-    <div class="small-8 columns">
-        <div> 
-            <form id="jira-name" ng-submit="updateJiraName()">
-                <fieldset class="fieldset">
-                <legend>Update JIRA Username</legend>
-                <div class="row">
-                     <div class="small-12 columns">
-                        <label for="jira-user-name">JIRA Username</label>
-                        <input id="jira-user-name" name="jira-user-name" size="30" ng-model="jiraUserName" type="text" value="{{jiraUserName}}">
-                        <div class="{{jiraUserStatusClass}} callout" ng-show="jiraUserMessage">
-                            <p>{{jiraUserStatusMessage}}</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="button" type="submit">Update Username</button>
-                </fieldset>
-            </form>
-        </div>
-
-        <div>
-            <form id="jira-pw" ng-submit="updateJiraPassword()">
-                <fieldset class="fieldset">
-                <legend>Update JIRA Password</legend>nodemo
-                <div class="row">
-                    <div class="small-12 columns">
-                        <label for="jira-password">JIRA Password</label>
-                        <input id="jira-password" name="jira-password" size="30" type="password" ng-model="jiraPassword">
-                        <div class="{{jiraPasswordStatusClass}} callout" ng-show="jiraPasswordMessage">
-                            <p>{{jiraPasswordStatusMessage}}</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="button" type="submit">Update JIRA Password</button>
-                </fieldset>
-            </form>
-        </div>
+    <div class="small-6 columns">
+        <h2>JIRA Details</h2>
+        <h4>{{jiraUsermame}}</h4>
 
         <div class="{{jiraStatusClass}} callout" ng-show="jiraMessage">
             <p>{{jiraStatusMessage}}</p>

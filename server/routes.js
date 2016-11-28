@@ -23,14 +23,6 @@ module.exports = [
 		}	
 	},
 	{
-		path: '/api/jira/valid',
-		method: 'GET',
-		config: {
-			auth: 'session',
-			handler: user.checkJira
-		}
-	},
-	{
 		method: 'GET', 
 		path: '/login/slack',
 		config: {

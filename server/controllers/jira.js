@@ -22,10 +22,8 @@ function slackTokenMatch(token) {
 module.exports.slackHook = (request, reply) => {
     const payload = request.payload;
     let action = payload.text.split(/\s+/).slice(0,1);
-    let argString = payload.text.replace(command[0], '').trim();
+    let params = payload.text.replace(action[0], '').trim();
     let mechanism;
-
-    JIRA.setCommand(payload.command);
 
     if (!slackTokenMatch(payload.token)) {
         let message = {
@@ -35,41 +33,29 @@ module.exports.slackHook = (request, reply) => {
         return reply(message).header('content-type', 'application/json');
     }
 
-    JIRA.doAction(action[0]);
+    JIRA.setCommand(payload.command);
 
-    if (command[0] === 'issues' || command[0] === 'i') {
-        mechanism = JIRA.queryIssues(argString);
-        console.log(mechanism);
-    } else if (command[0] === 'states' || command[0] === 's') {
-        mechanism = JIRA.retrieveTransitions(argString);
-    } else if (command[0] === 'details' || command[0] === 'd') {
-        mechanism = JIRA.issueDetails(argString);
-    } else if (command[0] === 'transition' || command[0] === 't') {
-        mechanism = JIRA.transitionIssue(argString);
-    } else if (command[0] === 'comment' || command[0] === 'c') {
-        mechanism = JIRA.addComment(argString);
-    } else if (command[0] === 'connect') {
-        mechanism = JIRA.signinLink(request.payload);
-    } else if (command[0] === 'help') {
-        return reply(JIRA.help(1)).header('content-type', 'application/json');
+    mechanism = JIRA.doAction(action[0], params);
+
+    if(typeof mechanism.then === 'function') {
+        mechanism
+            .then((result) => {
+                reply(result).header('content-type', 'application/json');
+            })
+            .catch((err) => {
+                reply(err).header('content-type', 'application/json');
+            });
     } else {
-        return reply(JIRA.help(0)).header('content-type', 'application/json');
+        return reply(mechanism).header('content-type', 'application/json');
     }
 
-    mechanism
-    .then((result) => {
-        reply(result).header('content-type', 'application/json');
-    })
-    .catch((err) => {
-        reply(err).header('content-type', 'application/json');
-    });
 };
 
 module.exports.checkUser = (request, reply) => {
     JIRA.checkUser(request.auth.credentials.id)
         .then((result) => {
             console.log(result)
-            reply(result); 
+            reply(result);
         })
         .catch((error) => {
             reply(error);

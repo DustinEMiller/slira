@@ -76,7 +76,7 @@ const app = (() => {
         });
     });
 
-    return server
+    return server;
 });
 
 module.exports = app();

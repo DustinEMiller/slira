@@ -91,42 +91,7 @@ function queryTransitions (issue) {
 	return getRequest(opts);
 }
 
-module.exports.setCommand = (cmd) => {
-	command = cmd;
-};
-
-module.exports.checkUser = (id) => {
-	let endPoint = config.jira.url + 'rest/api/2/myself';
-
-	return User.findOne({userId: id}).exec()
-		.then((user) => {
-
-			if(user.jiraOAuthSecret && user.jiraOAuthToken) {
-                user.decryptTokens();
-                console.log(user);
-                return new Promise((resolve, reject) => {
-                    consumer.get(endPoint, user.jiraOAuthToken, user.jiraOAuthSecret, (err, httpResponse, body) => {
-                        if (err) {
-                            return reject(httpResponse.statusCode);
-                        }
-
-                        return resolve(httpResponse.statusCode);
-                    });
-                });
-
-			} else {
-			    //Boom: no good.
-                return false;
-            }
-
-		})
-		.catch((error) => {
-		    console.log(error);
-			return '400';		
-		});
-}
-
-module.exports.retrieveTransitions = (issue) => {
+function handleRetrieveStates(issue) {
 	return queryTransitions(issue)
 		.then((result) => {
 	        let message = {
@@ -165,7 +130,7 @@ module.exports.retrieveTransitions = (issue) => {
 	    });
 }
 
-module.exports.issueDetails = (issue) => {
+function handleIssueDetails(issue) {
 	let opts = Object.create(options);
 	opts.url = config.jira.url + '/rest/api/2/issue/'+issue;
 
@@ -231,7 +196,7 @@ module.exports.issueDetails = (issue) => {
 		});
 }
 
-module.exports.transitionIssue = (args) => {
+function handleTransitionIssue(args) {
 	let issue = args.split(/\s+/).slice(0,1);
     let status = args.replace(issue[0], '').trim();
 
@@ -281,7 +246,7 @@ module.exports.transitionIssue = (args) => {
 		});
 }
 
-module.exports.queryIssues = (query) => {
+function handleQueryIssues(query) {
 	let opts = Object.create(options);
 
 	if (query.toLowerCase() === 'unassigned') {
@@ -324,7 +289,7 @@ module.exports.queryIssues = (query) => {
 		});
 }
 
-module.exports.addComment = (args) => {
+function handleAddComment(args) {
 	let issue = "",
 		comment = "",
 		opts = Object.create(options);
@@ -357,25 +322,25 @@ module.exports.addComment = (args) => {
 		});
 }
 
-module.exports.signinLink = (request) => {
+function handleConnect(request) {
 	return {
       	"response_type": "ephemeral",
       	"text": "Follow this link to begin the process of connecting your JIRA and Slack Accounts",
       	'attachments': [{
     		"title": "Connect your JIRA and Slack Accounts",
-    		"title_link": config.url + "/login/slack"
+    		"title_link": config.url + "/account"
 		}]
 	};
 }
 
-module.exports.help = (isIntentional) => {
+function handleHelp(noToken) {
 	let message = {
       	"response_type": "ephemeral",
       	"text": '`'+command + " help` topics.",
       	'attachments': []
     };
 
-    if(!isIntentional) {
+    if(noToken) {
     	message.text = 'That command does not exist. Here are the ' + command + ' help topics.';	
     }
 
@@ -411,27 +376,70 @@ module.exports.help = (isIntentional) => {
     return message;
 };
 
-module.exports.doAction = (action) => {
+module.exports.doAction = (action, params) => {
 
     let actions = {
-        'issues': this.handleIssues,
-        'i': this.handleIssues,
-        'states': this.handleStates,
-        's': this.handleStates,
-        'details': this.handleDetails,
-        'd': this.handleDetails,
-        'transitions': this.handleTransitions,
-        't': this.handleTransitions,
-        'comment': this.handleComment,
-        'c': this.handleComment,
-        'connect': this.handleConnect,
-        'help': this.handleHelp,
-        'h': this.handleHelp,
+        'issues': handleQueryIssues,
+        'i': handleQueryIssues,
+        'states': handleRetrieveStates,
+        's': handleRetrieveStates,
+        'details': handleIssueDetails,
+        'd': handleIssueDetails,
+        'transitions':handleTransitionIssue,
+        't': handleTransitionIssue,
+        'comment': handleAddComment,
+        'c': handleAddComment,
+        'connect': handleConnect,
+        'help': handleHelp,
+        'h': handleHelp,
+		'': handleHelp
     };
 
     if (typeof actions[action] !== 'function') {
-        throw new Error('Invalid token.');
+        action = 'h';
+        params = 1;
     }
 
-    return actions[action]();
+    return actions[action](params);
+};
+
+module.exports.setCommand = (cmd) => {
+    command = cmd;
+};
+
+module.exports.checkUser = (id) => {
+    let endPoint = config.jira.url + 'rest/api/2/myself';
+
+    return User.findOne({userId: id}).exec()
+        .then((user) => {
+
+            if(user.jiraOAuthSecret && user.jiraOAuthToken) {
+                user.decryptTokens();
+                //oauth.js
+                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", null, callback );
+                //must change to
+                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", "application/json", callback );
+                return new Promise((resolve, reject) => {
+                    consumer.get(endPoint, user.jiraOAuthToken, user.jiraOAuthSecret, (error, response, body) => {
+                        if (error) {
+                            return reject(error);
+                        }
+
+                        return resolve({
+                            status: body.statusCode,
+                            response: response
+                        });
+                    });
+                });
+
+            } else {
+                //Boom: no good.
+                return false;
+            }
+
+        })
+        .catch((error) => {
+            //Boom 400
+            return '400';
+        });
 };

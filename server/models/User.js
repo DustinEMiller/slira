@@ -59,8 +59,6 @@ UserSchema.pre('save', (next) => {
 UserSchema.methods.decryptTokens = () => {
     let user = this;
     let decipher;
-    console.log('Yolo');
-    console.log(this);
 
     if(user.jiraOAuthSecret) {
         decipher = crypto.createDecipher('aes-256-ctr', config.cryptoSecret);

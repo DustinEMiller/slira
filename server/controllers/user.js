@@ -4,6 +4,12 @@ const User = require('../models/User');
 const config = require('../config');
 const bcrypt = require('bcryptjs');
 const Boom = require('boom');
+const fs = require('fs');
+const OAuth = require('oauth').OAuth;
+const privateKey = fs.readFileSync(config.privateKeyFile, 'utf8');
+const consumer =
+    new OAuth(config.jira.url + "plugins/servlet/oauth/request-token", config.jira.url + "plugins/servlet/oauth/access-token",
+		"hardcoded-consumer", privateKey, "1.0", "http://54.244.181.96:3000/login/jira", "RSA-SHA1");
 
 module.exports.handleLogin = (request, reply) => {
 	let user = new User();
@@ -54,11 +60,6 @@ module.exports.handleLogin = (request, reply) => {
 	} else {
         return reply(Boom.unauthorized());
     }
-};
-
-module.exports.checkJira = (request, reply) => {
-    console.log('called');
-    return reply(201);
 };
 
 module.exports.handleJiraCredentials = (request, reply) => {

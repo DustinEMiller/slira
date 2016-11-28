@@ -4,18 +4,6 @@
 
     function config ($routeProvider, $locationProvider) {
         $routeProvider
-        .when('/', {
-            templateUrl: '../client/js/index/index.view.html',
-            controller: 'indexCtrl',
-        })
-        .when('/register/:registrationToken', {
-           templateUrl: '../client/js/auth/register/register.view.html',
-            controller: 'registerCtrl',
-        })
-        .when('/slack', {
-            templateUrl: '../client/js/auth/slack/slack.view.html',
-            controller: 'slackCtrl',
-        })
         .when('/account', {
             templateUrl: '../client/js/account/account.view.html',
             controller: 'accountCtrl',
@@ -32,7 +20,7 @@
         .when('/notFound', {
             templateUrl: '../client/js/errors/notFound.html'
         })
-        .otherwise({redirectTo: '/'});
+        .otherwise({redirectTo: '/account'});
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
@@ -149,67 +137,6 @@ angular
                 $scope.jiraStatusMessage = "Could not verify your account. Please try again.";  
             });        
         }
-    }
-})();;(function () {
-
-  angular
-    .module('slira')
-    .controller('registerCtrl', registerCtrl);
-
-  registerCtrl.$inject = ['$location', 'authentication', '$routeParams', '$scope'];
-    function registerCtrl($location, authentication, $routeParams, $scope) {
-        $scope.message = "";
-        $scope.invalidToken = false;
-        $scope.invalidRegistration = false;
-
-        $scope.credentials = {
-            email: "",
-            password: "",
-            token: $routeParams.registrationToken
-        };
-
-        authentication.registrationToken($routeParams.registrationToken)
-            .then(function(response) {
-                if(response.data.success) {
-                    $scope.credentials.email = response.data.email;   
-                } else {
-                    $scope.registration.$error.formLevel = true;
-                    $scope.invalidToken = true;
-                    $scope.message = response.data.msg;    
-                }
-            })
-            .catch(function(err) {
-                $scope.registration.$error.formLevel = true;
-                $scope.invalidToken = true;
-                $scope.message = "Internal error. Please try again";
-            })
-
-        $scope.onSubmit = function(isValid) {
-            if(isValid) {
-                authentication
-                .register($scope.credentials)
-                .then(function(response) {
-                    if(response.data.success) {
-                        $location.path('account');
-                    } else {
-                        $scope.invalidRegistration = true;
-                        $scope.registrationMessage = response.data.msg;
-                    }
-                    
-                })
-                .catch(function(err) {
-                    if(err.data.message == 'child "password" fails because ["password" is not allowed to be empty]') {
-                        $scope.registrationMessage = "Password must not be empty";
-                    } else if (err.data.message == 'child "password" fails because ["password" length must be at least 6 characters long]') {
-                        $scope.message = "Password must be at least 6 characters longs";    
-                    } else if (err.data.registrationMessage == 'child "email" fails because ["email" is not allowed to be empty]') {
-                        $scope.registrationMessage = "Email must not be empty";
-                    } else {
-                        $scope.registrationMessage = "There was an error. Please try again.";    
-                    }
-                });    
-            }
-        };
     }
 })();;(function () {
 
@@ -352,108 +279,27 @@ angular
     	};
     }
 
-})();;(function () {
-
-  angular
-  .module('slira')
-  .controller('indexCtrl', indexCtrl);
-
-    indexCtrl.$inject = ['$scope'];
-
-    function indexCtrl($scope) {
-
-        $scope.slackLogin = function() {
-          window.location = "/login/slack"    
-        }
-    }
-})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/auth/register/register.view.html', '../client/js/errors/denied.view.html', '../client/js/errors/loginError.view.html', '../client/js/errors/notFound.view.html', '../client/js/errors/unauthorized.view.html', '../client/js/index/index.view.html']);
+})();;angular.module('templates-dist', ['../client/js/account/account.view.html', '../client/js/errors/denied.view.html', '../client/js/errors/loginError.view.html', '../client/js/errors/notFound.view.html', '../client/js/errors/unauthorized.view.html']);
 
 angular.module("../client/js/account/account.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/account/account.view.html",
     "<navigation></navigation>\n" +
     "<div class=\"row\">\n" +
-    "    <div class=\"small-12 columns\"><h2>Your Account</h2></div>\n" +
+    "    <div class=\"small-12 columns\"><h2>Your Accounts</h2></div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
-    "    <div class=\"small-4 columns\">\n" +
+    "    <div class=\"small-6 columns\">\n" +
+    "        <h2>Slack Details</h2>\n" +
     "        <h4>{{slackTeam}}</h4>\n" +
     "        <h5>{{slackUserName}}</h5>\n" +
     "    </div>\n" +
-    "    <div class=\"small-8 columns\">\n" +
-    "        <div> \n" +
-    "            <form id=\"jira-name\" ng-submit=\"updateJiraName()\">\n" +
-    "                <fieldset class=\"fieldset\">\n" +
-    "                <legend>Update JIRA Username</legend>\n" +
-    "                <div class=\"row\">\n" +
-    "                     <div class=\"small-12 columns\">\n" +
-    "                        <label for=\"jira-user-name\">JIRA Username</label>\n" +
-    "                        <input id=\"jira-user-name\" name=\"jira-user-name\" size=\"30\" ng-model=\"jiraUserName\" type=\"text\" value=\"{{jiraUserName}}\">\n" +
-    "                        <div class=\"{{jiraUserStatusClass}} callout\" ng-show=\"jiraUserMessage\">\n" +
-    "                            <p>{{jiraUserStatusMessage}}</p>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                <button class=\"button\" type=\"submit\">Update Username</button>\n" +
-    "                </fieldset>\n" +
-    "            </form>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <div>\n" +
-    "            <form id=\"jira-pw\" ng-submit=\"updateJiraPassword()\">\n" +
-    "                <fieldset class=\"fieldset\">\n" +
-    "                <legend>Update JIRA Password</legend>nodemo\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div class=\"small-12 columns\">\n" +
-    "                        <label for=\"jira-password\">JIRA Password</label>\n" +
-    "                        <input id=\"jira-password\" name=\"jira-password\" size=\"30\" type=\"password\" ng-model=\"jiraPassword\">\n" +
-    "                        <div class=\"{{jiraPasswordStatusClass}} callout\" ng-show=\"jiraPasswordMessage\">\n" +
-    "                            <p>{{jiraPasswordStatusMessage}}</p>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                <button class=\"button\" type=\"submit\">Update JIRA Password</button>\n" +
-    "                </fieldset>\n" +
-    "            </form>\n" +
-    "        </div>\n" +
+    "    <div class=\"small-6 columns\">\n" +
+    "        <h2>JIRA Details</h2>\n" +
+    "        <h4>{{jiraUsermame}}</h4>\n" +
     "\n" +
     "        <div class=\"{{jiraStatusClass}} callout\" ng-show=\"jiraMessage\">\n" +
     "            <p>{{jiraStatusMessage}}</p>\n" +
     "        </div>\n" +
-    "    </div>\n" +
-    "</div>");
-}]);
-
-angular.module("../client/js/auth/register/register.view.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("../client/js/auth/register/register.view.html",
-    "<navigation></navigation>\n" +
-    "\n" +
-    "<div class=\"row\">\n" +
-    "    <div class=\"small-12 columns\">\n" +
-    "        <h2>Register</h2>\n" +
-    "        <p>If you already have an account, please <a href=\"login\">log in</a> instead.</p>\n" +
-    "        <form name=\"registration\" ng-submit=\"onSubmit(registration.$valid)\" novalidate>\n" +
-    "            <div class=\"row\" ng-show=\"invalidToken\">\n" +
-    "                <div class=\"small-12 columns\">{{message}}</div>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div>\n" +
-    "                <label for=\"email\">Email address</label>\n" +
-    "                <input type=\"email\" id=\"email\" placeholder=\"Enter email\" name='email' ng-model=\"credentials.email\" ng-disabled=\"invalidToken\" required>\n" +
-    "                <div ng-messages=\"registration.email.$error\" ng-hide=\"invalidToken\">\n" +
-    "                    <div ng-message=\"required\">Email is required.</div>\n" +
-    "                    <div ng-message=\"email\">Your email address is invalid</div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div>\n" +
-    "                <label for=\"password\">Password</label>\n" +
-    "                <input type=\"password\" id=\"password\" placeholder=\"Password\" name=\"password\" ng-model=\"credentials.password\" ng-disabled=\"invalidToken\" ng-minlength=\"6\" required>\n" +
-    "                <div ng-messages=\"registration.password.$error\" ng-hide=\"invalidToken\">\n" +
-    "                    <div ng-message=\"required\">Password is required.</div>\n" +
-    "                    <div ng-message=\"minlength\">Password must be at least 6 characters long.</div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <button type=\"submit\" ng-disabled=\"!registration.$valid || invalidToken\">Register</button>\n" +
-    "        </form>\n" +
     "    </div>\n" +
     "</div>");
 }]);
@@ -476,16 +322,4 @@ angular.module("../client/js/errors/notFound.view.html", []).run(["$templateCach
 angular.module("../client/js/errors/unauthorized.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("../client/js/errors/unauthorized.view.html",
     "You're not allowed");
-}]);
-
-angular.module("../client/js/index/index.view.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("../client/js/index/index.view.html",
-    "<navigation></navigation>\n" +
-    "<div>\n" +
-    "    <h1>Greetings</h1>\n" +
-    "	<div class=\"small-12 columns\">\n" +
-    "        <h1>Log In</h1>\n" +
-    "        <a ng-click=\"slackLogin()\"><img src=\"https://api.slack.com/img/sign_in_with_slack.png\"/></a>\n" +
-    "    </div>\n" +
-    "</div>");
 }]);

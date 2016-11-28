@@ -4,18 +4,6 @@
 
     function config ($routeProvider, $locationProvider) {
         $routeProvider
-        .when('/', {
-            templateUrl: '../client/js/index/index.view.html',
-            controller: 'indexCtrl',
-        })
-        .when('/register/:registrationToken', {
-           templateUrl: '../client/js/auth/register/register.view.html',
-            controller: 'registerCtrl',
-        })
-        .when('/slack', {
-            templateUrl: '../client/js/auth/slack/slack.view.html',
-            controller: 'slackCtrl',
-        })
         .when('/account', {
             templateUrl: '../client/js/account/account.view.html',
             controller: 'accountCtrl',
@@ -32,7 +20,7 @@
         .when('/notFound', {
             templateUrl: '../client/js/errors/notFound.html'
         })
-        .otherwise({redirectTo: '/'});
+        .otherwise({redirectTo: '/account'});
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
