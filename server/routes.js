@@ -102,7 +102,7 @@ module.exports = [
 			auth: 'session',
 			handler: (request, reply) => {
 				request.cookieAuth.clear();
-				reply('bye bye');
+				reply.file('index.html');
 			}
 		}
 	},

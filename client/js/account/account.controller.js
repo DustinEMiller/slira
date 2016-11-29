@@ -27,67 +27,21 @@
                 console.log('promise rejected');
             });
     
-       //checkCredentials();
-
-        $scope.updateJiraName = function() {
-            $scope.jiraUserMessage = false;
-            
-            sliraData.updateJiraUser({username:$scope.jiraUserName})
-                .then(function(data) {
-                    if (data.data === 200) {
-                        $scope.jiraUserStatusMessage = "User name updated successfully";
-                        $scope.jiraUserStatusClass = "success";  
-                    } else {
-                        $scope.jiraUserStatusMessage = "Unable to update user name";
-                        $scope.jiraUserStatusClass = "warning";    
-                    }
-                    $scope.jiraUserMessage = true;
-                    checkCredentials();
-                })
-                .catch(function(e) {
-                    $scope.jiraUserStatusMessage = "Unable to update user name";
-                    $scope.jiraUserStatusClass = "warning"; 
-                    $scope.jiraUserMessage = true;
-                    checkCredentials(); 
-                });
-        };
-
-        $scope.updateJiraPassword = function() {
-            $scope.jiraPasswordMessage = false;
-            
-            sliraData.updateJiraUser({password:$scope.jiraPassword})
-                .then(function(data) {
-                     if (data.data === 200) {
-                        $scope.jiraPasswordStatusMessage = "Password updated successfully";
-                        $scope.jiraPasswordStatusClass = "success";  
-                    } else {
-                        $scope.jiraPasswordStatusMessage = "Unable to update password";
-                        $scope.jiraPasswordStatusClass = "warning";    
-                    }
-                    $scope.jiraPasswordMessage = true;
-                    checkCredentials();
-                })
-                .catch(function(e) {
-                    $scope.jiraPasswordStatusMessage = "Unable to update password";
-                    $scope.jiraPasswordStatusClass = "warning";
-                    $scope.jiraPasswordMessage = true;
-                    checkCredentials();
-                });
-        };
+        checkCredentials();
         
         function checkCredentials() {
-            sliraData.checkJira()
+            sliraData.getJiraProfile()
             .then(function(data) {
                 $scope.jiraMessage = true; 
-                if (data.data === 200) {
+                if (data.statusCode === 200) {
                     $scope.jiraStatusClass = "success";  
-                    $scope.jiraStatusMessage = "Your JIRA credentials are valid.";
-                } else if (data.data === 403) {
+                    $scope.jiraStatusMessage = "Your JIRA account is connected";
+                } else if (data.statusCode === 204) {
                     $scope.jiraStatusClass = "alert";  
-                    $scope.jiraStatusMessage = "Your JIRA credentials are invalid. Your account needs login validation. Please go to (your JIRA url) and verify your account.";   
-                } else {
+                    $scope.jiraStatusMessage = "Your JIRA account is NOT connected. Click here to connect.";
+                } else if (data.statusCode === 500) {
                     $scope.jiraStatusClass = "alert";  
-                    $scope.jiraStatusMessage = "Your JIRA credentials are invalid.";      
+                    $scope.jiraStatusMessage = "Your user account was not found. How did you even get here?";
                 }
             })
             .catch(function(e) {

@@ -3,12 +3,8 @@
 const req = require('request');
 const config = require('../config');
 const User = require('../models/User');
-const fs = require('fs');
-const OAuth = require('oauth').OAuth;
-const privateKey = fs.readFileSync(config.privateKeyFile, 'utf8');
-const consumer =
-    new OAuth(config.jira.url + "plugins/servlet/oauth/request-token", config.jira.url + "plugins/servlet/oauth/access-token",
-        "hardcoded-consumer", privateKey, "1.0", "http://54.244.181.96:3000/login/jira", "RSA-SHA1");
+const consumer  = require('../utils/oauth');
+const Boom = require('boom');
 
 let command = '/jira';
 //move this module into revealing pattern and inject options from the JIRA controller
@@ -425,21 +421,23 @@ module.exports.checkUser = (id) => {
                             return reject(error);
                         }
 
+                        let result  = JSON.parse(response);
+
                         return resolve({
-                            status: body.statusCode,
-                            response: response
+                            statusCode: body.statusCode,
+                            name: result.displayName,
+                            avatars: result.avatarUrls,
+                            profile: result.self
                         });
                     });
                 });
 
             } else {
-                //Boom: no good.
-                return false;
+                return { statusCode: '204' };
             }
 
         })
         .catch((error) => {
-            //Boom 400
-            return '400';
+            return Boom.badImplementation('Unacceptable data', error);
         });
 };

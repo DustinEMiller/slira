@@ -4,9 +4,9 @@
 	.module('slira')
 	.service('sliraData', sliraData);
 
-  sliraData.$inject = ['$http', 'authentication'];
+  sliraData.$inject = ['$http'];
 
-    function sliraData ($http, authentication) {
+    function sliraData ($http) {
 
     	var getProfile = function () {
             return $http.get('/api/user/information')
@@ -18,33 +18,21 @@
                 });
     	};
 
-        var checkJira = function () {
-            return $http.get('/api/jira/check')
+        var getJiraProfile = function () {
+            return $http.get('/check/user')
                 .then(function (request) {
                     console.log(request);
                     return request;
                 })
                 .catch(function (error) {
+                    console.log(error);
                     return error;
                 });
         };
-
-        var updateJiraUser = function (user) {
-            return $http.post('/api/jira/update/user', user)
-                .then(function (request) {
-                    console.log(request);
-                    return request;
-                })
-                .catch(function (error) {
-                    return error;
-                });
-        };
-
 
     	return {
     	  	getProfile: getProfile,
-            checkJira: checkJira,
-            updateJiraUser: updateJiraUser
+            getJiraProfile: getJiraProfile
     	};
     }
 

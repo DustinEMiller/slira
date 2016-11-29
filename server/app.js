@@ -1,4 +1,4 @@
-const app = (() => {
+module.exports = (() => {
     'use strict';
 
     const Hapi = require('hapi'),
@@ -77,6 +77,4 @@ const app = (() => {
     });
 
     return server;
-});
-
-module.exports = app();
+})();
