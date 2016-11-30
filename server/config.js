@@ -1,5 +1,5 @@
 'use strict';
-var getEnv = require('getenv');
+let getEnv = require('getenv');
 
 module.exports = {
   	//3001
@@ -7,9 +7,9 @@ module.exports = {
     url: getEnv('SLIRA_URL', 'http://localhost:3000'),
 	slack:{
 	    token: getEnv('SLACK_TOKEN', ''),
-      password: getEnv('SLIRA_OAUTH_PASSWORD','dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr'),
-      clientId: getEnv('SLIRA_CLIENT_ID','13949143637.72058318581'),
-      oauthSecret: getEnv('SLIRA_OAUTH_SECRET', ''),
+        password: getEnv('SLIRA_OAUTH_PASSWORD','dlksjdgjinrimirmnginhcoihgirhjgijcobpsdkgowkr'),
+        clientId: getEnv('SLIRA_CLIENT_ID','13949143637.72058318581'),
+        oauthSecret: getEnv('SLIRA_OAUTH_SECRET', ''),
 	    webhooks:{
       		requestTokens: getEnv('SLIRA_SLACK_WEBHOOK_TOKENS', '').split(',')
 	    }

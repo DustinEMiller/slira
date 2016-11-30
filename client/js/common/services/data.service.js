@@ -31,8 +31,8 @@
         };
 
     	return {
-    	  	getProfile: getProfile,
-            getJiraProfile: getJiraProfile
+            getJiraProfile: getJiraProfile,
+    	  	getProfile: getProfile
     	};
     }
 
