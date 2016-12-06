@@ -401,7 +401,8 @@ function oauthUser(userId, url, data) {
                             });
                         });
                     } else {
-                        console.log(url);
+                        console.log(user.jiraOAuthToken);
+                        console.log(user.jiraOAuthSecret);
                         consumer.post(url, user.jiraOAuthToken, user.jiraOAuthSecret, data, "application/x-www-form-urlencoded", (error, response, body) => {
                             if (error) {
                                 return reject(error);
@@ -427,6 +428,7 @@ function oauthUser(userId, url, data) {
             return result;
         })
         .catch((error) => {
+            console.log(error);
             return Boom.badImplementation('Unacceptable data', error);
         });
 };
