@@ -57,8 +57,6 @@ angular
         $scope.jiraUserMessage = false;
         $scope.jiraPasswordMessage = false;
 
-        console.log(sliraData);
-
         sliraData.getProfile()
             .then(function(data) {
 
@@ -66,35 +64,31 @@ angular
                     $scope.slackUserName = data.data.user.username;
                     $scope.slackTeam = data.data.user.team;
                 }
-                checkJira();
             })
             .catch(function (e) {
                 console.log('promise rejected');
-                checkJira();
             });
 
-        function checkJira() {
-            sliraData.getJiraProfile()
-                .then(function(data) {
-                    $scope.jiraMessage = true;
-                    if (data.statusCode === 200) {
-                        $scope.jiraStatusClass = "success";
-                        $scope.jiraStatusMessage = "Your JIRA account is connected";
-                    } else if (data.statusCode === 204) {
-                        $scope.jiraStatusClass = "alert";
-                        $scope.jiraStatusMessage = "Your JIRA account is NOT connected. Click here to connect.";
-                    } else if (data.statusCode === 500) {
-                        $scope.jiraStatusClass = "alert";
-                        $scope.jiraStatusMessage = "Your user account was not found. How did you even get here?";
-                    }
-                })
-                .catch(function(e) {
-                    $scope.jiraMessage = true;
-                    $scope.jiraStatusClass = "warning";
-                    $scope.jiraStatusMessage = "Could not verify your account. Please try again.";
-                });
+        sliraData.getJiraProfile()
+            .then(function(data) {
+                $scope.jiraMessage = true;
+                if (data.data.statusCode === 200) {
+                    $scope.jiraStatusClass = "success";
+                    $scope.jiraStatusMessage = "Your JIRA account is connected";
+                } else if (data.data.statusCode === 204) {
+                    $scope.jiraStatusClass = "alert";
+                    $scope.jiraStatusMessage = "Your JIRA account is NOT connected. Click here to connect.";
+                } else {
+                    $scope.jiraStatusClass = "alert";
+                    $scope.jiraStatusMessage = "Your user account was not found. How did you even get here?";
+                }
+            })
+            .catch(function(e) {
+                $scope.jiraMessage = true;
+                $scope.jiraStatusClass = "warning";
+                $scope.jiraStatusMessage = "Could not verify your account. Please try again.";
+            });
 
-        }
 
     }
 })();;(function () {
@@ -129,12 +123,10 @@ angular
 
         var getJiraProfile = function () {
             return $http.get('/check/user')
-                .then(function (request) {
-                    console.log(request);
+                .success(function (request) {
                     return request;
                 })
-                .catch(function (error) {
-                    console.log(error);
+                .error(function (error) {
                     return error;
                 });
         };

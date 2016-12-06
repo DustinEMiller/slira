@@ -20,12 +20,10 @@
 
         var getJiraProfile = function () {
             return $http.get('/check/user')
-                .then(function (request) {
-                    console.log(request);
+                .success(function (request) {
                     return request;
                 })
-                .catch(function (error) {
-                    console.log(error);
+                .error(function (error) {
                     return error;
                 });
         };

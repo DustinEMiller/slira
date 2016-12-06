@@ -437,6 +437,9 @@ module.exports.checkUser = (id) => {
             }
 
         })
+        .then((result) => {
+            return result;
+        })
         .catch((error) => {
             return Boom.badImplementation('Unacceptable data', error);
         });
