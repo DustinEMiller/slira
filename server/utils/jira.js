@@ -81,7 +81,7 @@ function mappedColors(color) {
 	return "#000000";
 }
 
-function queryTransitions (issue) {
+function queryTransitions(issue) {
 	let opts = Object.create(options);
 	opts.url = config.jira.url + 'rest/api/2/issue/'+issue+'/transitions?expand=transitions.fields';
 	return getRequest(opts);
@@ -187,19 +187,19 @@ function handleIssueDetails(issue) {
 			} else {
 				message.text = 'There was an unknown issue with that command. Please contact the administrator if you continue to see this message or type `'+command+' help` for further assistance.'
 			}
-			console.log(err);
+
 			return JSON.stringify(message);
 		});
 }
 
-function handleTransitionIssue(args) {
+function handleTransitionIssue(args, payload) {
 	let issue = args.split(/\s+/).slice(0,1);
     let status = args.replace(issue[0], '').trim();
+    let statusId = status;
+    let url= config.jira.url + 'rest/api/2/issue/'+issue[0]+'/transitions?expand=transitions.fields';
 
 	return queryTransitions(issue[0])
 		.then((result) => {
-			let statusId = status;
-            let opts = Object.create(options);
 
 			if(!isNumber(status)) {
 				let transition = result.transitions.find((state) => {
@@ -213,21 +213,24 @@ function handleTransitionIssue(args) {
 				});	
 				status = transition.name;
 			}
+            let json = {"transition": { "id": statusId }};
 
-			opts.url = config.jira.url + 'rest/api/2/issue/'+issue[0]+'/transitions?expand=transitions.fields';
-			opts.json = {"transition": { "id": statusId }};
-		
-			return postRequest(opts);
+            return oauthUser(payload.user_id, url, json);
 		})
-		.then((result) => {
-			let message = {
-          		"response_type": "ephemeral",
-          		"text": "Issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>* has been updated to `'+status+'`',
-        	};
-			return JSON.stringify(message);
-		})
+        .then((result) => {
+            console.log(result);
+
+            let message = {
+                "response_type": "ephemeral",
+                "text": "Issue *<" + config.jira.url + 'browse/' + issue + '|' + issue + '>* has been updated to `'+status+'`',
+            };
+
+            return JSON.stringify(message);
+        })
 		.catch((err) => {
+		    console.log(err);
 			let message = {text: err.toString()};
+
 			if (issue[0] === '') {
 				message.text = 'No issue detected in your command. Please type `'+command+' help` for assistance.';
 			} else if (status === '') {
@@ -372,7 +375,65 @@ function handleHelp(noToken) {
     return message;
 };
 
-module.exports.doAction = (action, params) => {
+function oauthUser(userId, url, data) {
+    console.log(userId);
+    return User.findOne({userId: userId}).exec()
+        .then((user) => {
+
+            if(user.jiraOAuthSecret && user.jiraOAuthToken) {
+                user.decryptTokens();
+                //oauth.js
+                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", null, callback );
+                //must change to
+                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", "application/json", callback );
+                return new Promise((resolve, reject) => {
+                    if(!data) {
+                        consumer.get(url, user.jiraOAuthToken, user.jiraOAuthSecret, (error, response, body) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let result  = JSON.parse(response);
+
+                            return resolve({
+                                statusCode: body.statusCode,
+                                result: result
+                            });
+                        });
+                    } else {
+                        console.log(url);
+                        consumer.post(url, user.jiraOAuthToken, user.jiraOAuthSecret, data, "application/x-www-form-urlencoded", (error, response, body) => {
+                            if (error) {
+                                return reject(error);
+                            }
+
+                            let result  = JSON.parse(response);
+
+                            return resolve({
+                                statusCode: body.statusCode,
+                                result: result
+                            });
+                        });
+                    }
+
+                });
+
+            } else {
+                return { statusCode: '204' };
+            }
+
+        })
+        .then((result) => {
+            return result;
+        })
+        .catch((error) => {
+            return Boom.badImplementation('Unacceptable data', error);
+        });
+};
+
+module.exports.doAction = (payload) => {
+	let action = payload.text.split(/\s+/).slice(0,1);
+	let params = payload.text.replace(action[0], '').trim();
 
     let actions = {
         'issues': handleQueryIssues,
@@ -396,7 +457,7 @@ module.exports.doAction = (action, params) => {
         params = 1;
     }
 
-    return actions[action](params);
+    return actions[action](params, payload);
 };
 
 module.exports.setCommand = (cmd) => {
@@ -405,42 +466,20 @@ module.exports.setCommand = (cmd) => {
 
 module.exports.checkUser = (id) => {
     let endPoint = config.jira.url + 'rest/api/2/myself';
+    let user = oauthUser(id, endPoint);
 
-    return User.findOne({userId: id}).exec()
-        .then((user) => {
-
-            if(user.jiraOAuthSecret && user.jiraOAuthToken) {
-                user.decryptTokens();
-                //oauth.js
-                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", null, callback );
-                //must change to
-                //return this._performSecureRequest( oauth_token, oauth_token_secret, "GET", url, null, "", "application/json", callback );
-                return new Promise((resolve, reject) => {
-                    consumer.get(endPoint, user.jiraOAuthToken, user.jiraOAuthSecret, (error, response, body) => {
-                        if (error) {
-                            return reject(error);
-                        }
-
-                        let result  = JSON.parse(response);
-
-                        return resolve({
-                            statusCode: body.statusCode,
-                            name: result.displayName,
-                            avatars: result.avatarUrls,
-                            profile: result.self
-                        });
-                    });
-                });
-
-            } else {
-                return { statusCode: '204' };
-            }
-
-        })
-        .then((result) => {
+    return user.then((result) => {
+        if(result.statusCode === '') {
+            return {
+                statusCode: result.statusCode,
+                name: result.result.displayName,
+                avatars: result.result.avatarUrls,
+                profile: result.result.self
+            };
+        } else {
             return result;
-        })
-        .catch((error) => {
-            return Boom.badImplementation('Unacceptable data', error);
-        });
+        }
+        return result;
+    });
+
 };

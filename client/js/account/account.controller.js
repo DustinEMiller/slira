@@ -20,7 +20,7 @@
                     $scope.slackTeam = data.data.user.team;
                 }
             })
-            .catch(function (e) {
+            .catch(function(e) {
                 console.log('promise rejected');
             });
 

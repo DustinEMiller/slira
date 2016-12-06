@@ -21,8 +21,6 @@ function slackTokenMatch(token) {
 
 module.exports.slackHook = (request, reply) => {
     const payload = request.payload;
-    let action = payload.text.split(/\s+/).slice(0,1);
-    let params = payload.text.replace(action[0], '').trim();
     let mechanism;
 
     if (!slackTokenMatch(payload.token)) {
@@ -35,7 +33,7 @@ module.exports.slackHook = (request, reply) => {
 
     JIRA.setCommand(payload.command);
 
-    mechanism = JIRA.doAction(action[0], params);
+    mechanism = JIRA.doAction(payload);
 
     if(typeof mechanism.then === 'function') {
         mechanism

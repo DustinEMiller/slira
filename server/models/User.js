@@ -71,8 +71,6 @@ UserSchema.methods.decryptTokens = () => {
         user.jiraOAuthToken = decipher.update(user.jiraOAuthToken,'hex','utf8');
         user.jiraOAuthToken += decipher.final('utf8');
     }
-
-
 };
 
 module.exports = mongoose.model('User', UserSchema);
