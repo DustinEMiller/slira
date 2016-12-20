@@ -376,7 +376,6 @@ function handleHelp(noToken) {
 };
 
 function oauthUser(userId, url, data) {
-    console.log(userId);
     return User.findOne({userId: userId}).exec()
         .then((user) => {
 
@@ -401,8 +400,6 @@ function oauthUser(userId, url, data) {
                             });
                         });
                     } else {
-                        console.log(user.jiraOAuthToken);
-                        console.log(user.jiraOAuthSecret);
                         consumer.post(url, user.jiraOAuthToken, user.jiraOAuthSecret, data, "application/x-www-form-urlencoded", (error, response, body) => {
                             if (error) {
                                 return reject(error);
@@ -469,7 +466,7 @@ module.exports.setCommand = (cmd) => {
 module.exports.checkUser = (id) => {
     let endPoint = config.jira.url + 'rest/api/2/myself';
     let user = oauthUser(id, endPoint);
-
+	console.log('myself');
     return user.then((result) => {
         if(result.statusCode === '') {
             return {

@@ -106,19 +106,20 @@ module.exports.handleJiraCredentials = (request, reply) => {
 		}
 	);
 };
-
+4
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
 		User.findOne({userId: request.auth.credentials.id}).exec()
 	  		.then((response) => {
 	  			if(response) {
-
+					console.log('getaccount');
 	  				let user = {
   						team: response.slackTeamName,
   						username: response.slackUserName,
   						jiraname: response.jiraUserName
 	  				};
+
 	  				return reply({success: true, user: user});
 	  			} else {
 	  				return reply({success: false, msg: "Unable to retrieve profile information"});	

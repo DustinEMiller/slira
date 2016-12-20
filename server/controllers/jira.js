@@ -60,11 +60,19 @@ module.exports.checkUser = (request, reply) => {
 };
 
 module.exports.issueUpdatedHook = (request, reply) => {
+    // change status console.log(request.payload.changelog.items);
+    console.log(request.payload);
+
+    //get all watchers first, ignore reporters
+
     if (request.payload.hasOwnProperty("comment")) {
+        console.log(request.payload.comment);
     	//console.log(request.payload.comment);
-    	console.log(request.payload.issue);
+    	//console.log(request.payload.issue);
     	//request.payload.issue.assignee
-    	//request.payload.issue.reporter
-    	//request.payload.issue.watches.self (api call url);
+    	//request.payload.issue.fields.reporter
+    	//request.payload.issue.watches.fields.self (api call url);
+    } else if (request.payload.hasOwnProperty("changelog")) {
+        //status, assignee
     }
 };
