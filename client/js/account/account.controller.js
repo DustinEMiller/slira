@@ -27,10 +27,11 @@
         sliraData.getJiraProfile()
             .then(function(data) {
                 $scope.jiraMessage = true;
-                if (data.data.statusCode === 200) {
+                console.log(data);
+                if (data.data.statusCode === 200 || data.data.statusCode === "200") {
                     $scope.jiraStatusClass = "success";
                     $scope.jiraStatusMessage = "Your JIRA account is connected";
-                } else if (data.data.statusCode === 204) {
+                } else if (data.data.statusCode === 204 || data.data.statusCode === "204") {
                     $scope.jiraStatusClass = "alert";
                     $scope.jiraStatusMessage = "Your JIRA account is NOT connected. Click here to connect.";
                 } else {

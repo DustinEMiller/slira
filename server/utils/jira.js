@@ -466,8 +466,9 @@ module.exports.setCommand = (cmd) => {
 module.exports.checkUser = (id) => {
     let endPoint = config.jira.url + 'rest/api/2/myself';
     let user = oauthUser(id, endPoint);
-	console.log('myself');
+
     return user.then((result) => {
+
         if(result.statusCode === '') {
             return {
                 statusCode: result.statusCode,

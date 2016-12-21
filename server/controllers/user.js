@@ -36,8 +36,6 @@ module.exports.handleLogin = (request, reply) => {
 							return reply(Boom.unauthorized('Error saving user'));
 						}
 
-						token = userUtils.createToken(user);
-
 						request.cookieAuth.set({
 	          				id: credentials.profile.user_id,
 	        			});
@@ -61,6 +59,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
 	consumer.getOAuthRequestToken(
 		(error, oauthToken, oauthTokenSecret, results) => {
 			if (!request.query.oauth_token) {
+				console.log(error);
 				if (error) {
                     return reply(Boom.badData('Error getting OAuth access token'));
 				}
@@ -106,7 +105,7 @@ module.exports.handleJiraCredentials = (request, reply) => {
 		}
 	);
 };
-4
+
 module.exports.getAccount = (request, reply) => {
 	if(request.auth.isAuthenticated && request.auth.credentials){
 
